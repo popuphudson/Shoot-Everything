@@ -1,0 +1,83 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[RequireComponent(typeof(CharacterController))]
+public class PlayerMovement : MonoBehaviour
+{
+    [HideInInspector] public AreaData CurrentArea;
+    [SerializeField] private float _moveSmoothTime;
+    [SerializeField] private float _gravityStrength;
+    [SerializeField] private float _jumpStrength;
+    [SerializeField] private float _walkSpeed;
+    [SerializeField] private float _runSpeed;
+    [SerializeField] private float _defaultRunDecay;
+    [SerializeField] private PlayerPerks _playerPerks;
+
+    private CharacterController _controller;
+    private Vector3 _currentMoveVelocity;
+    private Vector3 _moveDampVelocity;
+    private Vector3 _currentForceVelocity;
+
+    private float _runTimer;
+    private bool _running;
+
+    private void Start() {
+        _controller = GetComponent<CharacterController>();
+    }
+
+    public bool IsRunning() {
+        return _running;
+    }
+
+    private void Update() {
+        Vector3 playerInput = new Vector3() {
+            x = Input.GetAxisRaw("Horizontal"),
+            y = 0f,
+            z = Input.GetAxisRaw("Vertical")
+        };
+        
+        playerInput.Normalize();
+
+        Vector3 moveVector = transform.TransformDirection(playerInput);
+        if(Input.GetKey(KeyCode.LeftShift)) {
+            _runTimer -= (Time.deltaTime*_defaultRunDecay)/(_playerPerks.HasPerks(Perks.BETTER_RUN)?4:1);
+            _runTimer = Mathf.Max(0, _runTimer);
+        } else {
+            _runTimer += Time.deltaTime*(_playerPerks.HasPerks(Perks.BETTER_RUN)?2:1);
+            _runTimer = Mathf.Min(_runTimer, 1);
+        }
+        _running = Input.GetKey(KeyCode.LeftShift) && playerInput.z == 1 && _runTimer > 0;
+        float currentSpeed = _running? _runSpeed : _walkSpeed;
+        _currentMoveVelocity = Vector3.SmoothDamp(
+            _currentMoveVelocity,
+            moveVector * currentSpeed * (_playerPerks.HasPerks(Perks.BETTER_RUN)?1.5f:1),
+            ref _moveDampVelocity,
+            _moveSmoothTime
+        );
+
+        _controller.Move(_currentMoveVelocity * Time.deltaTime);
+
+        Ray groundCheckRay = new Ray(transform.position, Vector3.down);
+        if(Physics.Raycast(groundCheckRay, 1.1f)) {
+
+            if(_currentForceVelocity.y <= 0) {
+                _currentForceVelocity.y = -2f;
+            } 
+
+            if(Input.GetKeyDown(KeyCode.Space)) {
+                _currentForceVelocity.y = _jumpStrength;
+            }
+        } else {
+            _currentForceVelocity.y -= _gravityStrength * _gravityStrength * Time.deltaTime;
+        }
+
+        _controller.Move(_currentForceVelocity * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if(other.CompareTag("Area")) {
+            CurrentArea = other.GetComponent<AreaData>();
+        }
+    }
+}
