@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class DebrisBuyable : Buyable
 {
+    [SerializeField] private AreaData[] _areaDataLinksAffected;
+    [SerializeField] private int[] _selectedAreaDataLinks;
+    [SerializeField] private bool[] _areaDataLinkEnabled;   
     private bool _removing = false;
     public override void Buy(PlayerScriptsHandler playerScripts) {
         if(_removing) return;
         if(playerScripts.GetPlayerPoints().GetPoints() < _cost) return;
         playerScripts.GetPlayerPoints().RemovePoints(_cost);
+        for(int i = 0; i < _areaDataLinksAffected.Length; i++) {
+            _areaDataLinksAffected[i].AreaLinks[_selectedAreaDataLinks[i]].LinkEnabled = _areaDataLinkEnabled[i];
+        }
         StartCoroutine(Remove());
     }
 
@@ -27,6 +33,6 @@ public class DebrisBuyable : Buyable
 
     public override string GetShown(PlayerScriptsHandler playerScripts)
     {
-        return $"Debris {_cost}";
+        return $"Clear Debris: {_cost}";
     }
 }

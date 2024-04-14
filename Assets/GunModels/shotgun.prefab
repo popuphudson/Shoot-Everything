@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6279740389721294155}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: shotgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 6279740389721294157}
   - component: {fileID: 6279740389724685677}
   - component: {fileID: 6279740389723719597}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mesh2_Group3_Group1_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 6279740389721294159}
   - component: {fileID: 6279740389724685679}
   - component: {fileID: 6279740389723719599}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mesh1_Group2_Group1_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

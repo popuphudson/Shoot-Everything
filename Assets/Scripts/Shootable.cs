@@ -65,7 +65,7 @@ public class Shootable : MonoBehaviour
         }
         if(_hp <= 0) {
             if(_notificationName != "" && _enemyAI) {
-                playerPoints.AddPoints((int)(_pointsGiven*pointmul));
+                playerPoints.AddPoints(Mathf.CeilToInt(_pointsGiven*pointmul));
                 if(_enemyAI.CanPathToPlayerWithoutBarrierLinks()) {
                     if(powerUpManager.GetKillsToNextPowerup() == 0) {
                         PowerUp go = Instantiate(_powerUpPrefab, transform.position, Quaternion.identity).GetComponent<PowerUp>();
@@ -78,5 +78,12 @@ public class Shootable : MonoBehaviour
             gameObject.SetActive(false);
             Destroy(gameObject, 1f);
         }
+    }
+
+    public float GetHealth() {
+        return _hp;
+    }
+    public float GetMaxHealth() {
+        return _maxHp;
     }
 }

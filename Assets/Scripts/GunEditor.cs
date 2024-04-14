@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 
 [CustomEditor(typeof(Gun))]
 public class GunEditor : Editor {
@@ -23,7 +24,11 @@ public class GunEditor : Editor {
         SerializedProperty pierceDamageDropOff = serializedObject.FindProperty("PierceDamageDropOff");
         SerializedProperty shotsPerShot = serializedObject.FindProperty("ShotsPerShot");
         SerializedProperty maxShotSpread = serializedObject.FindProperty("MaxShotSpread");
+        SerializedProperty isWonderWeapon = serializedObject.FindProperty("IsWonderWeapon");
+        SerializedProperty wonderWeaponType = serializedObject.FindProperty("WonderWeaponType");
 
+        isWonderWeapon.boolValue = EditorGUILayout.Toggle("Is Wonder Weapon", isWonderWeapon.boolValue);
+        if(isWonderWeapon.boolValue) EditorGUILayout.PropertyField(wonderWeaponType);
         damage.floatValue = EditorGUILayout.FloatField("Damage", damage.floatValue);
         shootRange.floatValue = EditorGUILayout.FloatField("Shoot Range", shootRange.floatValue);
         rangeDamageDropOff.animationCurveValue = EditorGUILayout.CurveField("Range Damage Drop Off", rangeDamageDropOff.animationCurveValue, Color.green, new Rect(0, 0, 1, 1));

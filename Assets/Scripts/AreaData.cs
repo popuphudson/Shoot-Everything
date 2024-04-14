@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class AreaData : MonoBehaviour
 {
+    public AreaDataLink[] AreaLinks;
     public ZombieSpawnPoint[] ZombieSpawnPoints;
 }

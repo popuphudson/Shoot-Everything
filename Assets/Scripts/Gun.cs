@@ -1,7 +1,14 @@
 using UnityEngine;
 
+public enum WonderWeaponType {
+    RAYGUN,
+    COILGUN
+}
+
 [CreateAssetMenu(fileName = "Gun", menuName = "Shoot Everything/Gun", order = 0)]
 public class Gun : ScriptableObject {
+    public bool IsWonderWeapon;
+    public WonderWeaponType WonderWeaponType;
     public float Damage;
     public float ShootRange;
     public AnimationCurve RangeDamageDropOff;

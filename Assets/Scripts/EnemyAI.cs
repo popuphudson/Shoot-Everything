@@ -9,6 +9,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private Transform _target;
     [SerializeField] private Animator _anims;
+    [SerializeField] private LayerMask _solidLayers;
     private Barrier _barrier;
     private bool _ai = true;
     private bool _targetBarrier = false;
@@ -43,7 +44,7 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        if(Vector3.Distance(_target.position, transform.position) > 1.5f && _ai && !_targetBarrier) {
+        if(Vector3.Distance(_target.position, transform.position) > 2.25f && _ai && !_targetBarrier) {
             _agent.isStopped = false;
             _agent.destination = _target.position;
             _targetBarrier = _agent.pathStatus == NavMeshPathStatus.PathPartial;
@@ -61,23 +62,25 @@ public class EnemyAI : MonoBehaviour
     }
 
     private void TryDamageBarrier() {
-        if(Vector3.Distance(_barrier.transform.position, transform.position) <= 1.5f) {
+        if(Vector3.Distance(_barrier.transform.position, transform.position) <= 2.25f) {
             _anims.Play("Attack");
         }
     }
 
     private void TryDamagePlayer() {
-        if(Vector3.Distance(_target.position, transform.position) <= 1.5f) {
-            _anims.Play("Attack");
+        if(Vector3.Distance(_target.position, transform.position) <= 2.25f) {
+            if(!Physics.Linecast(transform.position, _target.position, _solidLayers)) {
+                _anims.Play("Attack");
+            }
         }
     }
 
     public void CauseDamage() {
         if(_targetBarrier) {
-            if(Vector3.Distance(_barrier.transform.position, transform.position) > 1.75f) return;
+            if(Vector3.Distance(_barrier.transform.position, transform.position) > 2.25f) return;
             _barrier.TakeDamage(50);
         } else {
-            if(Vector3.Distance(_target.position, transform.position) > 1.75f) return;
+            if(Vector3.Distance(_target.position, transform.position) > 2.5f) return;
             PlayerHealth playerHealth = _target.GetComponent<PlayerHealth>();
             if(!playerHealth) return;
             playerHealth.Damage(50);

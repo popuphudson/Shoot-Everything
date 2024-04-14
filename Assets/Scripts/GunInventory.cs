@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor.UIElements;
 
 public class GunInventory : MonoBehaviour
 {
@@ -222,9 +223,9 @@ public class GunInventory : MonoBehaviour
         KickCamera();
     }
 
-    private float GetGunDamage(RaycastHit hit, int pierce) {
+    private float GetGunDamage(Vector3 hitPos, int pierce) {
         float totalDamage = _selectedGun.Damage;
-        totalDamage *= _selectedGun.RangeDamageDropOff.Evaluate(Vector3.Distance(hit.point, _playerCamera.position)/_selectedGun.ShootRange)*_selectedGun.PierceDamageDropOff.Evaluate(pierce);
+        totalDamage *= _selectedGun.RangeDamageDropOff.Evaluate(Vector3.Distance(hitPos, _playerCamera.position)/_selectedGun.ShootRange)*_selectedGun.PierceDamageDropOff.Evaluate(pierce);
         totalDamage *= _playerPerks.HasPerks(Perks.EXTRA_OVERALL_DAMAGE)?2:1;
         if(_powerUpManager.IsPowerupActive(PowerupType.INSTAKILL)) totalDamage = -1;
         return totalDamage;
@@ -247,6 +248,17 @@ public class GunInventory : MonoBehaviour
         }
     }
 
+    private void RayGunSplash(RaycastHit hit) {
+        Collider[] hitColliders = Physics.OverlapSphere(hit.point, 1.5f, _enemyHealthLayer);
+        foreach(Collider col in hitColliders) {
+            ShootableRelay shot = col.transform.GetComponent<ShootableRelay>();
+            if(shot) {
+                shot.TakeDamage(GetGunDamage(col.transform.position, 0), _playerPoints, false, _powerUpManager);
+                _playerPoints.AddPoints(10);
+            }
+        }
+    }
+
     private void ShootRay() {
         RaycastHit hit;
         Collider collider;
@@ -254,14 +266,32 @@ public class GunInventory : MonoBehaviour
             ShootableRelay shot = hit.transform.GetComponent<ShootableRelay>();
             collider = hit.transform.GetComponent<Collider>();
             if(shot) {
-                shot.TakeDamage(GetGunDamage(hit, 0), _playerPoints, false, _powerUpManager);
+                shot.TakeDamage(GetGunDamage(hit.point, 0), _playerPoints, false, _powerUpManager);
                 _playerPoints.AddPoints(10);
-                GameObject effect = Instantiate(_selectedGun.ZombieHitEffect, hit.point, Quaternion.identity);
-                Destroy(effect, 5f);
+                if(_selectedGun.IsWonderWeapon && _selectedGun.WonderWeaponType == WonderWeaponType.COILGUN) {
+                    CoilGunStunner effect = Instantiate(_selectedGun.ZombieHitEffect, hit.point, Quaternion.identity).GetComponent<CoilGunStunner>();
+                    effect.transform.forward = hit.normal;
+                    effect.SetData(_playerPoints, _powerUpManager);
+                    Destroy(effect, 5f);
+                } else {
+                    GameObject effect = Instantiate(_selectedGun.ZombieHitEffect, hit.point, Quaternion.identity);
+                    effect.transform.forward = hit.normal;
+                    Destroy(effect, 5f);
+                }
             } else {
-                GameObject effect = Instantiate(_selectedGun.HitEffect, hit.point, Quaternion.identity);
-                effect.transform.forward = hit.normal;
-                Destroy(effect, 5f);
+                if(_selectedGun.IsWonderWeapon && _selectedGun.WonderWeaponType == WonderWeaponType.COILGUN) {
+                    CoilGunStunner effect = Instantiate(_selectedGun.HitEffect, hit.point, Quaternion.identity).GetComponent<CoilGunStunner>();
+                    effect.transform.forward = hit.normal;
+                    effect.SetData(_playerPoints, _powerUpManager);
+                    Destroy(effect, 5f);
+                } else {
+                    GameObject effect = Instantiate(_selectedGun.HitEffect, hit.point, Quaternion.identity);
+                    effect.transform.forward = hit.normal;
+                    Destroy(effect, 5f);
+                }
+            }
+            if(_selectedGun.IsWonderWeapon && _selectedGun.WonderWeaponType == WonderWeaponType.RAYGUN) {
+                RayGunSplash(hit);
             }
             for(int i = 0; i < _selectedGun.Pierce; i++) {
                 if(!hit.transform) break;
@@ -273,7 +303,7 @@ public class GunInventory : MonoBehaviour
                     if(Pierceshot) {
                         _playerPoints.AddPoints(10);
                         KillNotification.Notification("10");
-                        Pierceshot.TakeDamage(GetGunDamage(hit, i+1), _playerPoints, false, _powerUpManager);
+                        Pierceshot.TakeDamage(GetGunDamage(hit.point, i+1), _playerPoints, false, _powerUpManager);
                         GameObject effect = Instantiate(_selectedGun.ZombieHitEffect, hit.point, Quaternion.identity);
                         Destroy(effect, 5f);
                     } else {
@@ -293,7 +323,7 @@ public class GunInventory : MonoBehaviour
         if(_selectedGun.Automatic) {
             float recoilStep = _shootingTime/(_selectedGun.AmmoPerMag/_selectedGun.ShotsPerSecond);
             Vector2 currentRecoil = new Vector2(_selectedGun.VerticalRecoilPattern.Evaluate(recoilStep), _selectedGun.HorizontalRecoilPattern.Evaluate(recoilStep));
-            _playerLook.AddRecoil(new Vector2(-(currentRecoil.x-_preRecoil.x),currentRecoil.y-_preRecoil.y));
+            _playerLook.AddRecoil(new Vector2(-(currentRecoil.x-_preRecoil.x),currentRecoil.y-_preRecoil.y)+new Vector2(0.5f*Random.Range(-1f,1f), 0.5f*Random.Range(-1f, 1f)));
             _preRecoil = currentRecoil;
         } else {
             _playerLook.AddReversibleRecoil(new Vector2(-_selectedGun.OneTimeVerticalRecoil,Random.Range(-1,2)*_selectedGun.OneTimeHorizontalRecoil));

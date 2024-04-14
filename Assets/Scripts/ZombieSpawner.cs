@@ -7,7 +7,6 @@ public class ZombieSpawner : MonoBehaviour
 {
     public static ZombieSpawner Instance;
     [SerializeField] private GameObject _basicZombie;
-    [SerializeField] private int _amountForFirstWave;
     [SerializeField] private float _healthForFirstWave;
     [SerializeField] private int _maxZombiesAliveAtOnce;
     [SerializeField] private PlayerMovement _player;
@@ -41,25 +40,38 @@ public class ZombieSpawner : MonoBehaviour
     }
 
     private void SpawnBasicZombie() {
-        int chosen = Random.Range(0, _player.CurrentArea.ZombieSpawnPoints.Length);
-        Transform toSpawn = _player.CurrentArea.ZombieSpawnPoints[chosen].SpawnPoint;
-        Transform chosenBarrier = _player.CurrentArea.ZombieSpawnPoints[chosen].ConnectedBarriers[Random.Range(0, _player.CurrentArea.ZombieSpawnPoints[chosen].ConnectedBarriers.Length)];
-        EnemyAI go = Instantiate(_basicZombie, transform).GetComponent<EnemyAI>();
+        List<ZombieSpawnPoint> SpawnPoints = new List<ZombieSpawnPoint>();
+        foreach(ZombieSpawnPoint spawnPoint in _player.CurrentArea.ZombieSpawnPoints) {
+            SpawnPoints.Add(spawnPoint);
+        }
+        foreach(AreaDataLink linkedArea in _player.CurrentArea.AreaLinks) {
+            if(linkedArea.LinkEnabled) {
+                foreach(ZombieSpawnPoint spawnPoint in linkedArea.AreaData.ZombieSpawnPoints) {
+                    SpawnPoints.Add(spawnPoint);
+                }
+            }
+        }
+        int chosen = Random.Range(0, SpawnPoints.Count);
+        Transform toSpawn = SpawnPoints[chosen].SpawnPoint;
+        Transform chosenBarrier = SpawnPoints[chosen].ConnectedBarriers[Random.Range(0, SpawnPoints[chosen].ConnectedBarriers.Length)];
+        EnemyAI go = Instantiate(_basicZombie, toSpawn.position, Quaternion.identity).GetComponent<EnemyAI>();
+        go.transform.parent = transform;
         go.SetTarget(_player.transform);
         go.SetBarrier(chosenBarrier.GetComponent<Barrier>());
         go.SetLevelData(_levelData);
-        go.GetComponent<Shootable>().SetHealth(_healthForFirstWave*_wave);
-        go.transform.position = toSpawn.position;
+        float health = _healthForFirstWave+(100*Mathf.Min(_wave-1, 8));
+        if(_wave > 9) {
+            health *= Mathf.Pow(1.1f, _wave-9);
+        }
+        go.GetComponent<Shootable>().SetHealth(health);
     }
 
     private IEnumerator SpawnZombies() {
         _spawning = true;
         _wave += 1;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
         _roundText.text = _wave.ToString();
-        int additional = (_amountForFirstWave/2)*(_wave-1);
-        additional += (additional/2)*Mathf.FloorToInt(_wave/10);
-        _leftToSpawn = _amountForFirstWave + additional;
+        _leftToSpawn = Mathf.CeilToInt((0.000058f*Mathf.Pow(_wave, 3))+(0.074032f*Mathf.Pow(_wave, 2))+(0.718119f*_wave)+14.738699f);
         _timeBetweenSpawns = 20/_leftToSpawn;
     }
 

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22dc713a0b035b244aa5f4ef09708f47, type: 3}
   m_Name: Shotgun
   m_EditorClassIdentifier: 
-  Damage: 100
+  IsWonderWeapon: 0
+  WonderWeaponType: 0
+  Damage: 196
   ShootRange: 30
   RangeDamageDropOff:
     serializedVersion: 2
