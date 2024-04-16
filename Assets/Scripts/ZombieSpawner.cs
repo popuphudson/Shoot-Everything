@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class ZombieSpawner : MonoBehaviour
 {
     public static ZombieSpawner Instance;
     [SerializeField] private GameObject _basicZombie;
+    [SerializeField] private int _zombiesForFirstWave;
     [SerializeField] private float _healthForFirstWave;
     [SerializeField] private int _maxZombiesAliveAtOnce;
     [SerializeField] private PlayerMovement _player;
@@ -71,7 +73,8 @@ public class ZombieSpawner : MonoBehaviour
         _wave += 1;
         yield return new WaitForSeconds(4);
         _roundText.text = _wave.ToString();
-        _leftToSpawn = Mathf.CeilToInt((0.000058f*Mathf.Pow(_wave, 3))+(0.074032f*Mathf.Pow(_wave, 2))+(0.718119f*_wave)+14.738699f);
+        if(_wave < 10) _leftToSpawn = _zombiesForFirstWave+(2*(_wave-1));
+        else _leftToSpawn = Mathf.CeilToInt((0.000058f*Mathf.Pow(_wave, 3))+(0.074032f*Mathf.Pow(_wave, 2))+(0.718119f*_wave)+14.738699f);
         _timeBetweenSpawns = 20/_leftToSpawn;
     }
 

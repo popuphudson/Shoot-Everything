@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -71,6 +72,7 @@ public class Shootable : MonoBehaviour
                         PowerUp go = Instantiate(_powerUpPrefab, transform.position, Quaternion.identity).GetComponent<PowerUp>();
                         go.SetPowerUpManager(powerUpManager);
                         PowerupType powerupType = (PowerupType)System.Enum.GetValues(typeof(PowerupType)).GetValue(Random.Range(0, System.Enum.GetValues(typeof(PowerupType)).Length));
+                        go.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>().text = powerupType.ToString()[0].ToString().ToUpper() + powerupType.ToString().Substring(1).Replace("_", " ").ToLower();
                         go.SetPowerUpType(powerupType);
                     }
                 }

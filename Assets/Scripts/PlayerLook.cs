@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerLook : MonoBehaviour
 {
+    [SerializeField] private PauseMenu _pauser;
     [SerializeField] private Transform _playerCamera;
     [SerializeField] private Vector2 _sensitivity;
     [SerializeField] private Vector3 _cameraOffset;
@@ -36,7 +37,16 @@ public class PlayerLook : MonoBehaviour
         _playerInput = false;
     }
 
+    public void UpdateSense() {
+        _sensitivity = GlobalSettingsManager.Instance.MouseSensitivity;
+    }
+
+    public void UpdateFOV() {
+        _playerCamera.GetComponent<Camera>().fieldOfView = GlobalSettingsManager.Instance.FOV;
+    }
+
     private void Update() {
+        if(_pauser.Paused) return;
         if(_playerInput) {
             Vector2 mouseInput = new Vector2() {
                 x = Input.GetAxis("Mouse X"),

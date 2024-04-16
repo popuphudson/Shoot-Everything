@@ -20,11 +20,11 @@ public class CoilGunStunner : MonoBehaviour
 
     void Update()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.5f, _enemySplashLayer);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f, _enemySplashLayer);
         foreach(Collider col in hitColliders) {
             ShootableRelay shot = col.transform.GetComponent<ShootableRelay>();
             if(shot) {
-                shot.TakeDamage(shot.GetShootableMaxHealth()*0.2f*Time.deltaTime, _playerPoints, false, _powerUpManager);
+                shot.TakeDamage(shot.GetShootableMaxHealth()*Time.deltaTime, _playerPoints, false, _powerUpManager);
             }
         }
     }

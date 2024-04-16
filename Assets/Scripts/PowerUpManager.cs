@@ -5,7 +5,7 @@ using TMPro;
 
 public enum PowerupType {
     INSTAKILL,
-    DOUBLEPOINTS,
+    DOUBLE_POINTS,
     MAX_AMMO,
     CARPENTER,
     NUKE
@@ -31,7 +31,7 @@ public class PowerUpManager : MonoBehaviour
         _powerUpNames.Add(PowerupType.INSTAKILL, "Instakill");
         _powerUpNames.Add(PowerupType.CARPENTER, "Carpenter");
         _powerUpNames.Add(PowerupType.NUKE, "Nuke");
-        _powerUpNames.Add(PowerupType.DOUBLEPOINTS, "Double Points");
+        _powerUpNames.Add(PowerupType.DOUBLE_POINTS, "Double Points");
     }
 
     public int GetKillsToNextPowerup() {
@@ -56,7 +56,7 @@ public class PowerUpManager : MonoBehaviour
         switch(type) {
             case PowerupType.INSTAKILL:
                 return _instaKillTimer > 0;
-            case PowerupType.DOUBLEPOINTS:
+            case PowerupType.DOUBLE_POINTS:
                 return _doublePointsTimer > 0;
         }
         return false;
@@ -69,7 +69,7 @@ public class PowerUpManager : MonoBehaviour
             case PowerupType.INSTAKILL:
                 _instaKillTimer += 30;
                 break;
-            case PowerupType.DOUBLEPOINTS:
+            case PowerupType.DOUBLE_POINTS:
                 _doublePointsTimer += 30;
                 break;
             case PowerupType.CARPENTER:

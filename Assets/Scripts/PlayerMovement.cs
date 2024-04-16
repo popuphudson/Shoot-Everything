@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private PauseMenu _pauser;
     [HideInInspector] public AreaData CurrentArea;
     [SerializeField] private float _moveSmoothTime;
     [SerializeField] private float _gravityStrength;
@@ -31,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Update() {
+        if(_pauser.Paused) return;
         Vector3 playerInput = new Vector3() {
             x = Input.GetAxisRaw("Horizontal"),
             y = 0f,

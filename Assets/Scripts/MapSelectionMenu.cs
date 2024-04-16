@@ -10,6 +10,7 @@ public class MapSelectionMenu : MonoBehaviour
     [SerializeField] private GameObject[] _mapDescriptions;
     [SerializeField] private Animator _screenFade;
     private int _selectedMap = 0;
+
     public void ShowMapData(int mapIndex) {
         _startButton.SetActive(true);
         _background.SetActive(true);
@@ -22,11 +23,12 @@ public class MapSelectionMenu : MonoBehaviour
 
     public void StartGame() {
         _screenFade.Play("Fade Out");
-        Invoke("LoadGameScene", 1f);
+        StartCoroutine(LoadGameScene());
     }
 
-    public void LoadGameScene() {
-        SceneManager.LoadSceneAsync(_selectedMap);
+    IEnumerator LoadGameScene() {
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene(_selectedMap);
     }
 
     public void Back() {

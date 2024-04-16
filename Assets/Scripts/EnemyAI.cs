@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -34,7 +32,11 @@ public class EnemyAI : MonoBehaviour
             link.SetActive(false);
         }
         NavMeshPath path = new NavMeshPath(); 
-        _agent.CalculatePath(_target.position, path);
+        try {
+            _agent.CalculatePath(_target.position, path);
+        } catch (System.Exception e) {
+            return false;
+        }
         bool pathStatus = path.status == NavMeshPathStatus.PathComplete;
         for(int i = 0; i < _levelData.BarrierLinks.Length; i++) {
             _levelData.BarrierLinks[i].SetActive(activeLinks[i]);

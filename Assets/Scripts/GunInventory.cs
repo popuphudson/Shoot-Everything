@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEditor.UIElements;
 
 public class GunInventory : MonoBehaviour
 {
+    [SerializeField] private PauseMenu _pauser;
     [SerializeField] private Transform _gunHoldPoint;
     [SerializeField] private LayerMask _solidLayers;
     [SerializeField] private LayerMask _enemyHealthLayer;
@@ -77,6 +77,7 @@ public class GunInventory : MonoBehaviour
     }
 
     private void Update() {
+        if(_pauser.Paused) return;
         _timePassed += Time.deltaTime;
         if(Input.GetAxisRaw("Mouse ScrollWheel") < 0 && !_meleeing) {
             _selectedIndex += 1;
@@ -272,7 +273,6 @@ public class GunInventory : MonoBehaviour
                     CoilGunStunner effect = Instantiate(_selectedGun.ZombieHitEffect, hit.point, Quaternion.identity).GetComponent<CoilGunStunner>();
                     effect.transform.forward = hit.normal;
                     effect.SetData(_playerPoints, _powerUpManager);
-                    Destroy(effect, 5f);
                 } else {
                     GameObject effect = Instantiate(_selectedGun.ZombieHitEffect, hit.point, Quaternion.identity);
                     effect.transform.forward = hit.normal;

@@ -25,11 +25,11 @@ public class PlayerPoints : MonoBehaviour
     }
 
     public void AddPoints(int amount) {
-        _points += amount*(_powerUpManager.IsPowerupActive(PowerupType.DOUBLEPOINTS)?2:1);
-        _totalPoints += amount*(_powerUpManager.IsPowerupActive(PowerupType.DOUBLEPOINTS)?2:1);
+        _points += amount*(_powerUpManager.IsPowerupActive(PowerupType.DOUBLE_POINTS)?2:1);
+        _totalPoints += amount*(_powerUpManager.IsPowerupActive(PowerupType.DOUBLE_POINTS)?2:1);
         _pointsText.text = $"Points: {_points}";
         _notification.localPosition = new Vector3(-755+((_pointsText.text.Length-9)*30), -475, 0);
-        KillNotification.Notification($"{amount*(_powerUpManager.IsPowerupActive(PowerupType.DOUBLEPOINTS)?2:1)}");
+        KillNotification.Notification($"{amount*(_powerUpManager.IsPowerupActive(PowerupType.DOUBLE_POINTS)?2:1)}");
     }
 
     public void RemovePoints(int amount) {

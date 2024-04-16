@@ -4826,8 +4826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff06f33ee4bb3fd47a292e261e95244a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damagePerSecond: 200
   _enemySplashLayer:
     serializedVersion: 2
     m_Bits: 1024
-  _stayTime: 5
+  _stayTime: 6
