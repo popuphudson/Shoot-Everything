@@ -29,6 +29,7 @@ public class Barrier : Buyable
 
     public override void Buy(PlayerScriptsHandler playerScripts)
     {
+        if(_health >= _maxHealth) return;
         if(_repairTimer > 0) return;
         _health = Mathf.Min(_maxHealth, _health+_repairHealth);
         _offMeshLink.SetActive(false);
@@ -39,8 +40,9 @@ public class Barrier : Buyable
 
     public override string GetShown(PlayerScriptsHandler playerScripts)
     {
+        if(_health >= _maxHealth) return "";
         if(_repairTimer > 0) return $"REPAIR COOL DOWN: {_repairTimer:0.00}!";
-        return "Press interact to repair!";
+        return "Press E To Repair!";
     }
 
     public void TakeDamage(float damage) {

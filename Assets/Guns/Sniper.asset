@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsWonderWeapon: 0
   WonderWeaponType: 0
-  Damage: 1432
-  ShootRange: 200
+  Damage: 732
+  ShootRange: 100
   RangeDamageDropOff:
     serializedVersion: 2
     m_Curve:
@@ -113,6 +113,7 @@ MonoBehaviour:
   OneTimeVerticalRecoil: 15
   OneTimeHorizontalRecoil: 3
   Automatic: 0
+  ExtraShotsPerSecond: 0.5
   GunModel: {fileID: 7393585506450278224, guid: f5f1a3a6c65b8a149b02e6cf2b669421, type: 3}
   HitEffect: {fileID: 7938236842536322869, guid: 06f4a3a76a4e7ce4a9f59c2a73cdcb5f, type: 3}
   ZombieHitEffect: {fileID: 546732742291030855, guid: 3edf3e3944e965e48930ef1041fca506, type: 3}

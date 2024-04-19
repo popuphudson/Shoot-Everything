@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 750484605845117073}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Machinegun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 750484605845117075}
   - component: {fileID: 750484605848017073}
   - component: {fileID: 750484605847018097}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mesh1_Group2_Group1_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 750484605845117077}
   - component: {fileID: 750484605848017075}
   - component: {fileID: 750484605847018099}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mesh2_Group3_Group1_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

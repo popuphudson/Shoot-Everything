@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 508866474492730449}
   - component: {fileID: 508866474489338993}
   - component: {fileID: 508866474490437297}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mesh3_Group4_Group1_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 508866474492730451}
   - component: {fileID: 508866474489338995}
   - component: {fileID: 508866474490437299}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mesh4_Group5_Group1_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 508866474492730453}
   - component: {fileID: 508866474489338997}
   - component: {fileID: 508866474490437301}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mesh1_Group2_Group1_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 508866474492730455}
   - component: {fileID: 508866474489338999}
   - component: {fileID: 508866474490437303}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mesh2_Group3_Group1_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -341,7 +341,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 508866474492730461}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: uziLong
   m_TagString: Untagged
   m_Icon: {fileID: 0}

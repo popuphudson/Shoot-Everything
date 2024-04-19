@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4299531537000287696}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 4299531537000287700}
   - component: {fileID: 4299531536996863476}
   - component: {fileID: 4299531536997863220}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mesh1_Group2_Group1_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 4299531537000287702}
   - component: {fileID: 4299531536996863478}
   - component: {fileID: 4299531536997863222}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mesh2_Group3_Group1_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

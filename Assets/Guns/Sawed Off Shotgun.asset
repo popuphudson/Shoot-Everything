@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsWonderWeapon: 0
   WonderWeaponType: 0
-  Damage: 274
+  Damage: 247
   ShootRange: 20
   RangeDamageDropOff:
     serializedVersion: 2
@@ -26,21 +26,30 @@ MonoBehaviour:
       outSlope: 0
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4
+      value: 1
+      inSlope: -0
+      outSlope: -3.3254726
+      tangentMode: 5
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.05555555
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
+      value: 0.1
+      inSlope: -0.012406306
+      outSlope: -0.012406306
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+      inWeight: 0.5069444
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  Pierce: 3
+  Pierce: 2
   PierceDamageDropOff:
     serializedVersion: 2
     m_Curve:
@@ -65,12 +74,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  ShotsPerSecond: 2
+  ShotsPerSecond: 5
   ShotsPerShot: 8
-  MaxShotSpread: {x: 0, y: 0}
+  MaxShotSpread: {x: 6, y: 6}
   AmmoPerMag: 2
   MaxAmmoReserve: 30
-  ReloadTime: 1.5
+  ReloadTime: 2.5
   VerticalRecoilPattern:
     serializedVersion: 2
     m_Curve: []

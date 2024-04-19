@@ -24,6 +24,7 @@ public class PowerUpManager : MonoBehaviour
     private int _killsToNextPowerup;
     private Dictionary<PowerupType, string> _powerUpNames = new Dictionary<PowerupType, string>();
     private int _totalKills;
+    private int _powerUpsGotten;
 
     private void Start() {
         _killsToNextPowerup = Random.Range(10, 20);
@@ -38,7 +39,8 @@ public class PowerUpManager : MonoBehaviour
         _totalKills++;
         _killsToNextPowerup--;
         if(_killsToNextPowerup == 0) {
-            _killsToNextPowerup = Random.Range(10, 30);
+            _powerUpsGotten++;
+            _killsToNextPowerup = Random.Range(10+(5*_powerUpsGotten), 30+(7*_powerUpsGotten));
             return 0;
         }
         return _killsToNextPowerup;

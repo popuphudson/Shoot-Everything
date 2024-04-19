@@ -33,6 +33,6 @@ public class DebrisBuyable : Buyable
 
     public override string GetShown(PlayerScriptsHandler playerScripts)
     {
-        return $"Clear Debris: {_cost}";
+        return $"E To Clear Debris: <b>{_cost}</b> Points";
     }
 }

@@ -86,6 +86,7 @@ MonoBehaviour:
   OneTimeVerticalRecoil: 15
   OneTimeHorizontalRecoil: 4
   Automatic: 0
+  ExtraShotsPerSecond: 0.5
   GunModel: {fileID: 6447663167742845289, guid: e2f47bf9affa16e4e828a05a0315ef88, type: 3}
   HitEffect: {fileID: 7193220370529408889, guid: 93462c9936eb5734f8552ab244918b05, type: 3}
   ZombieHitEffect: {fileID: 5474087948818168996, guid: b6fb94cc03525bb42ab60a585e81682b, type: 3}

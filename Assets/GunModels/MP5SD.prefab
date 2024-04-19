@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1393907122752379905}
   - component: {fileID: 446505036922963160}
   - component: {fileID: 5238912321952383874}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 5221140239714164820}
   - component: {fileID: 6277087658723256110}
   - component: {fileID: 3477996420778690632}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Right_Bump_Mount_Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 5471961363150898598}
   - component: {fileID: 3572292406523435799}
   - component: {fileID: 639372441116402442}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Scope_Mount_Leg_Left_Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 6629213003839642211}
   - component: {fileID: 1913963664823854432}
   - component: {fileID: 8114795572180484275}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Screw_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -349,7 +349,7 @@ GameObject:
   - component: {fileID: 6218560851170537008}
   - component: {fileID: 191956316353243231}
   - component: {fileID: 8401296009167818962}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mag_Release
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -432,7 +432,7 @@ GameObject:
   - component: {fileID: 3939738229232248603}
   - component: {fileID: 6412060191324634330}
   - component: {fileID: 3256904310086532980}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Pistol_Grip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -515,7 +515,7 @@ GameObject:
   - component: {fileID: 7524940514816644006}
   - component: {fileID: 374143208698169348}
   - component: {fileID: 216614913670228476}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Piccatiny_Rail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -602,7 +602,7 @@ GameObject:
   - component: {fileID: 487787092819230279}
   - component: {fileID: 3754445131631823551}
   - component: {fileID: 7207968198019006793}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Butt_Pad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -687,7 +687,7 @@ GameObject:
   - component: {fileID: 8487538589314877054}
   - component: {fileID: 8239627816054295670}
   - component: {fileID: 7820724837429255480}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Right_Bump_Mount_Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -770,7 +770,7 @@ GameObject:
   - component: {fileID: 7500855661381255243}
   - component: {fileID: 206504066536866564}
   - component: {fileID: 5915541607660164391}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Scope_Mount_Leg_Right_Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -853,7 +853,7 @@ GameObject:
   - component: {fileID: 6580165593759802762}
   - component: {fileID: 4572442484432134274}
   - component: {fileID: 796930661012415815}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: pin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -936,7 +936,7 @@ GameObject:
   - component: {fileID: 7398348712877485756}
   - component: {fileID: 5738771211738340336}
   - component: {fileID: 734535460523307552}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Scope_Mount_Leg_Left_Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1019,7 +1019,7 @@ GameObject:
   - component: {fileID: 2812573822162608514}
   - component: {fileID: 8884518142056040688}
   - component: {fileID: 706298376462023420}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Barrel_Connector_SD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1101,7 +1101,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4213831248523108053}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: MP5SD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1146,7 +1146,7 @@ GameObject:
   - component: {fileID: 5205383013653309122}
   - component: {fileID: 4912720477338722297}
   - component: {fileID: 9028522433243567714}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Micro_T_1_Short
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1229,7 +1229,7 @@ GameObject:
   - component: {fileID: 2906626885882948668}
   - component: {fileID: 5125506336182747854}
   - component: {fileID: 2943684601164977286}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Arm_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1312,7 +1312,7 @@ GameObject:
   - component: {fileID: 3435983380066787384}
   - component: {fileID: 2647703669966514478}
   - component: {fileID: 6383619303947416679}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Piccatiny_Rail_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1395,7 +1395,7 @@ GameObject:
   - component: {fileID: 4687155357070309691}
   - component: {fileID: 5918859852414936637}
   - component: {fileID: 4654174729343145517}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Piccatiny_Rail_Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1478,7 +1478,7 @@ GameObject:
   - component: {fileID: 6848557510114261825}
   - component: {fileID: 8554496042465402886}
   - component: {fileID: 8471708514418272326}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Piccatiny_Rail_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1561,7 +1561,7 @@ GameObject:
   - component: {fileID: 4366465228638422101}
   - component: {fileID: 729106986914589563}
   - component: {fileID: 2824319951251413529}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Piccatiny_rail_SD_Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1649,7 +1649,7 @@ GameObject:
   - component: {fileID: 738832571910536151}
   - component: {fileID: 7515024423990247050}
   - component: {fileID: 4398410935837126781}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Pin_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1732,7 +1732,7 @@ GameObject:
   - component: {fileID: 6235403683888972119}
   - component: {fileID: 4601100341424346284}
   - component: {fileID: 3340393865946359922}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Rear_Sight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1815,7 +1815,7 @@ GameObject:
   - component: {fileID: 1314459045469384332}
   - component: {fileID: 4692030784081998546}
   - component: {fileID: 5111084578577400950}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Handguard_SD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1898,7 +1898,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6326356172904152087}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1934,7 +1934,7 @@ GameObject:
   - component: {fileID: 3017576207464358074}
   - component: {fileID: 58472825436739227}
   - component: {fileID: 26603913338028875}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Fire_Selector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2017,7 +2017,7 @@ GameObject:
   - component: {fileID: 5229914276294866160}
   - component: {fileID: 9117896895614181131}
   - component: {fileID: 5576182320849645045}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2100,7 +2100,7 @@ GameObject:
   - component: {fileID: 6645060095179947627}
   - component: {fileID: 7177654976676854878}
   - component: {fileID: 8103346680440277918}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2181,7 +2181,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4130599992269596008}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Handguards
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2213,7 +2213,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 220188172752795709}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Stocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2247,7 +2247,7 @@ GameObject:
   - component: {fileID: 2208502999709194127}
   - component: {fileID: 5093920701426643614}
   - component: {fileID: 7507446959645810833}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mount_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2330,7 +2330,7 @@ GameObject:
   - component: {fileID: 5875937583772932996}
   - component: {fileID: 8159002585542254773}
   - component: {fileID: 4660748567782913146}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Stock_Collapsable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2415,7 +2415,7 @@ GameObject:
   - component: {fileID: 118566219250619437}
   - component: {fileID: 3021936643177874710}
   - component: {fileID: 533778725830645224}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Left_Bump_Mount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2498,7 +2498,7 @@ GameObject:
   - component: {fileID: 359662029586274010}
   - component: {fileID: 684298765760505127}
   - component: {fileID: 5311015608109185490}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Magazine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2581,7 +2581,7 @@ GameObject:
   - component: {fileID: 2521786986935440320}
   - component: {fileID: 8854539334297860630}
   - component: {fileID: 4519086798704761387}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2662,7 +2662,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2564751292700711514}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Magazines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2696,7 +2696,7 @@ GameObject:
   - component: {fileID: 1829880516736588992}
   - component: {fileID: 2091307393402596554}
   - component: {fileID: 7202694658245281530}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Dial_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2779,7 +2779,7 @@ GameObject:
   - component: {fileID: 4303546932985421064}
   - component: {fileID: 8772838209532313437}
   - component: {fileID: 4724114306640010192}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Dial_Right_Small
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2860,7 +2860,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4121832707060190457}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: CCO_Micro_M1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2900,7 +2900,7 @@ GameObject:
   - component: {fileID: 1793680921749924840}
   - component: {fileID: 8395725195250228667}
   - component: {fileID: 5488992907416660574}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Scope_Mount_Leg_Right_Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2983,7 +2983,7 @@ GameObject:
   - component: {fileID: 7606383904197228492}
   - component: {fileID: 5909457008913750455}
   - component: {fileID: 1971097503593734894}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Arm_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3066,7 +3066,7 @@ GameObject:
   - component: {fileID: 3667460750373611421}
   - component: {fileID: 7015923595304841743}
   - component: {fileID: 2461069191695863337}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Rear_Sight_KAC_Screw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3149,7 +3149,7 @@ GameObject:
   - component: {fileID: 3438177139892147748}
   - component: {fileID: 4369481491253784488}
   - component: {fileID: 4700333636962149928}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: ejection_port
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3232,7 +3232,7 @@ GameObject:
   - component: {fileID: 1827815904267644286}
   - component: {fileID: 14833956123632459}
   - component: {fileID: 2339943971747875131}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Front_Sight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3315,7 +3315,7 @@ GameObject:
   - component: {fileID: 8487268122715684025}
   - component: {fileID: 3318005978915846406}
   - component: {fileID: 4096874367231962224}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Screw_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3398,7 +3398,7 @@ GameObject:
   - component: {fileID: 4137567556469907971}
   - component: {fileID: 6153801170727096090}
   - component: {fileID: 2854260665133784190}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Pin_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3481,7 +3481,7 @@ GameObject:
   - component: {fileID: 3618012478001415194}
   - component: {fileID: 4589191549536522495}
   - component: {fileID: 1359609522285001268}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Rear_Sight_HK_Classic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3567,7 +3567,7 @@ GameObject:
   - component: {fileID: 2965624164537615288}
   - component: {fileID: 3786278123634287738}
   - component: {fileID: 1017709728103796848}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Dial_Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3650,7 +3650,7 @@ GameObject:
   - component: {fileID: 7365406233287845780}
   - component: {fileID: 7707381944192503278}
   - component: {fileID: 1373976407440976337}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Charging_Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3733,7 +3733,7 @@ GameObject:
   - component: {fileID: 2846213708085409890}
   - component: {fileID: 1937587523195994629}
   - component: {fileID: 9143804595024655044}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3816,7 +3816,7 @@ GameObject:
   - component: {fileID: 2111809405154874306}
   - component: {fileID: 3986098551920975723}
   - component: {fileID: 1364325218808714852}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Mount_T_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3899,7 +3899,7 @@ GameObject:
   - component: {fileID: 6718304149845272766}
   - component: {fileID: 7227940367859750299}
   - component: {fileID: 5003292468496558411}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}

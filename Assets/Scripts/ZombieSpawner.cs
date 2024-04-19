@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.ProBuilder.MeshOperations;
 
 public class ZombieSpawner : MonoBehaviour
 {
@@ -13,6 +12,7 @@ public class ZombieSpawner : MonoBehaviour
     [SerializeField] private int _maxZombiesAliveAtOnce;
     [SerializeField] private PlayerMovement _player;
     [SerializeField] private TextMeshProUGUI _roundText;
+    [SerializeField] private Animator _roundTextAnims;
     [SerializeField] private LevelData _levelData;
     [SerializeField] private PowerUpManager _powerUpManager;
     private int _wave = 0;
@@ -54,16 +54,22 @@ public class ZombieSpawner : MonoBehaviour
             }
         }
         int chosen = Random.Range(0, SpawnPoints.Count);
-        Transform toSpawn = SpawnPoints[chosen].SpawnPoint;
+        Transform toSpawn = SpawnPoints[0].SpawnPoint;
+        try {
+            toSpawn = SpawnPoints[chosen].SpawnPoint;
+        } catch(System.IndexOutOfRangeException) {
+            Debug.LogError($"{chosen} isn't within the confines of 0-{SpawnPoints.Count-1}!");
+        }
         Transform chosenBarrier = SpawnPoints[chosen].ConnectedBarriers[Random.Range(0, SpawnPoints[chosen].ConnectedBarriers.Length)];
         EnemyAI go = Instantiate(_basicZombie, toSpawn.position, Quaternion.identity).GetComponent<EnemyAI>();
         go.transform.parent = transform;
         go.SetTarget(_player.transform);
         go.SetBarrier(chosenBarrier.GetComponent<Barrier>());
         go.SetLevelData(_levelData);
+        if(ZombieGonnaRun()) go.SetRunning();
         float health = _healthForFirstWave+(100*Mathf.Min(_wave-1, 8));
         if(_wave > 9) {
-            health *= Mathf.Pow(1.1f, _wave-9);
+            health *= Mathf.Pow(1.125f, _wave-9);
         }
         go.GetComponent<Shootable>().SetHealth(health);
     }
@@ -71,11 +77,20 @@ public class ZombieSpawner : MonoBehaviour
     private IEnumerator SpawnZombies() {
         _spawning = true;
         _wave += 1;
-        yield return new WaitForSeconds(4);
+        _roundTextAnims.Play("Start Round");
+        yield return new WaitForSeconds(0.3f);
         _roundText.text = _wave.ToString();
+        yield return new WaitForSeconds(4);
         if(_wave < 10) _leftToSpawn = _zombiesForFirstWave+(2*(_wave-1));
         else _leftToSpawn = Mathf.CeilToInt((0.000058f*Mathf.Pow(_wave, 3))+(0.074032f*Mathf.Pow(_wave, 2))+(0.718119f*_wave)+14.738699f);
         _timeBetweenSpawns = 20/_leftToSpawn;
+    }
+
+    private bool ZombieGonnaRun() {
+        float chance = Mathf.Max((_wave-4)/10, 0);
+        if(chance >= 1) return true;
+        float chosen = Random.Range(0f, 1f);
+        return chosen<chance;
     }
 
     public void KillAll() {

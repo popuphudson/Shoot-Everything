@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _walkSpeed;
     [SerializeField] private float _runSpeed;
     [SerializeField] private float _defaultRunDecay;
+    [SerializeField] private float _defaultRunRecharge;
     [SerializeField] private PlayerPerks _playerPerks;
 
     private CharacterController _controller;
@@ -22,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
 
     private float _runTimer;
     private bool _running;
+    private bool _holdingRunKey;
+    private bool _runRecharge;
 
     private void Start() {
         _controller = GetComponent<CharacterController>();
@@ -42,18 +45,25 @@ public class PlayerMovement : MonoBehaviour
         playerInput.Normalize();
 
         Vector3 moveVector = transform.TransformDirection(playerInput);
-        if(Input.GetKey(KeyCode.LeftShift)) {
+        if(!_holdingRunKey && _runTimer > 0 && !_runRecharge) {
+            _holdingRunKey = Input.GetKeyDown(KeyCode.LeftShift);
+        } else if(_runTimer <= 0 || Input.GetKeyUp(KeyCode.LeftShift)) {
+            _holdingRunKey = false;
+            _runRecharge = true;
+        }
+        if(_runRecharge && _runTimer == 1) _runRecharge = false;
+        _running = _holdingRunKey && playerInput.z > 0;
+        if(_running) {
             _runTimer -= (Time.deltaTime*_defaultRunDecay)/(_playerPerks.HasPerks(Perks.BETTER_RUN)?4:1);
             _runTimer = Mathf.Max(0, _runTimer);
         } else {
-            _runTimer += Time.deltaTime*(_playerPerks.HasPerks(Perks.BETTER_RUN)?2:1);
+            _runTimer += Time.deltaTime*_defaultRunRecharge*(_playerPerks.HasPerks(Perks.BETTER_RUN)?2:1);
             _runTimer = Mathf.Min(_runTimer, 1);
         }
-        _running = Input.GetKey(KeyCode.LeftShift) && playerInput.z == 1 && _runTimer > 0;
         float currentSpeed = _running? _runSpeed : _walkSpeed;
         _currentMoveVelocity = Vector3.SmoothDamp(
             _currentMoveVelocity,
-            moveVector * currentSpeed * (_playerPerks.HasPerks(Perks.BETTER_RUN)?1.5f:1),
+            moveVector * currentSpeed * (_playerPerks.HasPerks(Perks.BETTER_RUN)?1.125f:1),
             ref _moveDampVelocity,
             _moveSmoothTime
         );

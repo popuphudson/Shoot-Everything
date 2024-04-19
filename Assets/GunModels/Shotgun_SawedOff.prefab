@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1527448535846089886}
   - component: {fileID: 2494235311392226107}
   - component: {fileID: 394551523097710577}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Shotgun_SawedOff
   m_TagString: Untagged
   m_Icon: {fileID: 0}

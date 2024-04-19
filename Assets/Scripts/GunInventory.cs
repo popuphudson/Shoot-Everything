@@ -21,6 +21,9 @@ public class GunInventory : MonoBehaviour
     [SerializeField] private float _meleeRange;
     [SerializeField] private Animator _anims;
     [SerializeField] private PowerUpManager _powerUpManager;
+    [SerializeField] private GameObject _meleeZombieHitEffect;
+    [SerializeField] private float _gunMoveSmoothness;
+    [SerializeField] private float _gunRotSmoothness;
     private List<int> _magAmmo = new List<int>();
     private List<int> _spareAmmo = new List<int>();
     private int _selectedIndex;
@@ -31,6 +34,10 @@ public class GunInventory : MonoBehaviour
     private float _shootingTime;
     private Vector2 _preRecoil = Vector2.zero;
     private bool _meleeing;
+    private Vector3 _gunHoldPointStart;
+    private Vector3 _gunHoldPointPosition;
+    private Vector3 _gunHoldPointRotation;
+    
 
     private void Start() {
         _reloading = false;
@@ -41,6 +48,7 @@ public class GunInventory : MonoBehaviour
         }
         SwapGun();
         _meleeing = false;
+        _gunHoldPointStart = _gunHoldPoint.localPosition;
     }
 
     public int GetNumberOfGuns() {
@@ -96,7 +104,7 @@ public class GunInventory : MonoBehaviour
         if(Input.GetMouseButtonUp(0)) {
             _switchingGuns = false;
         }
-        if(Input.GetKeyDown(KeyCode.V) && !_meleeing && !_playerMovement.IsRunning()) {
+        if(Input.GetKeyDown(KeyCode.V) && !_meleeing && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN))) {
             if(_reloading) {
                 _anims.speed = 1;
                 _reloading = false;
@@ -105,17 +113,21 @@ public class GunInventory : MonoBehaviour
             _anims.Play("Melee");
             _meleeing = true;
         }
-        if(_selectedGun && !_switchingGuns && !_meleeing && !_playerMovement.IsRunning()) {
+        if(_selectedGun && !_switchingGuns && !_meleeing && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN))) {
             TryFireGun();
             TryReload();
         }
         UpdateAmmoDisplay();
         CheckHealthBars();
-        if(_reloading) {
-            _gunHoldPoint.Rotate((Time.deltaTime/_selectedGun.ReloadTime)*360, 0, 0);
-        } else {
-            _gunHoldPoint.localRotation = Quaternion.Euler(0, 0, 0);
-        }
+    }
+
+    private void LateUpdate() {
+        Vector3 changeInPos = ((Vector3.forward*Input.GetAxisRaw("Vertical"))+(Vector3.right*Input.GetAxisRaw("Horizontal")))*(_playerMovement.IsRunning()?(_playerPerks.HasPerks(Perks.BETTER_RUN)?2.5f:2):1);
+        _gunHoldPointPosition = Vector3.Lerp(_gunHoldPointPosition, _gunHoldPointStart-(changeInPos/20), Time.deltaTime*_gunMoveSmoothness);
+        if(!_meleeing && !_reloading) _gunHoldPoint.localPosition = _gunHoldPointPosition;
+        Vector3 changeInRot = new Vector3(-Input.GetAxisRaw("Mouse Y"), Input.GetAxisRaw("Mouse X"), 0)*20;
+        _gunHoldPointRotation = Vector3.Lerp(_gunHoldPointRotation, changeInRot, Time.deltaTime*_gunRotSmoothness);
+        if(!_meleeing && !_reloading) _gunHoldPoint.localEulerAngles = _gunHoldPointRotation;
     }
 
     private void TryReload() {
@@ -151,16 +163,16 @@ public class GunInventory : MonoBehaviour
 
     private void TryFireGun() {
         if(_selectedGun.Automatic) {
-            if(Input.GetMouseButton(0) && _timePassed > (1/_selectedGun.ShotsPerSecond)) {
+            if(Input.GetMouseButton(0) && _timePassed > (1/(_selectedGun.ShotsPerSecond+(_playerPerks.HasPerks(Perks.FAST_RELOAD)?_selectedGun.ExtraShotsPerSecond:0)))) {
                 FireGun();
-            } else if(_timePassed > (1/_selectedGun.ShotsPerSecond)) {
+            } else if(_timePassed > (1/(_selectedGun.ShotsPerSecond+(_playerPerks.HasPerks(Perks.FAST_RELOAD)?_selectedGun.ExtraShotsPerSecond:0)))) {
                 _shootingTime = Mathf.Max(_shootingTime-Time.deltaTime, 0);
                 float recoilStep = _shootingTime/(_selectedGun.AmmoPerMag/_selectedGun.ShotsPerSecond);
                 _preRecoil = new Vector2(_selectedGun.VerticalRecoilPattern.Evaluate(recoilStep), _selectedGun.HorizontalRecoilPattern.Evaluate(recoilStep));
             }
         } else {
             _shootingTime = 0;
-            if(Input.GetMouseButtonDown(0) && _timePassed > (1/_selectedGun.ShotsPerSecond)) {
+            if(Input.GetMouseButtonDown(0) && _timePassed > (1/(_selectedGun.ShotsPerSecond+(_playerPerks.HasPerks(Perks.FAST_RELOAD)?_selectedGun.ExtraShotsPerSecond:0)))) {
                 FireGun();
             }
         }
@@ -237,13 +249,10 @@ public class GunInventory : MonoBehaviour
         if(Physics.Raycast(_playerCamera.position, _playerCamera.forward, out hit, _meleeRange, _solidLayers)) {
             ShootableRelay shot = hit.transform.GetComponent<ShootableRelay>();
             if(shot) {
-                shot.TakeDamage(_meleeDamage, _playerPoints, true, _powerUpManager);
+                if(_powerUpManager.IsPowerupActive(PowerupType.INSTAKILL)) shot.TakeDamage(-1, _playerPoints, true, _powerUpManager);
+                else shot.TakeDamage(_meleeDamage, _playerPoints, true, _powerUpManager);
                 _playerPoints.AddPoints(10);
-                GameObject effect = Instantiate(_selectedGun.ZombieHitEffect, hit.point, Quaternion.identity);
-                Destroy(effect, 5f);
-            } else {
-                GameObject effect = Instantiate(_selectedGun.HitEffect, hit.point, Quaternion.identity);
-                effect.transform.forward = hit.normal;
+                GameObject effect = Instantiate(_meleeZombieHitEffect, hit.point, Quaternion.identity);
                 Destroy(effect, 5f);
             }
         }
@@ -323,10 +332,14 @@ public class GunInventory : MonoBehaviour
         if(_selectedGun.Automatic) {
             float recoilStep = _shootingTime/(_selectedGun.AmmoPerMag/_selectedGun.ShotsPerSecond);
             Vector2 currentRecoil = new Vector2(_selectedGun.VerticalRecoilPattern.Evaluate(recoilStep), _selectedGun.HorizontalRecoilPattern.Evaluate(recoilStep));
-            _playerLook.AddRecoil(new Vector2(-(currentRecoil.x-_preRecoil.x),currentRecoil.y-_preRecoil.y)+new Vector2(0.5f*Random.Range(-1f,1f), 0.5f*Random.Range(-1f, 1f)));
+            Vector2 addedRecoil = new Vector2(-(currentRecoil.x-_preRecoil.x),currentRecoil.y-_preRecoil.y)+new Vector2(0.5f*Random.Range(-1f,1f), 0.5f*Random.Range(-1f, 1f));
+            _playerLook.AddRecoil(addedRecoil);
+            _gunHoldPointRotation += new Vector3(addedRecoil.x, addedRecoil.y, 0)*2;
             _preRecoil = currentRecoil;
         } else {
-            _playerLook.AddReversibleRecoil(new Vector2(-_selectedGun.OneTimeVerticalRecoil,Random.Range(-1,2)*_selectedGun.OneTimeHorizontalRecoil));
+            Vector2 addedRecoil = new Vector2(-_selectedGun.OneTimeVerticalRecoil,Random.Range(-1,2)*_selectedGun.OneTimeHorizontalRecoil);
+            _playerLook.AddReversibleRecoil(addedRecoil);
+            _gunHoldPointRotation += new Vector3(addedRecoil.x, addedRecoil.y, 0)*2;
         }
     }
 
@@ -335,11 +348,17 @@ public class GunInventory : MonoBehaviour
             Destroy(_gunHoldPoint.GetChild(i).gameObject);
         }
         _reloading = false;
+        _meleeing = false;
         StopAllCoroutines();
+        _anims.speed = 1;
         _anims.Play("Idle");
         _timePassed = 0;
         _selectedGun = _guns[_selectedIndex];
         Transform shownGun = Instantiate(_selectedGun.GunModel, _gunHoldPoint).transform;
+        Transform[] allChildren = shownGun.GetComponentsInChildren<Transform>();
+        foreach(Transform child in allChildren) {
+            child.gameObject.layer = 9;
+        }
     }
 
     public void RefillAllAmmo() {

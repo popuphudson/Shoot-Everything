@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsWonderWeapon: 0
   WonderWeaponType: 0
-  Damage: 716
+  Damage: 186
   ShootRange: 60
   RangeDamageDropOff:
     serializedVersion: 2

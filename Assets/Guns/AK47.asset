@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsWonderWeapon: 0
   WonderWeaponType: 0
-  Damage: 280
+  Damage: 342
   ShootRange: 90
   RangeDamageDropOff:
     serializedVersion: 2
@@ -74,12 +74,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  ShotsPerSecond: 10
+  ShotsPerSecond: 6
   ShotsPerShot: 1
   MaxShotSpread: {x: 0.5, y: 0.5}
   AmmoPerMag: 20
   MaxAmmoReserve: 160
-  ReloadTime: 2
+  ReloadTime: 2.2
   VerticalRecoilPattern:
     serializedVersion: 2
     m_Curve:

@@ -74,7 +74,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  ShotsPerSecond: 0.8
+  ShotsPerSecond: 1.4
   ShotsPerShot: 8
   MaxShotSpread: {x: 3, y: 3}
   AmmoPerMag: 6
@@ -95,6 +95,7 @@ MonoBehaviour:
   OneTimeVerticalRecoil: 10
   OneTimeHorizontalRecoil: 5
   Automatic: 0
+  ExtraShotsPerSecond: 0.6
   GunModel: {fileID: 6279740389721463147, guid: 294228b1fc2ac2b4f815b2b3dc849dde, type: 3}
   HitEffect: {fileID: 7938236842536322869, guid: 06f4a3a76a4e7ce4a9f59c2a73cdcb5f, type: 3}
   ZombieHitEffect: {fileID: 546732742291030855, guid: 3edf3e3944e965e48930ef1041fca506, type: 3}

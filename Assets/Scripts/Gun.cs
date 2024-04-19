@@ -25,6 +25,7 @@ public class Gun : ScriptableObject {
     public float OneTimeVerticalRecoil;
     public float OneTimeHorizontalRecoil;
     public bool Automatic;
+    public float ExtraShotsPerSecond;
     public GameObject GunModel;
     public GameObject HitEffect;
     public GameObject ZombieHitEffect;

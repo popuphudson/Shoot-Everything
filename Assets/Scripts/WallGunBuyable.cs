@@ -24,8 +24,8 @@ public class WallGunBuyable : Buyable
     public override string GetShown(PlayerScriptsHandler _playerScripts)
     {
         if(_playerScripts.GetPlayerGunInventory().HasGun(_gunGiven)) {
-            return $"{_gunName} Ammo: {_ammoCost}"; 
+            return $"E To Buy {_gunName} Ammo: <b>{_ammoCost}</b> Points"; 
         }
-        return $"{_gunName}: {_cost}";
+        return $"E To Buy {_gunName}: <b>{_cost}</b> Points";
     }
 }

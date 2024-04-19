@@ -27,6 +27,7 @@ public class GunEditor : Editor {
         SerializedProperty maxShotSpread = serializedObject.FindProperty("MaxShotSpread");
         SerializedProperty isWonderWeapon = serializedObject.FindProperty("IsWonderWeapon");
         SerializedProperty wonderWeaponType = serializedObject.FindProperty("WonderWeaponType");
+        SerializedProperty extraShotsPerSecond = serializedObject.FindProperty("ExtraShotsPerSecond");
 
         isWonderWeapon.boolValue = EditorGUILayout.Toggle("Is Wonder Weapon", isWonderWeapon.boolValue);
         if(isWonderWeapon.boolValue) EditorGUILayout.PropertyField(wonderWeaponType);
@@ -38,6 +39,7 @@ public class GunEditor : Editor {
         shotsPerShot.intValue = EditorGUILayout.IntField("Shots Per Shot", shotsPerShot.intValue);
         maxShotSpread.vector2Value = EditorGUILayout.Vector2Field("Max Shot Spread", maxShotSpread.vector2Value);
         shotsPerSecond.floatValue = EditorGUILayout.FloatField("Shots Per Second", shotsPerSecond.floatValue);
+        extraShotsPerSecond.floatValue = EditorGUILayout.FloatField("Extra Shots Per Second", extraShotsPerSecond.floatValue);
         ammoPerMag.intValue = EditorGUILayout.IntField("Ammo Per Mag", ammoPerMag.intValue);
         maxAmmoReserve.intValue = EditorGUILayout.IntField("Max Ammo Reserve", maxAmmoReserve.intValue);
         reloadTime.floatValue = EditorGUILayout.FloatField("Reload Time", reloadTime.floatValue);

@@ -532,6 +532,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6c9be8d17ce9ea74d9f3a3fc2bfeeb5a, type: 2}
   - {fileID: 11400000, guid: b92727ebcfa3eff499e376cdfcbb2565, type: 2}
   - {fileID: 11400000, guid: b92727ebcfa3eff499e376cdfcbb2565, type: 2}
+  _starterPistol: {fileID: 11400000, guid: 6c9be8d17ce9ea74d9f3a3fc2bfeeb5a, type: 2}
   _gunDisplay: {fileID: 4209033390216001405}
   _anims: {fileID: 2094870867681627191}
   _locations: []
