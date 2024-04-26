@@ -195,6 +195,8 @@ public class GunInventory : MonoBehaviour
         }
         _anims.Play("Idle");
         _anims.speed = 1;
+        _gunHoldPointPosition = _gunHoldPointStart;
+        _gunHoldPointRotation = Vector3.zero;
     }
 
     private void FireGun() {

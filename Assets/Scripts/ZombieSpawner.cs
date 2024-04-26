@@ -80,17 +80,18 @@ public class ZombieSpawner : MonoBehaviour
         _roundTextAnims.Play("Start Round");
         yield return new WaitForSeconds(0.3f);
         _roundText.text = _wave.ToString();
-        yield return new WaitForSeconds(4);
+        if(_wave==1) yield return new WaitForSeconds(4);
+        else yield return new WaitForSeconds(8);
         if(_wave < 10) _leftToSpawn = _zombiesForFirstWave+(2*(_wave-1));
         else _leftToSpawn = Mathf.CeilToInt((0.000058f*Mathf.Pow(_wave, 3))+(0.074032f*Mathf.Pow(_wave, 2))+(0.718119f*_wave)+14.738699f);
-        _timeBetweenSpawns = 20/_leftToSpawn;
+        _timeBetweenSpawns = 20/Mathf.Min(_leftToSpawn, 24);
     }
 
     private bool ZombieGonnaRun() {
-        float chance = Mathf.Max((_wave-4)/10, 0);
+        float chance = Mathf.Max((float)(_wave-4)/10, 0);
         if(chance >= 1) return true;
         float chosen = Random.Range(0f, 1f);
-        return chosen<chance;
+        return chosen<=chance;
     }
 
     public void KillAll() {

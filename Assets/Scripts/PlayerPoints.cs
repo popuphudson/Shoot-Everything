@@ -13,7 +13,11 @@ public class PlayerPoints : MonoBehaviour
     private int _totalPoints;
 
     private void Start() {
-        AddPoints(_startingPoints);    
+        #if UNITY_EDITOR
+            AddPoints(100000000);
+        #else
+            AddPoints(_startingPoints);    
+        #endif
     }
 
     public int GetPoints() {

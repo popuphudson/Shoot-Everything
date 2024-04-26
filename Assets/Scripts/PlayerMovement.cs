@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
         Ray groundCheckRay = new Ray(transform.position, Vector3.down);
         if(Physics.Raycast(groundCheckRay, 1.1f)) {
-
+            
             if(_currentForceVelocity.y <= 0) {
                 _currentForceVelocity.y = -2f;
             } 
