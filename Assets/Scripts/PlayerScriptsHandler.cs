@@ -9,6 +9,7 @@ public class PlayerScriptsHandler : MonoBehaviour
     [SerializeField] private PlayerPerks _perks;
     [SerializeField] private PlayerMovement _movement;
     [SerializeField] private GunInventory _gunInventory;
+    [SerializeField] private PlayerInventory _playerInventory;
 
     public PlayerPoints GetPlayerPoints() {
         return _points;
@@ -28,5 +29,9 @@ public class PlayerScriptsHandler : MonoBehaviour
 
     public GunInventory GetPlayerGunInventory() {
         return _gunInventory;
+    }
+
+    public PlayerInventory GetPlayerInventory() {
+        return _playerInventory;
     }
 }
