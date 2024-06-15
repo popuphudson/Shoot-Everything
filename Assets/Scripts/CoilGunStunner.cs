@@ -13,9 +13,9 @@ public class CoilGunStunner : MonoBehaviour
         Destroy(gameObject, _stayTime);
     }
 
-    public void SetData(PlayerPoints playerPoints, PowerUpManager powerUpManager) {
-        _playerPoints = playerPoints;
-        _powerUpManager = powerUpManager;
+    public void SetData(PlayerPoints __playerPoints, PowerUpManager __powerUpManager) {
+        _playerPoints = __playerPoints;
+        _powerUpManager = __powerUpManager;
     }
 
     void Update()

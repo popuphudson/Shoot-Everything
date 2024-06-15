@@ -55,33 +55,33 @@ public class GunInventory : MonoBehaviour
         return _guns.Count;
     }
 
-    public bool HasGun(Gun gun) {
-        return _guns.Contains(gun);
+    public bool HasGun(Gun __gun) {
+        return _guns.Contains(__gun);
     }
 
-    public bool GunAtFullAmmo(Gun gun) {
-        int index = _guns.IndexOf(gun);
-        return _magAmmo[index] == gun.AmmoPerMag && _spareAmmo[index] == gun.MaxAmmoReserve;
+    public bool GunAtFullAmmo(Gun __gun) {
+        int index = _guns.IndexOf(__gun);
+        return _magAmmo[index] == __gun.AmmoPerMag && _spareAmmo[index] == __gun.MaxAmmoReserve;
     }
 
-    public void AddGun(Gun gun) {
+    public void AddGun(Gun __gun) {
         if(_guns.Count == 2) {
-            _guns[_selectedIndex] = gun;
-            _magAmmo[_selectedIndex] = gun.AmmoPerMag;
-            _spareAmmo[_selectedIndex] = gun.MaxAmmoReserve;
+            _guns[_selectedIndex] = __gun;
+            _magAmmo[_selectedIndex] = __gun.AmmoPerMag;
+            _spareAmmo[_selectedIndex] = __gun.MaxAmmoReserve;
         } else {
-            _guns.Add(gun);
+            _guns.Add(__gun);
             _selectedIndex = 1;
-            _magAmmo.Add(gun.AmmoPerMag);
-            _spareAmmo.Add(gun.MaxAmmoReserve);
+            _magAmmo.Add(__gun.AmmoPerMag);
+            _spareAmmo.Add(__gun.MaxAmmoReserve);
         }
         SwapGun();
     }
 
-    public void AddAmmo(Gun gun) {
-        int index = _guns.IndexOf(gun);
-        _magAmmo[index] = gun.AmmoPerMag;
-        _spareAmmo[index] = gun.MaxAmmoReserve;
+    public void AddAmmo(Gun __gun) {
+        int index = _guns.IndexOf(__gun);
+        _magAmmo[index] = __gun.AmmoPerMag;
+        _spareAmmo[index] = __gun.MaxAmmoReserve;
     }
 
     private void Update() {
@@ -238,9 +238,9 @@ public class GunInventory : MonoBehaviour
         KickCamera();
     }
 
-    private float GetGunDamage(Vector3 hitPos, int pierce) {
+    private float GetGunDamage(Vector3 __hitPos, int __pierce) {
         float totalDamage = _selectedGun.Damage;
-        totalDamage *= _selectedGun.RangeDamageDropOff.Evaluate(Vector3.Distance(hitPos, _playerCamera.position)/_selectedGun.ShootRange)*_selectedGun.PierceDamageDropOff.Evaluate(pierce);
+        totalDamage *= _selectedGun.RangeDamageDropOff.Evaluate(Vector3.Distance(__hitPos, _playerCamera.position)/_selectedGun.ShootRange)*_selectedGun.PierceDamageDropOff.Evaluate(__pierce);
         totalDamage *= _playerPerks.HasPerks(Perks.EXTRA_OVERALL_DAMAGE)?2:1;
         if(_powerUpManager.IsPowerupActive(PowerupType.INSTAKILL)) totalDamage = -1;
         return totalDamage;
@@ -260,8 +260,8 @@ public class GunInventory : MonoBehaviour
         }
     }
 
-    private void RayGunSplash(RaycastHit hit) {
-        Collider[] hitColliders = Physics.OverlapSphere(hit.point, 1.5f, _enemyHealthLayer);
+    private void RayGunSplash(RaycastHit __hit) {
+        Collider[] hitColliders = Physics.OverlapSphere(__hit.point, 1.5f, _enemyHealthLayer);
         foreach(Collider col in hitColliders) {
             ShootableRelay shot = col.transform.GetComponent<ShootableRelay>();
             if(shot) {

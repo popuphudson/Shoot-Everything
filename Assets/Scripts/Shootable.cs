@@ -29,9 +29,9 @@ public class Shootable : MonoBehaviour
         }
     }
 
-    public void SetHealth(float hp) {
-        _hp = hp;
-        _maxHp = hp;
+    public void SetHealth(float __hp) {
+        _hp = __hp;
+        _maxHp = __hp;
     }
 
     public void ShowHealth() {
@@ -56,21 +56,21 @@ public class Shootable : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage, PlayerPoints playerPoints, float pointmul, PowerUpManager powerUpManager) {
+    public void TakeDamage(float __damage, PlayerPoints __playerPoints, float __pointmul, PowerUpManager __powerUpManager) {
         _prevDecay = _decaySlider.value;
-        _hp -= damage;
-        if(damage < 0) _hp = 0;
+        _hp -= __damage;
+        if(__damage < 0) _hp = 0;
         if(_hpSlider) {
             _decayTimer = 0;
             _hpSlider.value = _hp;
         }
         if(_hp <= 0) {
             if(_notificationName != "" && _enemyAI) {
-                playerPoints.AddPoints(Mathf.CeilToInt(_pointsGiven*pointmul));
+                __playerPoints.AddPoints(Mathf.CeilToInt(_pointsGiven*__pointmul));
                 if(_enemyAI.CanPathToPlayerWithoutBarrierLinks()) {
-                    if(powerUpManager.GetKillsToNextPowerup() == 0) {
+                    if(__powerUpManager.GetKillsToNextPowerup() == 0) {
                         PowerUp go = Instantiate(_powerUpPrefab, transform.position, Quaternion.identity).GetComponent<PowerUp>();
-                        go.SetPowerUpManager(powerUpManager);
+                        go.SetPowerUpManager(__powerUpManager);
                         PowerupType powerupType = (PowerupType)System.Enum.GetValues(typeof(PowerupType)).GetValue(Random.Range(0, System.Enum.GetValues(typeof(PowerupType)).Length));
                         go.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>().text = powerupType.ToString()[0].ToString().ToUpper() + powerupType.ToString().Substring(1).Replace("_", " ").ToLower();
                         go.SetPowerUpType(powerupType);

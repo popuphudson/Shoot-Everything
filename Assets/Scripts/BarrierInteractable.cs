@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Barrier : Buyable
+public class BarrierInteractable : Interactable
 {
     [SerializeField] private float _maxHealth;
     [SerializeField] private float _repairHealth;
@@ -27,7 +27,7 @@ public class Barrier : Buyable
         return _health;
     }
 
-    public override void Buy(PlayerScriptsHandler playerScripts)
+    public override void Interact(PlayerScriptsHandler __playerScripts)
     {
         if(_health >= _maxHealth) return;
         if(_repairTimer > 0) return;
@@ -38,7 +38,7 @@ public class Barrier : Buyable
         else _barrierShown.material.color = new Color(1-(_health/_maxHealth), _health/_maxHealth, 0, 0.3f);
     }
 
-    public override string GetShown(PlayerScriptsHandler playerScripts)
+    public override string GetShown(PlayerScriptsHandler __playerScripts)
     {
         if(_health >= _maxHealth) return "";
         if(_repairTimer > 0) return $"REPAIR COOL DOWN: {_repairTimer:0.00}!";

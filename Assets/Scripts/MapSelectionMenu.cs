@@ -11,14 +11,14 @@ public class MapSelectionMenu : MonoBehaviour
     [SerializeField] private Animator _screenFade;
     private int _selectedMap = 0;
 
-    public void ShowMapData(int mapIndex) {
+    public void ShowMapData(int __mapIndex) {
         _startButton.SetActive(true);
         _background.SetActive(true);
         foreach(GameObject desc in _mapDescriptions) {
             desc.SetActive(false);
         }
-        _mapDescriptions[mapIndex].SetActive(true);
-        _selectedMap = mapIndex+1;
+        _mapDescriptions[__mapIndex].SetActive(true);
+        _selectedMap = __mapIndex+1;
     }
 
     public void StartGame() {

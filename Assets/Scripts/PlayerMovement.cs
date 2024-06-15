@@ -26,6 +26,10 @@ public class PlayerMovement : MonoBehaviour
     private bool _holdingRunKey;
     private bool _runRecharge;
 
+    public void Teleport(Vector3 __location) {
+        transform.position = __location;
+    }
+
     private void Start() {
         _controller = GetComponent<CharacterController>();
     }
@@ -87,9 +91,9 @@ public class PlayerMovement : MonoBehaviour
         _controller.Move(_currentForceVelocity * Time.deltaTime);
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if(other.CompareTag("Area")) {
-            CurrentArea = other.GetComponent<AreaData>();
+    private void OnTriggerEnter(Collider __other) {
+        if(__other.CompareTag("Area")) {
+            CurrentArea = __other.GetComponent<AreaData>();
         }
     }
 }

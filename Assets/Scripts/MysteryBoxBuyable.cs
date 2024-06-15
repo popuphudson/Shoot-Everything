@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MysteryBoxBuyable : Buyable
+public class MysteryBoxBuyable : Interactable
 {
+    [SerializeField] private int _cost;
     [SerializeField] private Gun[] _allGuns;
     [SerializeField] private Gun _starterPistol;
     [SerializeField] private Transform _gunDisplay;
@@ -50,10 +51,10 @@ public class MysteryBoxBuyable : Buyable
         _moving = false;
     }
 
-    public override void Buy(PlayerScriptsHandler playerScripts)
+    public override void Interact(PlayerScriptsHandler __playerScripts)
     {
         if(_grabTimer > 0 && _canGrab) {
-            playerScripts.GetPlayerGunInventory().AddGun(_selectedGun);
+            __playerScripts.GetPlayerGunInventory().AddGun(_selectedGun);
             _grabTimer = -1;
             _canGrab = false;
             for(int i = 0; i < _gunDisplay.childCount; i++) {
@@ -69,11 +70,11 @@ public class MysteryBoxBuyable : Buyable
             return;
         }
         if(_moving) return;
-        if(playerScripts.GetPlayerPoints().GetPoints() < _cost) return;
-        playerScripts.GetPlayerPoints().RemovePoints(_cost);
+        if(__playerScripts.GetPlayerPoints().GetPoints() < _cost) return;
+        __playerScripts.GetPlayerPoints().RemovePoints(_cost);
         List<Gun> gunPool = new List<Gun>();
         foreach(Gun gun in _allGuns) {
-            if(!playerScripts.GetPlayerGunInventory().HasGun(gun)) {
+            if(!__playerScripts.GetPlayerGunInventory().HasGun(gun)) {
                 gunPool.Add(gun);
             }
         }
@@ -87,7 +88,7 @@ public class MysteryBoxBuyable : Buyable
         _rollsUntilSwap--;
     }
 
-    public override string GetShown(PlayerScriptsHandler playerScripts)
+    public override string GetShown(PlayerScriptsHandler __playerScripts)
     {
         if(_grabTimer > 0 && _canGrab && _selectedGun) {
             return $"E To Grab {_selectedGun.name}";

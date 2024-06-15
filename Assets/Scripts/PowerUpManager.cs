@@ -13,7 +13,7 @@ public enum PowerupType {
 
 public class PowerUpManager : MonoBehaviour
 {
-    [SerializeField] private Barrier[] _barriers;
+    [SerializeField] private BarrierInteractable[] _barriers;
     [SerializeField] private PlayerScriptsHandler _playerScripts;
     [SerializeField] private ZombieSpawner _zombieSpawner;
     [SerializeField] private GameObject[] _powerUpUIs;
@@ -54,8 +54,8 @@ public class PowerUpManager : MonoBehaviour
         _powerUpUIs[1].SetActive(_instaKillTimer > 0);
     }
 
-    public bool IsPowerupActive(PowerupType type) {
-        switch(type) {
+    public bool IsPowerupActive(PowerupType __type) {
+        switch(__type) {
             case PowerupType.INSTAKILL:
                 return _instaKillTimer > 0;
             case PowerupType.DOUBLE_POINTS:
@@ -64,10 +64,10 @@ public class PowerUpManager : MonoBehaviour
         return false;
     }
 
-    public void ActivatePowerUp(PowerupType type) {
-        _powerUpPopUpText.text = _powerUpNames[type];
+    public void ActivatePowerUp(PowerupType __type) {
+        _powerUpPopUpText.text = _powerUpNames[__type];
         _powerUpPopUpTextAnims.Play("Popup");
-        switch (type) {
+        switch (__type) {
             case PowerupType.INSTAKILL:
                 _instaKillTimer += 30;
                 break;
@@ -75,7 +75,7 @@ public class PowerUpManager : MonoBehaviour
                 _doublePointsTimer += 30;
                 break;
             case PowerupType.CARPENTER:
-                foreach(Barrier bar in _barriers) {
+                foreach(BarrierInteractable bar in _barriers) {
                     bar.FullRepair();
                 }
                 break;

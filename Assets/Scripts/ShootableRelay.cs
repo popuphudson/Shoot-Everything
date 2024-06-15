@@ -8,11 +8,11 @@ public class ShootableRelay : MonoBehaviour
     [SerializeField] private float _damageMul = 1;
     [SerializeField] private float _pointMul = 1;
 
-    public void TakeDamage(float damage, PlayerPoints playerPoints, bool melee, PowerUpManager powerUpManager) {
-        if(melee) {
-            _shootable.TakeDamage(damage, playerPoints, 13/6, powerUpManager);
+    public void TakeDamage(float __damage, PlayerPoints __playerPoints, bool __melee, PowerUpManager __powerUpManager) {
+        if(__melee) {
+            _shootable.TakeDamage(__damage, __playerPoints, 13/6, __powerUpManager);
         } else {
-            _shootable.TakeDamage(damage*_damageMul, playerPoints, _pointMul, powerUpManager);
+            _shootable.TakeDamage(__damage*_damageMul, __playerPoints, _pointMul, __powerUpManager);
         }
     }
 

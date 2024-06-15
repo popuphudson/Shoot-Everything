@@ -14,6 +14,13 @@ public class PlayerInventory : MonoBehaviour
         return _items.Contains(__item);
     }
 
+    public bool HasItems(string[] __items) {
+        foreach(string item in __items) {
+            if(!_items.Contains(item)) return false;
+        }
+        return true;
+    }
+
     public void RemoveItem(string __item) {
         _items.Remove(__item);
     }

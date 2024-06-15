@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DebrisBuyable : Buyable
+public class DebrisBuyable : Interactable
 {
+    [SerializeField] private int _cost;
     [SerializeField] private AreaData[] _areaDataLinksAffected;
     [SerializeField] private int[] _selectedAreaDataLinks;
     [SerializeField] private bool[] _areaDataLinkEnabled;   
     private bool _removing = false;
-    public override void Buy(PlayerScriptsHandler playerScripts) {
+    public override void Interact(PlayerScriptsHandler __playerScripts) {
         if(_removing) return;
-        if(playerScripts.GetPlayerPoints().GetPoints() < _cost) return;
-        playerScripts.GetPlayerPoints().RemovePoints(_cost);
+        if(__playerScripts.GetPlayerPoints().GetPoints() < _cost) return;
+        __playerScripts.GetPlayerPoints().RemovePoints(_cost);
         for(int i = 0; i < _areaDataLinksAffected.Length; i++) {
             _areaDataLinksAffected[i].AreaLinks[_selectedAreaDataLinks[i]].LinkEnabled = _areaDataLinkEnabled[i];
         }

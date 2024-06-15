@@ -12,9 +12,9 @@ public class KillNotification : MonoBehaviour
         _staticNotification = _notification;
         _myself = transform;
     }
-    public static void Notification(string notificationText) {
+    public static void Notification(string __notificationText) {
         GameObject Go = Instantiate(_staticNotification, _myself);
-        Go.GetComponent<TextMeshProUGUI>().text = notificationText;
+        Go.GetComponent<TextMeshProUGUI>().text = __notificationText;
         Go.GetComponent<UIMover>().MoveDir = 2*new Vector2(Random.Range(5,20), Random.Range(5, 20));
         Destroy(Go, 1f);
     }

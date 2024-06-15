@@ -9,7 +9,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Transform _target;
     [SerializeField] private Animator _anims;
     [SerializeField] private LayerMask _solidLayers;
-    private Barrier _barrier;
+    private BarrierInteractable _barrier;
     private bool _ai = true;
     private bool _targetBarrier = false;
     private LevelData _levelData;
@@ -24,16 +24,16 @@ public class EnemyAI : MonoBehaviour
         _anims.SetBool("running", true);
     }
 
-    public void SetTarget(Transform target) {
-        _target = target;
+    public void SetTarget(Transform __target) {
+        _target = __target;
     }
 
-    public void SetBarrier(Barrier barrier) {
-        _barrier = barrier;
+    public void SetBarrier(BarrierInteractable __barrier) {
+        _barrier = __barrier;
     }
 
-    public void SetLevelData(LevelData levelData) {
-        _levelData = levelData;
+    public void SetLevelData(LevelData __levelData) {
+        _levelData = __levelData;
     }
 
     public bool CanPathToPlayerWithoutBarrierLinks() {

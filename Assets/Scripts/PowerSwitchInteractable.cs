@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerSwitchBuyable : Buyable
+public class PowerSwitchInteractable : Interactable
 {
     [SerializeField] private ParticleSystem _sparks;
     [SerializeField] private Transform _powerSwitch;
     [SerializeField] private PowerManager _powerManager;
-    public override void Buy(PlayerScriptsHandler playerScripts)
+    public override void Interact(PlayerScriptsHandler __playerScripts)
     {
         if(_powerManager.IsMapPowered()) return;
         _powerManager.PowerMap();
@@ -15,7 +15,7 @@ public class PowerSwitchBuyable : Buyable
         _sparks.Play();
     }
 
-    public override string GetShown(PlayerScriptsHandler playerScripts)
+    public override string GetShown(PlayerScriptsHandler __playerScripts)
     {
         if(_powerManager.IsMapPowered()) return "";
         return "E To Turn On Power!";

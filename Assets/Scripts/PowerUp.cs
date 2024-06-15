@@ -30,16 +30,16 @@ public class PowerUp : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void SetPowerUpManager(PowerUpManager manager) {
-        _manager = manager;
+    public void SetPowerUpManager(PowerUpManager __manager) {
+        _manager = __manager;
     }
 
-    public void SetPowerUpType(PowerupType powerupType) {
-        _powerupType = powerupType;
+    public void SetPowerUpType(PowerupType __powerupType) {
+        _powerupType = __powerupType;
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if(other.CompareTag("Player")) {
+    private void OnTriggerEnter(Collider __other) {
+        if(__other.CompareTag("Player")) {
             _manager.ActivatePowerUp(_powerupType);
             Destroy(gameObject);
         }

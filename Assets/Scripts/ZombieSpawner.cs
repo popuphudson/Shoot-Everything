@@ -64,7 +64,7 @@ public class ZombieSpawner : MonoBehaviour
         EnemyAI go = Instantiate(_basicZombie, toSpawn.position, Quaternion.identity).GetComponent<EnemyAI>();
         go.transform.parent = transform;
         go.SetTarget(_player.transform);
-        go.SetBarrier(chosenBarrier.GetComponent<Barrier>());
+        go.SetBarrier(chosenBarrier.GetComponent<BarrierInteractable>());
         go.SetLevelData(_levelData);
         if(ZombieGonnaRun()) go.SetRunning();
         float health = _healthForFirstWave+(100*Mathf.Min(_wave-1, 8));
