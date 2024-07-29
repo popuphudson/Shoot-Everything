@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22dc713a0b035b244aa5f4ef09708f47, type: 3}
+  m_Name: Revolver
+  m_EditorClassIdentifier: 
+  Name: Revolver
+  IsWonderWeapon: 0
+  WonderWeaponType: 0
+  IsPAPed: 0
+  PAPedWeapon: {fileID: 11400000, guid: b53ec248cd9b76f418ed6153e5da2d50, type: 2}
+  Damage: 164
+  ShootRange: 60
+  RangeDamageDropOff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.775
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
+      inSlope: -2.7272718
+      outSlope: -2.7272718
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0916667
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  Pierce: 2
+  PierceDamageDropOff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.25
+      outSlope: -0.25
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.75
+      inSlope: -0.25
+      outSlope: -0.25
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 2
+      value: 0.5
+      inSlope: -0.25
+      outSlope: -0.25
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ShotsPerSecond: 2.5
+  ShotsPerShot: 1
+  MaxShotSpread: {x: 0, y: 0}
+  AmmoPerMag: 6
+  MaxAmmoReserve: 72
+  ReloadTime: 2
+  VerticalRecoilPattern:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HorizontalRecoilPattern:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  OneTimeVerticalRecoil: 6
+  OneTimeHorizontalRecoil: 2
+  Automatic: 0
+  ExtraShotsPerSecond: 0
+  GunModel: {fileID: 5861062666772920052, guid: c0f75558a8f134c4f9213c4248b7d278, type: 3}
+  HitEffect: {fileID: 7938236842536322869, guid: 06f4a3a76a4e7ce4a9f59c2a73cdcb5f, type: 3}
+  ZombieHitEffect: {fileID: 546732742291030855, guid: 3edf3e3944e965e48930ef1041fca506, type: 3}
+  ShootSound:
+    Clip: {fileID: 8300000, guid: 16a8dc6a36d8db841b00d46832fee88b, type: 3}
+    Volume: 0.2

@@ -1,0 +1,143 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22dc713a0b035b244aa5f4ef09708f47, type: 3}
+  m_Name: PAP_AK47
+  m_EditorClassIdentifier: 
+  Name: Maniac's Partner
+  IsWonderWeapon: 0
+  WonderWeaponType: 0
+  IsPAPed: 1
+  PAPedWeapon: {fileID: 0}
+  Damage: 315
+  ShootRange: 90
+  RangeDamageDropOff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.775
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -4.932619
+      outSlope: -4.932619
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.058333278
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  Pierce: 4
+  PierceDamageDropOff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.1875
+      outSlope: -0.1875
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 4
+      value: 0.25
+      inSlope: -0.1875
+      outSlope: -0.1875
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ShotsPerSecond: 6
+  ShotsPerShot: 1
+  MaxShotSpread: {x: 0.5, y: 0.5}
+  AmmoPerMag: 20
+  MaxAmmoReserve: 240
+  ReloadTime: 2.2
+  VerticalRecoilPattern:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 30
+      outSlope: 30
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 30
+      inSlope: 30
+      outSlope: 30
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HorizontalRecoilPattern:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 5
+      outSlope: 5
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 5
+      inSlope: 5
+      outSlope: 5
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  OneTimeVerticalRecoil: 0
+  OneTimeHorizontalRecoil: 0
+  Automatic: 1
+  ExtraShotsPerSecond: 0
+  GunModel: {fileID: 2715443020639671203, guid: ff0b875fae53838439c3ea5510f7ed02, type: 3}
+  HitEffect: {fileID: 7938236842536322869, guid: 06f4a3a76a4e7ce4a9f59c2a73cdcb5f, type: 3}
+  ZombieHitEffect: {fileID: 7938236842536322869, guid: 4d9ae622702676942942e025d95978bd, type: 3}
+  ShootSound:
+    Clip: {fileID: 8300000, guid: 20a2402cd9376d346a2892e5a2b061a5, type: 3}
+    Volume: 1

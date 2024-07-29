@@ -4829,4 +4829,8 @@ MonoBehaviour:
   _enemySplashLayer:
     serializedVersion: 2
     m_Bits: 1024
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
   _stayTime: 6
+  _timeToKill: 4

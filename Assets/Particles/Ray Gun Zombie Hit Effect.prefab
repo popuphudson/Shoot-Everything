@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8666804903279603087}
   - component: {fileID: 1814459964211785695}
   - component: {fileID: 6080369371809896470}
+  - component: {fileID: 3165522330741789455}
   m_Layer: 0
   m_Name: Ray Gun Zombie Hit Effect
   m_TagString: Untagged
@@ -4871,6 +4872,26 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &3165522330741789455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6088985502395129503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8578689e9b8a6564fa92e0281f087b42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemySplashLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _damage: 0
+  _radius: 2
 --- !u!1 &6957299890273542546
 GameObject:
   m_ObjectHideFlags: 0

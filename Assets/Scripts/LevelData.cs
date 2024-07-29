@@ -5,4 +5,5 @@ using UnityEngine;
 public class LevelData : MonoBehaviour
 {
     public GameObject[] BarrierLinks;
+    public AreaData[] Areas;
 }

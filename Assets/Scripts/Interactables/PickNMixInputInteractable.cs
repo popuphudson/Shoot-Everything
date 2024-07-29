@@ -1,0 +1,30 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PickNMixInputInteractable : Interactable
+{
+    [SerializeField] private PickNMixBuyable _pnmBuyable;
+    [SerializeField] private bool _isMainSide;
+    [SerializeField] private Perks[] _selection;
+    [SerializeField] private string[] _selectionNames;
+    private int _selectedPerkIndex;
+    public override void Interact(PlayerScriptsHandler __playerScripts)
+    {
+        _selectedPerkIndex++;
+        if(_selectedPerkIndex >= _selection.Length) {
+            _selectedPerkIndex = 0;
+        }
+        _pnmBuyable.UpdateCanMix();
+    }
+
+    public override string GetShown(PlayerScriptsHandler __playerScripts)
+    {
+        if(_isMainSide) return $"Cycle main perk, Current perk: {_selectionNames[_selectedPerkIndex]}";
+        return $"Cycle side perk, Current perk: {_selectionNames[_selectedPerkIndex]}";
+    }
+
+    public Perks GetSelectedPerk() {
+        return _selection[_selectedPerkIndex];
+    }
+}

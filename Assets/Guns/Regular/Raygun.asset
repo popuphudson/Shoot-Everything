@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22dc713a0b035b244aa5f4ef09708f47, type: 3}
+  m_Name: Raygun
+  m_EditorClassIdentifier: 
+  Name: Raygun
+  IsWonderWeapon: 1
+  WonderWeaponType: 0
+  IsPAPed: 0
+  PAPedWeapon: {fileID: 11400000, guid: 95fba5e23d7f29744b3d986bfa1872b1, type: 2}
+  Damage: 2627
+  ShootRange: 100
+  RangeDamageDropOff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  Pierce: 0
+  PierceDamageDropOff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ShotsPerSecond: 3
+  ShotsPerShot: 1
+  MaxShotSpread: {x: 0, y: 0}
+  AmmoPerMag: 30
+  MaxAmmoReserve: 300
+  ReloadTime: 1
+  VerticalRecoilPattern:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HorizontalRecoilPattern:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  OneTimeVerticalRecoil: 5
+  OneTimeHorizontalRecoil: 2
+  Automatic: 0
+  ExtraShotsPerSecond: 0
+  GunModel: {fileID: 3194613818491447574, guid: 6625904ebaf731642b529f0dd86bf293, type: 3}
+  HitEffect: {fileID: 6829297285961723688, guid: 087e38ac2c140e54a98b3e79c104054e, type: 3}
+  ZombieHitEffect: {fileID: 6088985502395129503, guid: 1ef7a6f1540b70941b2d4cb55fe8462f, type: 3}
+  ShootSound:
+    Clip: {fileID: 8300000, guid: 3b5f14483f3cba1488a7843c5a0c18c1, type: 3}
+    Volume: 1

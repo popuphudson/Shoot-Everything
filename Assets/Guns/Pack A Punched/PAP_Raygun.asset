@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22dc713a0b035b244aa5f4ef09708f47, type: 3}
+  m_Name: PAP_Raygun
+  m_EditorClassIdentifier: 
+  Name: Porters X2 Raygun
+  IsWonderWeapon: 1
+  WonderWeaponType: 0
+  IsPAPed: 1
+  PAPedWeapon: {fileID: 0}
+  Damage: 10795
+  ShootRange: 100
+  RangeDamageDropOff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  Pierce: 0
+  PierceDamageDropOff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ShotsPerSecond: 3
+  ShotsPerShot: 1
+  MaxShotSpread: {x: 0, y: 0}
+  AmmoPerMag: 40
+  MaxAmmoReserve: 400
+  ReloadTime: 1
+  VerticalRecoilPattern:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HorizontalRecoilPattern:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  OneTimeVerticalRecoil: 5
+  OneTimeHorizontalRecoil: 2
+  Automatic: 0
+  ExtraShotsPerSecond: 0
+  GunModel: {fileID: 3194613818491447574, guid: 2177ac08bbf96d04d94ed134bd775a07, type: 3}
+  HitEffect: {fileID: 6829297285961723688, guid: c9f0851acddccc34d90dbcd151099471, type: 3}
+  ZombieHitEffect: {fileID: 6088985502395129503, guid: c7d67735486ab12479854a9a050d1e06, type: 3}
+  ShootSound:
+    Clip: {fileID: 8300000, guid: 3b5f14483f3cba1488a7843c5a0c18c1, type: 3}
+    Volume: 1
