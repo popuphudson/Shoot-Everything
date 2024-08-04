@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PortalSound {
+    NONE,
+    START,
+    END
+}
+
 public class PortalInteractable : Interactable
 {
+    [SerializeField] private AudioManager _audioManager;
     [SerializeField] private PowerManager _powerManager;
     [SerializeField] private string[] _itemsRequired;
     [SerializeField] private bool _needsPower;
     [SerializeField] private Vector3[] _locations;
     [SerializeField] private Vector3[] _eulerRotations;
+    [SerializeField] private PortalSound[] _portalSoundQueues;
     [SerializeField] private float[] _times;
     [SerializeField] private bool[] _locksMovement;
     [SerializeField] private float _coolDownTime;
     [SerializeField] private string _missingItemMessage;
+    [SerializeField] private Sound _portalStartSound, _portalEndSound;
     float _coolDownTimer;
     
     public override void Interact(PlayerScriptsHandler __playerScripts)
@@ -38,10 +47,22 @@ public class PortalInteractable : Interactable
     }
 
     IEnumerator Teleportations(PlayerScriptsHandler __playerScripts) {
+        AudioSource prevSound = null;
         for(int i = 0; i < _locations.Length; i++) {
             __playerScripts.GetPlayerMovement().Teleport(_locations[i]);
             __playerScripts.GetPlayerLook().SetRotation(_eulerRotations[i]);
             if(_locksMovement[i]) __playerScripts.GetPlayerMovement().Freeze();
+            if(prevSound) {
+                Destroy(prevSound);
+            }
+            switch(_portalSoundQueues[i]) {
+                case PortalSound.START:
+                    prevSound = _audioManager.PlaySound(_portalStartSound);
+                    break;
+                case PortalSound.END:
+                    prevSound = _audioManager.PlaySound(_portalEndSound);
+                    break;
+            }
             yield return new WaitForSeconds(_times[i]);
             __playerScripts.GetPlayerMovement().UnFreeze();
         }

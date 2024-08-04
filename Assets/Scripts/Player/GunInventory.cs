@@ -185,6 +185,7 @@ public class GunInventory : MonoBehaviour
 
     public void StopMeleeing() {
         _meleeing = false;
+        if(_guns.Count == 0) return;
         if(_magAmmo[_selectedIndex] == 0 && _spareAmmo[_selectedIndex] > 0) {
             StartCoroutine(Reload());
         }
@@ -208,7 +209,9 @@ public class GunInventory : MonoBehaviour
     }
 
     private IEnumerator Reload() {
-        float reloadTime = _selectedGun.ReloadTime/(_playerPerks.HasPerks(Perks.FAST_RELOAD)?2:(_playerPerks.HasSideMixPerk(Perks.FAST_RELOAD)?1.5f:1));
+        float reloadDiv = _playerPerks.HasPerks(Perks.FAST_RELOAD)?2:(_playerPerks.HasSideMixPerk(Perks.FAST_RELOAD)?1.5f:1);
+        reloadDiv *= _playerPerks.HasMix(Perks.FAST_RELOAD, Perks.EXTRA_HEALTH)?_playerHealth.GetHealth()/100f:1;
+        float reloadTime = _selectedGun.ReloadTime/reloadDiv;
         _anims.speed = 1/reloadTime;
         _anims.CrossFade("Reload", 0.05f);
         _reloading = true;
@@ -303,7 +306,7 @@ public class GunInventory : MonoBehaviour
             effect.SetData(_playerPoints, _powerUpManager);
         } else if(_selectedGun.IsWonderWeapon && (_selectedGun.WonderWeaponType == WonderWeaponType.BOOMPISTOL || _selectedGun.WonderWeaponType == WonderWeaponType.RAYGUN)) {
             Explosion effect = Instantiate(_selectedGun.ZombieHitEffect, __hit.point, Quaternion.identity).GetComponent<Explosion>();
-            effect.SetData(_playerPoints, _powerUpManager, _selectedGun.Damage);
+            effect.SetData(_playerPoints, _powerUpManager, _audioManager, _selectedGun.Damage);
         } else {
             GameObject effect = Instantiate(_selectedGun.ZombieHitEffect, __hit.point, Quaternion.identity);
             effect.transform.forward = __hit.normal;
@@ -318,7 +321,7 @@ public class GunInventory : MonoBehaviour
             Destroy(effect, 5f);
         } else if(_selectedGun.IsWonderWeapon && (_selectedGun.WonderWeaponType == WonderWeaponType.BOOMPISTOL || _selectedGun.WonderWeaponType == WonderWeaponType.RAYGUN)) {
             Explosion effect = Instantiate(_selectedGun.HitEffect, __hit.point, Quaternion.identity).GetComponent<Explosion>();
-            effect.SetData(__playerPoints: _playerPoints, _powerUpManager, _selectedGun.Damage);
+            effect.SetData(__playerPoints: _playerPoints, _powerUpManager, _audioManager,_selectedGun.Damage);
         } else {
             GameObject effect = Instantiate(_selectedGun.HitEffect, __hit.point, Quaternion.identity);
             effect.transform.forward = __hit.normal;

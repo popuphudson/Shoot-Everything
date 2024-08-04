@@ -103,5 +103,5 @@ MonoBehaviour:
   HitEffect: {fileID: 7938236842536322869, guid: 4d9ae622702676942942e025d95978bd, type: 3}
   ZombieHitEffect: {fileID: 546732742291030855, guid: 3edf3e3944e965e48930ef1041fca506, type: 3}
   ShootSound:
-    Clip: {fileID: 8300000, guid: 58cb66f816e0a2542b8fa1f5ef411b59, type: 3}
+    Clip: {fileID: 8300000, guid: d812711905bc0b84e9214fca4fe85d3c, type: 3}
     Volume: 1

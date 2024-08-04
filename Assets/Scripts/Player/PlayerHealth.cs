@@ -14,6 +14,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private ZombieSpawner _zombieSpawner;
     private PlayerPerks _playerPerks;
     private PlayerLook _playerLook;
+    private PlayerMovement _playerMovement;
     private Vignette _vignette;
     private DepthOfField _depthOfField;
     private float _health;
@@ -25,6 +26,7 @@ public class PlayerHealth : MonoBehaviour
     private void Start() {
         _playerPerks = _playerScripts.GetPlayerPerks();
         _playerLook = _playerScripts.GetPlayerLook();
+        _playerMovement = _playerScripts.GetPlayerMovement();
         _maxHealth = _orimMaxHealth;
         _health = _orimMaxHealth;
         _preHealth = _orimMaxHealth;
@@ -37,7 +39,7 @@ public class PlayerHealth : MonoBehaviour
         _vignette.intensity.value = _health<=50?1:1-(_health/_maxHealth);
         _depthOfField.enabled.value = _health<=50; 
         if(_playerPerks.HasPerks(Perks.EXTRA_HEALTH)) _maxHealth = _orimMaxHealth+150;
-        if(_playerPerks.HasSideMixPerk(Perks.EXTRA_HEALTH) || _playerPerks.HasPerks(Perks.EXTRA_HEALTH) || _playerPerks.HasPerks(Perks.EXTRA_HEALTH)) _maxHealth = _orimMaxHealth+50;
+        if(_playerPerks.HasSideMixPerk(Perks.EXTRA_HEALTH) || _playerPerks.HasMainMixPerk(Perks.EXTRA_HEALTH)) _maxHealth = _orimMaxHealth+50;
         else _maxHealth = _orimMaxHealth;
         _damageTimer -= Time.deltaTime;
         if(_graceTimer > 0) _graceTimer -= Time.deltaTime;
@@ -49,7 +51,8 @@ public class PlayerHealth : MonoBehaviour
             _zombieSpawner.SetPhasable(false);
         }
         if(_damageTimer <= 0) {
-            float coef = _playerPerks.HasMix(Perks.EXTRA_HEALTH, Perks.QUICK_HEAL_LIFE)?(1-(_health/_maxHealth))*3:1;
+            float coef = _playerPerks.HasMix(Perks.QUICK_HEAL_LIFE, Perks.EXTRA_HEALTH)?(1-(_health/_maxHealth))*3:1;
+            coef *= _playerPerks.HasMix(Perks.QUICK_HEAL_LIFE, Perks.BETTER_RUN)?(_playerMovement.IsRunning()?2.5f:1):1;
             _health = Mathf.Lerp(_preHealth, _maxHealth, -(_damageTimer*coef));
         }
     }
