@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
         GameObject sound = Instantiate(_soundPrefab, _listener.transform);
         AudioSource source = sound.GetComponent<AudioSource>();
         source.clip = __sound.Clip;
-        source.volume = __sound.Volume;
+        source.volume = __sound.Volume*GlobalSettingsManager.Instance.Sound;
         Destroy(sound, __sound.Clip.length+0.5f);
         source.Play();
         return source;
@@ -28,7 +28,7 @@ public class AudioManager : MonoBehaviour
         GameObject sound = Instantiate(_sound3DPrefab, __position, Quaternion.identity);
         AudioSource source = sound.GetComponent<AudioSource>();
         source.clip = __sound.Clip;
-        source.volume = __sound.Volume;
+        source.volume = __sound.Volume*GlobalSettingsManager.Instance.Sound;
         Destroy(sound, __sound.Clip.length+0.5f);
         source.Play();
         return source;

@@ -8,6 +8,7 @@ public class GlobalSettingsManager : MonoBehaviour
     public Vector2 MouseSensitivity = new Vector2(3, 3);
     public bool ShowHealthBars = false;
     public float FOV = 90;
+    public float Sound = 0.5f;
 
 
     private void Awake() {
@@ -17,18 +18,18 @@ public class GlobalSettingsManager : MonoBehaviour
         }
         GlobalSettingsManager.Instance = this;
         DontDestroyOnLoad(gameObject);
-        if(PlayerPrefs.GetInt("SAVED") == 0) return;
-        MouseSensitivity = new Vector2(PlayerPrefs.GetFloat("MouseX"), PlayerPrefs.GetFloat("MouseY"));
-        ShowHealthBars = PlayerPrefs.GetInt("HealthBars")==1;
-        FOV = PlayerPrefs.GetFloat("FOV");
+        MouseSensitivity = new Vector2(PlayerPrefs.GetFloat("MouseX", 3), PlayerPrefs.GetFloat("MouseY", 3));
+        ShowHealthBars = PlayerPrefs.GetInt("HealthBars", 1)==1;
+        FOV = PlayerPrefs.GetFloat("FOV", 90f);
+        Sound = PlayerPrefs.GetFloat("Sound", 0.5f);
     }
 
     private void OnApplicationQuit() {
-        PlayerPrefs.SetInt("SAVED", 1);
         PlayerPrefs.SetFloat("MouseX", MouseSensitivity.x);
         PlayerPrefs.SetFloat("MouseY", MouseSensitivity.y);
         PlayerPrefs.SetInt("HealthBars", ShowHealthBars?1:0);
         PlayerPrefs.SetFloat("FOV", FOV);
+        PlayerPrefs.SetFloat("Sound", Sound);
         PlayerPrefs.Save();
     }
 }
