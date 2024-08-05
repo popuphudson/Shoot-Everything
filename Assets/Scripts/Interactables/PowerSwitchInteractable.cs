@@ -18,9 +18,9 @@ public class PowerSwitchInteractable : Interactable
         _sparks.Play();
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts)
+    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(_powerManager.IsMapPowered()) return "";
-        return "E To Turn On Power!";
+        return $"{__interactInput} To Turn On Power!";
     }
 }

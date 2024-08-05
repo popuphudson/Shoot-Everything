@@ -80,7 +80,7 @@ public class PowerUpManager : MonoBehaviour
                 }
                 break;
             case PowerupType.MAX_AMMO:
-                _playerScripts.GetPlayerGunInventory().RefillAllAmmo();
+                _playerScripts.GetPlayerGunHandler().RefillAllAmmo();
                 break;
             case PowerupType.NUKE:
                 _zombieSpawner.KillAll();

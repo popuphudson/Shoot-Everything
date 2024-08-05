@@ -14,38 +14,38 @@ public class WallGunBuyable : Interactable
     [SerializeField] private Sound _purchaseSound;
     public override void Interact(PlayerScriptsHandler __playerScripts)
     {
-        if(__playerScripts.GetPlayerGunInventory().HasGun(_packedGun)) {
+        if(__playerScripts.GetPlayerGunHandler().HasGun(_packedGun)) {
 
             if(__playerScripts.GetPlayerPoints().GetPoints() < _packedAmmoCost) return;
-            if(__playerScripts.GetPlayerGunInventory().GunAtFullAmmo(_packedGun)) return;
+            if(__playerScripts.GetPlayerGunHandler().GunAtFullAmmo(_packedGun)) return;
 
             __playerScripts.GetPlayerPoints().RemovePoints(_packedAmmoCost);
-            __playerScripts.GetPlayerGunInventory().AddAmmo(_packedGun);
+            __playerScripts.GetPlayerGunHandler().AddAmmo(_packedGun);
 
-        } else if(__playerScripts.GetPlayerGunInventory().HasGun(_gunGiven)) {
+        } else if(__playerScripts.GetPlayerGunHandler().HasGun(_gunGiven)) {
 
             if(__playerScripts.GetPlayerPoints().GetPoints() < _ammoCost) return;
-            if(__playerScripts.GetPlayerGunInventory().GunAtFullAmmo(_gunGiven)) return;
+            if(__playerScripts.GetPlayerGunHandler().GunAtFullAmmo(_gunGiven)) return;
 
             __playerScripts.GetPlayerPoints().RemovePoints(_ammoCost);
-            __playerScripts.GetPlayerGunInventory().AddAmmo(_gunGiven);
+            __playerScripts.GetPlayerGunHandler().AddAmmo(_gunGiven);
 
         } else {
 
             if(__playerScripts.GetPlayerPoints().GetPoints() < _cost) return;
 
             __playerScripts.GetPlayerPoints().RemovePoints(_cost);
-            __playerScripts.GetPlayerGunInventory().AddGun(_gunGiven);
+            __playerScripts.GetPlayerGunHandler().AddGun(_gunGiven);
 
         }
 
         _audioManager.PlaySoundAtPoint(_purchaseSound, transform.position);
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts)
+    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
-        if(__playerScripts.GetPlayerGunInventory().HasGun(_packedGun)) return $"E To Buy {_packedGun.Name} Ammo: <b>{_packedAmmoCost}</b> Points"; 
-        if(__playerScripts.GetPlayerGunInventory().HasGun(_gunGiven)) return $"E To Buy {_gunGiven.Name} Ammo: <b>{_ammoCost}</b> Points"; 
-        return $"E To Buy {_gunGiven.Name}: <b>{_cost}</b> Points";
+        if(__playerScripts.GetPlayerGunHandler().HasGun(_packedGun)) return $"E To Buy {_packedGun.Name} Ammo: <b>{_packedAmmoCost}</b> Points"; 
+        if(__playerScripts.GetPlayerGunHandler().HasGun(_gunGiven)) return $"E To Buy {_gunGiven.Name} Ammo: <b>{_ammoCost}</b> Points"; 
+        return $"{__interactInput} To Buy {_gunGiven.Name}: <b>{_cost}</b> Points";
     }
 }

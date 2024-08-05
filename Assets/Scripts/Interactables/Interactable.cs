@@ -5,5 +5,5 @@ using UnityEngine;
 public abstract class Interactable : MonoBehaviour
 {
     public abstract void Interact(PlayerScriptsHandler __playerScripts);
-    public abstract string GetShown(PlayerScriptsHandler __playerScripts);
+    public abstract string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput);
 }

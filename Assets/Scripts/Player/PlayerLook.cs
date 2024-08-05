@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerLook : MonoBehaviour
 {
+    [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private PauseMenu _pauser;
     [SerializeField] private Transform _playerCamera;
     [SerializeField] private Vector2 _sensitivity;
@@ -15,14 +17,15 @@ public class PlayerLook : MonoBehaviour
     private Vector2 _recoilRotation;
     private Vector2 _lateReversibleRecoilRotation;
     private Vector2 _reversibleRecoilRotation;
-    private bool _playerInput;
+    private bool _allowPlayerInput;
+    private InputAction _lookInput;
 
     public void Freeze() {
-        _playerInput = false;
+        _allowPlayerInput = false;
     }
 
     public void UnFreeze() {
-        _playerInput = true;
+        _allowPlayerInput = true;
     }
 
     public void SetRotation(Vector3 __eulerAngles) {
@@ -42,12 +45,13 @@ public class PlayerLook : MonoBehaviour
         Cursor.visible = false;
         _sensitivity = GlobalSettingsManager.Instance.MouseSensitivity;
         _playerCamera.GetComponent<Camera>().fieldOfView = GlobalSettingsManager.Instance.FOV;
-        _playerInput = true;
+        _allowPlayerInput = true;
         _xyRotation = new Vector2(transform.eulerAngles.x, transform.eulerAngles.y);
+        _lookInput = _playerInput.actions["Look"];
     }
 
     public void StopPlayerInput() {
-        _playerInput = false;
+        _allowPlayerInput = false;
     }
 
     public void UpdateSense() {
@@ -60,12 +64,8 @@ public class PlayerLook : MonoBehaviour
 
     private void Update() {
         if(_pauser.Paused) return;
-        if(_playerInput) {
-            Vector2 mouseInput = new Vector2() {
-                x = Input.GetAxis("Mouse X"),
-                y = Input.GetAxis("Mouse Y")
-            };
-
+        if(_allowPlayerInput) {
+            Vector2 mouseInput = _lookInput.ReadValue<Vector2>()/15;
             _xyRotation.x -= mouseInput.y * _sensitivity.y;
             _xyRotation.y += mouseInput.x * _sensitivity.x;
         }

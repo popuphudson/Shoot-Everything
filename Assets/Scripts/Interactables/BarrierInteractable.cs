@@ -38,11 +38,11 @@ public class BarrierInteractable : Interactable
         else _barrierShown.material.color = new Color(1-(_health/_maxHealth), _health/_maxHealth, 0, 0.3f);
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts)
+    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(_health >= _maxHealth) return "";
         if(_repairTimer > 0) return $"REPAIR COOL DOWN: {_repairTimer:0.00}!";
-        return "Press E To Repair!";
+        return $"Press {__interactInput} To Repair!";
     }
 
     public void TakeDamage(float damage) {

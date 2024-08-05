@@ -38,12 +38,12 @@ public class PortalInteractable : Interactable
         _coolDownTimer = _coolDownTime;
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts)
+    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(_needsPower && !_powerManager.IsMapPowered()) return "Needs power...";
         if(!__playerScripts.GetPlayerInventory().HasItems(_itemsRequired)) return _missingItemMessage;
         if(_coolDownTimer > 0) return "On cooldown";
-        return "E to teleport";
+        return $"{__interactInput} to teleport";
     }
 
     IEnumerator Teleportations(PlayerScriptsHandler __playerScripts) {

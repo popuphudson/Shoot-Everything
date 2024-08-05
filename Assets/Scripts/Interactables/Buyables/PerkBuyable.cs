@@ -39,12 +39,12 @@ public class PerkBuyable : Interactable
         }
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts)
+    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(!_ignoreMixedPerks && (__playerScripts.GetPlayerPerks().HasMainMixPerk(_perks) || __playerScripts.GetPlayerPerks().HasSideMixPerk(_perks))) return "";
         if(__playerScripts.GetPlayerPerks().HasPerks(_perks)) return "";
         if(!_powerManager.IsMapPowered() && _needsPower) return "Power needs to be turned on!";
         if(__playerScripts.GetPlayerPerks().HasPerks(_perks) || __playerScripts.GetPlayerPerks().GetNumberOfPerks() >= 5 || (_buylimit != -1 && _bought > _buylimit)) return "";
-        return $"E To Buy {_name}: <b>{_cost}</b> Points";
+        return $"{__interactInput} To Buy {_name}: <b>{_cost}</b> Points";
     }
 }

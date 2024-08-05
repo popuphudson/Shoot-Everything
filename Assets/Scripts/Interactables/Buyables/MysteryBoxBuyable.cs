@@ -57,7 +57,7 @@ public class MysteryBoxBuyable : Interactable
     public override void Interact(PlayerScriptsHandler __playerScripts)
     {
         if(_grabTimer > 0 && _canGrab) {
-            __playerScripts.GetPlayerGunInventory().AddGun(_selectedGun);
+            __playerScripts.GetPlayerGunHandler().AddGun(_selectedGun);
             _grabTimer = -1;
             _canGrab = false;
             for(int i = 0; i < _gunDisplay.childCount; i++) {
@@ -78,7 +78,7 @@ public class MysteryBoxBuyable : Interactable
         _audioManager.PlaySoundAtPoint(_purchaseSound, transform.position);
         List<Gun> gunPool = new List<Gun>();
         foreach(Gun gun in _allGuns) {
-            if(!__playerScripts.GetPlayerGunInventory().HasGun(gun) && !__playerScripts.GetPlayerGunInventory().HasGun(gun.PAPedWeapon)) {
+            if(!__playerScripts.GetPlayerGunHandler().HasGun(gun) && !__playerScripts.GetPlayerGunHandler().HasGun(gun.PAPedWeapon)) {
                 gunPool.Add(gun);
             }
         }
@@ -92,14 +92,14 @@ public class MysteryBoxBuyable : Interactable
         _rollsUntilSwap--;
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts)
+    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(_grabTimer > 0 && _canGrab && _selectedGun) {
             return $"E To Grab {_selectedGun.name}";
         } else if(_grabTimer > 0){
             return "";
         }
-        return $"E To Buy Random Weapon: <b>{_cost}</b> Points";
+        return $"{__interactInput} To Buy Random Weapon: <b>{_cost}</b> Points";
     }
 
     private void Update() {

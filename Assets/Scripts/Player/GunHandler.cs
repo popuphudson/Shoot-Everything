@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using JetBrains.Annotations;
+using UnityEngine.InputSystem;
 
-public class GunInventory : MonoBehaviour
+public class GunHandler : MonoBehaviour
 {
+    [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private PauseMenu _pauser;
     [SerializeField] private Transform _gunHoldPoint;
     [SerializeField] private LayerMask _solidLayers;
@@ -27,6 +29,7 @@ public class GunInventory : MonoBehaviour
     [SerializeField] private float _gunMoveSmoothness;
     [SerializeField] private float _gunRotSmoothness;
     [SerializeField] private AudioManager _audioManager;
+    [SerializeField] private GlobalSettingsManager _settings;
     private List<int> _magAmmo = new List<int>();
     private List<int> _spareAmmo = new List<int>();
     private int _selectedIndex;
@@ -40,6 +43,12 @@ public class GunInventory : MonoBehaviour
     private Vector3 _gunHoldPointStart;
     private Vector3 _gunHoldPointPosition;
     private Vector3 _gunHoldPointRotation;
+    private InputAction _fireInput;
+    private InputAction _reloadInput;
+    private InputAction _switchWeaponInput;
+    private InputAction _meleeInput;
+    private InputAction _lookInput;
+    private InputAction _moveInput;
     
 
     private void Start() {
@@ -52,6 +61,12 @@ public class GunInventory : MonoBehaviour
         SwapGun();
         _meleeing = false;
         _gunHoldPointStart = _gunHoldPoint.localPosition;
+        _fireInput = _playerInput.actions["Fire"];
+        _reloadInput = _playerInput.actions["Reload"];
+        _switchWeaponInput = _playerInput.actions["SwitchWeapon"];
+        _meleeInput = _playerInput.actions["Melee"];
+        _lookInput = _playerInput.actions["Look"];
+        _moveInput = _playerInput.actions["Move"];
     }
 
     public Gun GetSelectedGun() {
@@ -104,24 +119,21 @@ public class GunInventory : MonoBehaviour
     private void Update() {
         if(_pauser.Paused) return;
         _timePassed += Time.deltaTime;
-        if(Input.GetAxisRaw("Mouse ScrollWheel") < 0 && !_meleeing) {
+        if(_switchWeaponInput.ReadValue<float>() < 0 && !_meleeing) {
             _selectedIndex += 1;
             if(_selectedIndex >= _guns.Count) {
                 _selectedIndex = 0;
             }
             SwapGun();
         }
-        if(Input.GetAxisRaw("Mouse ScrollWheel") > 0 && !_meleeing) {
+        if(_switchWeaponInput.ReadValue<float>() > 0 && !_meleeing) {
             _selectedIndex -= 1;
             if(_selectedIndex < 0) {
                 _selectedIndex = _guns.Count-1;
             }
             SwapGun();
         }
-        if(Input.GetMouseButtonUp(0)) {
-            _switchingGuns = false;
-        }
-        if(Input.GetKeyDown(KeyCode.V) && !_meleeing && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN))) {
+        if(_meleeInput.WasPressedThisFrame() && !_meleeing && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN))) {
             if(_reloading) {
                 _anims.speed = 1;
                 _reloading = false;
@@ -143,17 +155,17 @@ public class GunInventory : MonoBehaviour
     }
 
     private void LateUpdate() {
-        Vector3 changeInPos = ((Vector3.forward*Input.GetAxisRaw("Vertical"))+(Vector3.right*Input.GetAxisRaw("Horizontal")))*(_playerMovement.IsRunning()?(_playerPerks.HasPerks(Perks.BETTER_RUN)?2.5f:2):1);
+        Vector3 changeInPos = ((Vector3.forward*_moveInput.ReadValue<Vector2>().y)+(Vector3.right*_moveInput.ReadValue<Vector2>().x))*(_playerMovement.IsRunning()?(_playerPerks.HasPerks(Perks.BETTER_RUN)?2.5f:2):1);
         changeInPos.Normalize();
         _gunHoldPointPosition = Vector3.Lerp(_gunHoldPointPosition, _gunHoldPointStart-(changeInPos/20), Time.deltaTime*_gunMoveSmoothness);
         if(!_meleeing && !_reloading) _gunHoldPoint.localPosition = _gunHoldPointPosition;
-        Vector3 changeInRot = new Vector3(Mathf.Clamp(-Input.GetAxisRaw("Mouse Y")*20f, -15f, 15f), Mathf.Clamp(Input.GetAxisRaw("Mouse X")*20f, -30f, 30f), 0);
+        Vector3 changeInRot = new Vector3(Mathf.Clamp(-_lookInput.ReadValue<Vector2>().y*_settings.MouseSensitivity.y, -10f, 10f), Mathf.Clamp(_lookInput.ReadValue<Vector2>().x*_settings.MouseSensitivity.x, -20f, 20f), 0);
         _gunHoldPointRotation = Vector3.Lerp(_gunHoldPointRotation, changeInRot, Time.deltaTime*_gunRotSmoothness);
         if(!_meleeing && !_reloading) _gunHoldPoint.localEulerAngles = _gunHoldPointRotation;
     }
 
     private void TryReload() {
-        if(Input.GetKeyDown(KeyCode.R) && !_reloading && _magAmmo[_selectedIndex] != _selectedGun.AmmoPerMag && _spareAmmo[_selectedIndex] > 0) {
+        if(_reloadInput.WasPressedThisFrame() && !_reloading && _magAmmo[_selectedIndex] != _selectedGun.AmmoPerMag && _spareAmmo[_selectedIndex] > 0) {
             StartCoroutine(Reload());
         }
     }
@@ -193,7 +205,7 @@ public class GunInventory : MonoBehaviour
 
     private void TryFireGun() {
         if(_selectedGun.Automatic) {
-            if(Input.GetMouseButton(0) && _timePassed > (1/(_selectedGun.ShotsPerSecond+(_playerPerks.HasPerks(Perks.FAST_RELOAD)?_selectedGun.ExtraShotsPerSecond:0)))) {
+            if(_fireInput.IsPressed() && _timePassed > (1/(_selectedGun.ShotsPerSecond+(_playerPerks.HasPerks(Perks.FAST_RELOAD)?_selectedGun.ExtraShotsPerSecond:0)))) {
                 FireGun();
             } else if(_timePassed > (1/(_selectedGun.ShotsPerSecond+(_playerPerks.HasPerks(Perks.FAST_RELOAD)?_selectedGun.ExtraShotsPerSecond:0)))) {
                 _shootingTime = Mathf.Max(_shootingTime-Time.deltaTime, 0);
@@ -202,7 +214,7 @@ public class GunInventory : MonoBehaviour
             }
         } else {
             _shootingTime = 0;
-            if(Input.GetMouseButtonDown(0) && _timePassed > (1/(_selectedGun.ShotsPerSecond+(_playerPerks.HasPerks(Perks.FAST_RELOAD)?_selectedGun.ExtraShotsPerSecond:0)))) {
+            if(_fireInput.WasPressedThisFrame() && _timePassed > (1/(_selectedGun.ShotsPerSecond+(_playerPerks.HasPerks(Perks.FAST_RELOAD)?_selectedGun.ExtraShotsPerSecond:0)))) {
                 FireGun();
             }
         }

@@ -35,13 +35,13 @@ public class PickNMixBuyable : Interactable
         _mixed = true;
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts)
+    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(_mixed) return "";
         if(_mainInput.GetSelectedPerk() == _sideInput.GetSelectedPerk()) return "Cannot mix the same perk together!";
         if(!_canMix) return "A strange force prevents you from mixing these two perks";
         if(!__playerScripts.GetPlayerPerks().HasPerks(_mainInput.GetSelectedPerk()) || !__playerScripts.GetPlayerPerks().HasPerks(_sideInput.GetSelectedPerk()))  return "You need the selected perks";
-        return $"E to mix perks (Only once) {_cost} Points";
+        return $"{__interactInput} to mix perks (Only once) {_cost} Points";
     }
 
     public void UpdateCanMix() {

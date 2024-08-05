@@ -35,8 +35,8 @@ public class DebrisBuyable : Interactable
         Destroy(gameObject);
     }
 
-    public override string GetShown(PlayerScriptsHandler playerScripts)
+    public override string GetShown(PlayerScriptsHandler playerScripts, string __interactInput)
     {
-        return $"E To Clear Debris: <b>{_cost}</b> Points";
+        return $"{__interactInput} To Clear Debris: <b>{_cost}</b> Points";
     }
 }

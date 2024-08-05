@@ -8,7 +8,7 @@ public class PlayerScriptsHandler : MonoBehaviour
     [SerializeField] private PlayerHealth _health;
     [SerializeField] private PlayerPerks _perks;
     [SerializeField] private PlayerMovement _movement;
-    [SerializeField] private GunInventory _gunInventory;
+    [SerializeField] private GunHandler _gunHandler;
     [SerializeField] private PlayerInventory _playerInventory;
     [SerializeField] private PlayerLook _playerLook;
 
@@ -32,8 +32,8 @@ public class PlayerScriptsHandler : MonoBehaviour
         return _movement;
     }
 
-    public GunInventory GetPlayerGunInventory() {
-        return _gunInventory;
+    public GunHandler GetPlayerGunHandler() {
+        return _gunHandler;
     }
 
     public PlayerInventory GetPlayerInventory() {

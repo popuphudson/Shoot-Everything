@@ -17,10 +17,10 @@ public class InventoryPickupInteractable : Interactable
         _renderer.enabled = false;
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts)
+    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(__playerScripts.GetPlayerInventory().HasItem(_inventoryItem)) return "";
         if(!_powerManager.IsMapPowered() && _needsPowerMessage != "") return _needsPowerMessage;
-        return _pickUpMessage;
+        return $"{__interactInput} to " + _pickUpMessage;
     }
 }

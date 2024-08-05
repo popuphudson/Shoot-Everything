@@ -18,10 +18,10 @@ public class PickNMixInputInteractable : Interactable
         _pnmBuyable.UpdateCanMix();
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts)
+    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
-        if(_isMainSide) return $"Cycle main perk, Current perk: {_selectionNames[_selectedPerkIndex]}";
-        return $"Cycle side perk, Current perk: {_selectionNames[_selectedPerkIndex]}";
+        if(_isMainSide) return $"{__interactInput} to Cycle main perk, Current perk: {_selectionNames[_selectedPerkIndex]}";
+        return $"{__interactInput} to Cycle side perk, Current perk: {_selectionNames[_selectedPerkIndex]}";
     }
 
     public Perks GetSelectedPerk() {

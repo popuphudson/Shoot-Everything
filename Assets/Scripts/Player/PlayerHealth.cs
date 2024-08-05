@@ -97,7 +97,7 @@ public class PlayerHealth : MonoBehaviour
                 return;
             }
             _playerScripts.GetPlayerMovement().enabled = false;
-            _playerScripts.GetPlayerGunInventory().enabled = false;
+            _playerScripts.GetPlayerGunHandler().enabled = false;
             _playerLook.StopPlayerInput();
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;

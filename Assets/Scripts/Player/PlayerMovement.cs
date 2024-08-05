@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum Stance {
     STANDING,
@@ -12,6 +13,7 @@ public enum Stance {
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private PlayerLook _playerLook;
     [SerializeField] private PlayerHealth _playerHealth;
@@ -48,6 +50,21 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _targetScale;
     private float _slideTimer;
 
+    private InputAction _sprintInput;
+    private InputAction _changeStanceInput;
+    private InputAction _moveInput;
+    private InputAction _jumpInput;
+
+    private void Start() {
+        _controller = GetComponent<CharacterController>();
+        _jumpMul = 1;
+        _stance = Stance.STANDING;
+        _moveInput = _playerInput.actions["Move"];
+        _sprintInput = _playerInput.actions["Sprint"];
+        _changeStanceInput = _playerInput.actions["ChangeStance"];
+        _jumpInput = _playerInput.actions["Jump"];
+    }
+
     public Vector3 GetMoveVelocity() {
         return _currentMoveVelocity;
     }
@@ -68,12 +85,6 @@ public class PlayerMovement : MonoBehaviour
         _controller.enabled = true;
     }
 
-    private void Start() {
-        _controller = GetComponent<CharacterController>();
-        _jumpMul = 1;
-        _stance = Stance.STANDING;
-    }
-
     public bool IsRunning() {
         return _running;
     }
@@ -82,9 +93,9 @@ public class PlayerMovement : MonoBehaviour
         if(_pauser.Paused) return;
         if(_frozen) return;
         Vector3 playerInput = new Vector3() {
-            x = Input.GetAxisRaw("Horizontal"),
+            x = _moveInput.ReadValue<Vector2>().x,
             y = 0f,
-            z = Input.GetAxisRaw("Vertical")
+            z = _moveInput.ReadValue<Vector2>().y
         };
         
         playerInput.Normalize();
@@ -92,8 +103,8 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveVector = transform.TransformDirection(playerInput);
 
         if(!_holdingRunKey && _runTimer > 0 && !_runRecharge) {
-            _holdingRunKey = Input.GetKeyDown(KeyCode.LeftShift);
-        } else if(_runTimer <= 0 || Input.GetKeyUp(KeyCode.LeftShift)) {
+            _holdingRunKey = _sprintInput.WasPressedThisFrame();
+        } else if(_runTimer <= 0 || _sprintInput.WasReleasedThisFrame()) {
             _holdingRunKey = false;
             _runRecharge = true;
         }
@@ -110,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
             _runTimer = Mathf.Min(_runTimer, 1);
         }
 
-        if(Input.GetKeyDown(KeyCode.C)) {
+        if(_changeStanceInput.WasPressedThisFrame()) {
             if(_stance == Stance.STANDING) {
                 _stance = Stance.CROUCHING;
             } else if(_stance == Stance.CROUCHING){
@@ -151,11 +162,13 @@ public class PlayerMovement : MonoBehaviour
             }
             
 
-            if(_currentForceVelocity.y <= 0) {
+            if(_currentForceVelocity.y <= 0 && _slideTimer < 0) {
                 _currentForceVelocity.y = -2f;
-            } 
+            } else if(_currentForceVelocity.y <= 0) {
+                _currentForceVelocity.y = -10f;
+            }
 
-            if(Input.GetKeyDown(KeyCode.Space) && (_stance == Stance.STANDING || _slideTimer > 0)) {
+            if(_jumpInput.WasPressedThisFrame() && (_stance == Stance.STANDING || _slideTimer > 0)) {
                 _currentForceVelocity.y = _jumpStrength*_jumpMul;
                 _jumpMul /= 1.1f;
                 if(_slideTimer > 0) {
@@ -183,7 +196,7 @@ public class PlayerMovement : MonoBehaviour
         } else {
             _targetScale = new Vector3(0.5f, 0.2f, 0.5f);
         }
-        transform.localScale = Vector3.Lerp(transform.localScale, _targetScale, _slideTimer>0?10:(Time.deltaTime*_stanceChangeSmoothness));
+        transform.localScale = Vector3.Lerp(transform.localScale, _targetScale, (_slideTimer>0?10:1)*Time.deltaTime*_stanceChangeSmoothness);
 
     }
 
