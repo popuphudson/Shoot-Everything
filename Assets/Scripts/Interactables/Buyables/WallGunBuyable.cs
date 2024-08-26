@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
 
-public class WallGunBuyable : Interactable
+public class WallGunBuyable : MonoBehaviour, Interactable
 {
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private int _cost;
@@ -12,7 +12,7 @@ public class WallGunBuyable : Interactable
     [SerializeField] private Gun _gunGiven;
     [SerializeField] private Gun _packedGun;
     [SerializeField] private Sound _purchaseSound;
-    public override void Interact(PlayerScriptsHandler __playerScripts)
+    public void Interact(PlayerScriptsHandler __playerScripts)
     {
         if(__playerScripts.GetPlayerGunHandler().HasGun(_packedGun)) {
 
@@ -42,7 +42,7 @@ public class WallGunBuyable : Interactable
         _audioManager.PlaySoundAtPoint(_purchaseSound, transform.position);
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
+    public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(__playerScripts.GetPlayerGunHandler().HasGun(_packedGun)) return $"E To Buy {_packedGun.Name} Ammo: <b>{_packedAmmoCost}</b> Points"; 
         if(__playerScripts.GetPlayerGunHandler().HasGun(_gunGiven)) return $"E To Buy {_gunGiven.Name} Ammo: <b>{_ammoCost}</b> Points"; 

@@ -33,6 +33,7 @@ public class Interactor : MonoBehaviour
             Interactable interactable = __other.GetComponent<Interactable>();
             _costText.text = interactable.GetShown(_playerScripts, _interactInput.GetBindingDisplayString());
             _costShowerRectTransform.sizeDelta = new Vector2(_costTextRectTransform.sizeDelta.x+35, 100);
+            _costShowerRectTransform.ForceUpdateRectTransforms();
             _costShower.SetActive(_costText.text!="");
             if(_tryToBuy) {
                 interactable.Interact(_playerScripts);

@@ -78,11 +78,11 @@ public class PlayerHealth : MonoBehaviour
 
     public void Damage(float __damage) {
         if(_graceTimer > 0) return;
+        _graceTimer = 0.5f;
         if(_immunityTimer > 0) {
             _playerLook.AddReversibleRecoil(new Vector2(-2*Random.Range(1f, 2f), 2*Random.Range(-1f, 1f)));
             return;
         }
-        _graceTimer = 0.5f;
         _playerLook.AddReversibleRecoil(new Vector2(-10*Random.Range(1f, 2f), 10*Random.Range(-1f, 1f)));
         _health -= __damage;
         _preHealth = _health;

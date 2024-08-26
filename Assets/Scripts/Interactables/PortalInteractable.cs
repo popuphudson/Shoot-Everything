@@ -8,11 +8,12 @@ public enum PortalSound {
     END
 }
 
-public class PortalInteractable : Interactable
+public class PortalInteractable : MonoBehaviour, Interactable
 {
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private PowerManager _powerManager;
     [SerializeField] private string[] _itemsRequired;
+    [SerializeField] private string[] _missingItemMessages;
     [SerializeField] private bool _needsPower;
     [SerializeField] private Vector3[] _locations;
     [SerializeField] private Vector3[] _eulerRotations;
@@ -20,11 +21,18 @@ public class PortalInteractable : Interactable
     [SerializeField] private float[] _times;
     [SerializeField] private bool[] _locksMovement;
     [SerializeField] private float _coolDownTime;
-    [SerializeField] private string _missingItemMessage;
     [SerializeField] private Sound _portalStartSound, _portalEndSound;
+    [SerializeField] private Triggerable[] _teleportTriggerable;
+    [SerializeField] private Triggerable[] _resetTriggerable;
+    [SerializeField] private string _customTeleportText;
     float _coolDownTimer;
+    private bool _reset = true;
     
-    public override void Interact(PlayerScriptsHandler __playerScripts)
+    private void Start() {
+        _reset = true;
+    }
+
+    public void Interact(PlayerScriptsHandler __playerScripts)
     {
         if(_needsPower && !_powerManager.IsMapPowered()) return;
         if(!__playerScripts.GetPlayerInventory().HasItems(_itemsRequired)) return;
@@ -35,15 +43,22 @@ public class PortalInteractable : Interactable
         } else {
             StartCoroutine(Teleportations(__playerScripts));
         }
+        foreach(Triggerable trigger in _teleportTriggerable) {
+            trigger.Trigger();
+        }
         _coolDownTimer = _coolDownTime;
+        _reset = false;
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
+    public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(_needsPower && !_powerManager.IsMapPowered()) return "Needs power...";
-        if(!__playerScripts.GetPlayerInventory().HasItems(_itemsRequired)) return _missingItemMessage;
+        for(int i = 0; i<_itemsRequired.Length; i++) {
+            if(!__playerScripts.GetPlayerInventory().HasItem(_itemsRequired[i])) return _missingItemMessages[i];
+        }
         if(_coolDownTimer > 0) return "On cooldown";
-        return $"{__interactInput} to teleport";
+        if(_customTeleportText == "") return $"{__interactInput} to teleport";
+        else return $"{__interactInput} {_customTeleportText}";
     }
 
     IEnumerator Teleportations(PlayerScriptsHandler __playerScripts) {
@@ -69,7 +84,15 @@ public class PortalInteractable : Interactable
     }
 
     private void Update() {
-        if(_coolDownTimer <= 0) return;
+        if(_coolDownTimer <= 0) {
+            if(!_reset) {
+                foreach(Triggerable trigger in _resetTriggerable) {
+                    trigger.Trigger();
+                }
+                _reset = true;
+            }
+            return;
+        }
         _coolDownTimer -= Time.deltaTime;
     }
 }

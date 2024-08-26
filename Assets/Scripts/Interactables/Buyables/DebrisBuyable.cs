@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DebrisBuyable : Interactable
+public class DebrisBuyable : MonoBehaviour, Interactable
 {
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private int _cost;
@@ -11,7 +11,7 @@ public class DebrisBuyable : Interactable
     [SerializeField] private bool[] _areaDataLinkEnabled;   
     [SerializeField] private Sound _purchaseSound;
     private bool _removing = false;
-    public override void Interact(PlayerScriptsHandler __playerScripts) {
+    public void Interact(PlayerScriptsHandler __playerScripts) {
         if(_removing) return;
         if(__playerScripts.GetPlayerPoints().GetPoints() < _cost) return;
         __playerScripts.GetPlayerPoints().RemovePoints(_cost);
@@ -35,7 +35,7 @@ public class DebrisBuyable : Interactable
         Destroy(gameObject);
     }
 
-    public override string GetShown(PlayerScriptsHandler playerScripts, string __interactInput)
+    public string GetShown(PlayerScriptsHandler playerScripts, string __interactInput)
     {
         return $"{__interactInput} To Clear Debris: <b>{_cost}</b> Points";
     }

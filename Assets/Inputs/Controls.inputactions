@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Grenade",
+                    "type": "Button",
+                    "id": "5c3fd18b-b84a-42ce-bc2e-bf6b0a37e0d3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -316,10 +325,10 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "1D Axis",
-                    "id": "2599e477-4834-4242-b07f-e7cd0302f07f",
-                    "path": "1DAxis(minValue=0,whichSideWins=1)",
-                    "interactions": "",
+                    "name": "Gamepad",
+                    "id": "1c8ce8cd-2bea-437c-ba25-05e3d7d78fd5",
+                    "path": "1DAxis(minValue=0)",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "SwitchWeapon",
@@ -327,8 +336,8 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Positive",
-                    "id": "9be3c9c5-b63d-43cf-ab93-5061f47db0f9",
+                    "name": "positive",
+                    "id": "d7df078e-af39-4348-a83a-91be56b6a5d9",
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
@@ -400,6 +409,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Melee",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "558032da-d885-4b44-bb9c-8dd3dfea9fef",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard And Mouse",
+                    "action": "Grenade",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4aa146a-49dc-43f7-8199-63b57dea5789",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Grenade",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

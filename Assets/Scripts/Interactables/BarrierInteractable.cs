@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BarrierInteractable : Interactable
+public class BarrierInteractable : MonoBehaviour, Interactable
 {
     [SerializeField] private float _maxHealth;
     [SerializeField] private float _repairHealth;
@@ -18,7 +18,7 @@ public class BarrierInteractable : Interactable
     }
 
     private void Update() {
-        _repairTimer -= Time.deltaTime;
+        _repairTimer = Mathf.Max(_repairTimer-Time.deltaTime, 0);
         if(_health <= 0) _barrierShown.material.color = new Color(0, 0, 0, 0.3f);
         else _barrierShown.material.color = new Color(1-(_health/_maxHealth), _health/_maxHealth, 0, 0.3f);
     }
@@ -27,7 +27,7 @@ public class BarrierInteractable : Interactable
         return _health;
     }
 
-    public override void Interact(PlayerScriptsHandler __playerScripts)
+    public void Interact(PlayerScriptsHandler __playerScripts)
     {
         if(_health >= _maxHealth) return;
         if(_repairTimer > 0) return;
@@ -38,7 +38,7 @@ public class BarrierInteractable : Interactable
         else _barrierShown.material.color = new Color(1-(_health/_maxHealth), _health/_maxHealth, 0, 0.3f);
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
+    public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(_health >= _maxHealth) return "";
         if(_repairTimer > 0) return $"REPAIR COOL DOWN: {_repairTimer:0.00}!";

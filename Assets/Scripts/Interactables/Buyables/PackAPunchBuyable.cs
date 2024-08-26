@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PackAPunchBuyable : Interactable
+public class PackAPunchBuyable : MonoBehaviour, Interactable
 {
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private int _cost;
@@ -12,7 +12,7 @@ public class PackAPunchBuyable : Interactable
     [SerializeField] private Sound _purchaseSound;
     private Gun _heldGun;
     private float _timer;
-    public override void Interact(PlayerScriptsHandler __playerScripts)
+    public void Interact(PlayerScriptsHandler __playerScripts)
     {
         if(_heldGun) {
             if(_timer > 0) return;
@@ -34,10 +34,10 @@ public class PackAPunchBuyable : Interactable
         _shownGun.gameObject.SetActive(false);
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
+    public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(__playerScripts.GetPlayerGunHandler().GetSelectedGun() && __playerScripts.GetPlayerGunHandler().GetSelectedGun().IsPAPed) return "";
-        if(_heldGun && _timer < 0) return "{__interactInput} to pickup weapon";
+        if(_heldGun && _timer < 0) return $"{__interactInput} to pickup weapon";
         if(!_heldGun) return $"{__interactInput} to Pack a Punch for {_cost}";
         return "Pack a punching";
     }

@@ -18,6 +18,8 @@ public class ZombieSpawner : MonoBehaviour
     [SerializeField] private Animator _roundTextAnims;
     [SerializeField] private LevelData _levelData;
     [SerializeField] private PowerUpManager _powerUpManager;
+    [SerializeField] private GunHandler _gunHandler;
+    [SerializeField] private Triggerable[] _waveNextTriggerable;
     private int _wave = 0;
     private bool _spawning = false;
     private int _leftToSpawn;
@@ -25,6 +27,7 @@ public class ZombieSpawner : MonoBehaviour
     private float _spawnTimer;
     private bool _forcedIdle;
     private float _ambientTimer;
+    private bool _spawnable;
 
     public bool ZombiesAreForcedIdle() {
         return _forcedIdle;
@@ -36,6 +39,7 @@ public class ZombieSpawner : MonoBehaviour
         }
         Instance = this;
         _ambientTimer = Random.Range(3, 5);
+        _spawnable = true;
     }
 
     private void PlayAmbientZombieNoise() {
@@ -48,6 +52,7 @@ public class ZombieSpawner : MonoBehaviour
     }
 
     private void Update() {
+        if(!_spawnable) return;
         _spawnTimer -= Time.deltaTime;
         _ambientTimer -= Time.deltaTime;
         if(_ambientTimer <= 0) {
@@ -83,11 +88,11 @@ public class ZombieSpawner : MonoBehaviour
         } catch(System.IndexOutOfRangeException) {
             Debug.LogError($"{chosen} isn't within the confines of 0-{SpawnPoints.Count-1}!");
         }
-        Transform chosenBarrier = SpawnPoints[chosen].ConnectedBarriers[Random.Range(0, SpawnPoints[chosen].ConnectedBarriers.Length)];
+        Transform chosenBarrier = SpawnPoints[chosen].ConnectedBarriers.Length>0?SpawnPoints[chosen].ConnectedBarriers[Random.Range(0, SpawnPoints[chosen].ConnectedBarriers.Length)]:null;
         EnemyAI enemyAI = Instantiate(_basicZombie, toSpawn.position, Quaternion.identity).GetComponent<EnemyAI>();
         enemyAI.transform.parent = transform;
         enemyAI.SetTarget(_player.transform);
-        enemyAI.SetBarrier(chosenBarrier.GetComponent<BarrierInteractable>());
+        if(chosenBarrier) enemyAI.SetBarrier(chosenBarrier.GetComponent<BarrierInteractable>());
         enemyAI.SetLevelData(_levelData);
         if(ZombieGonnaRun()) enemyAI.ForceRun();
         float health = _healthForFirstWave+(100*Mathf.Min(_wave-1, 8));
@@ -103,6 +108,10 @@ public class ZombieSpawner : MonoBehaviour
         _wave += 1;
         _roundTextAnims.Play("Start Round");
         _audioManager.PlaySound(_roundChangeSound);
+        _gunHandler.AddGrenades(1);
+        foreach(Triggerable triggerable in _waveNextTriggerable) {
+            triggerable.Trigger();
+        }
         yield return new WaitForSeconds(0.3f);
         _roundText.text = _wave.ToString();
         if(_wave==1) yield return new WaitForSeconds(4);
@@ -122,6 +131,13 @@ public class ZombieSpawner : MonoBehaviour
     public void KillAll() {
         for(int i = 0; i < transform.childCount; i++) {
             transform.GetChild(i).gameObject.GetComponent<Shootable>().TakeDamage(-1, null, 1, _powerUpManager);
+        }
+    }
+
+    public void RespawnAll() {
+        for(int i = 0; i < transform.childCount; i++) {
+            transform.GetChild(i).gameObject.GetComponent<Shootable>().TakeDamage(-1, null, 1, _powerUpManager);
+            _leftToSpawn++;
         }
     }
 
@@ -147,5 +163,13 @@ public class ZombieSpawner : MonoBehaviour
 
     public int GetRound() {
         return _wave;
+    }
+
+    public void Pause() {
+        _spawnable = false;
+    }
+
+    public void Resume() {
+        _spawnable = true;
     }
 }

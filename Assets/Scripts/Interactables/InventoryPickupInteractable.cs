@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryPickupInteractable : Interactable
+public class InventoryPickupInteractable : MonoBehaviour, Interactable
 {
     [SerializeField] private MeshRenderer _renderer;
     [SerializeField] private PowerManager _powerManager;
     [SerializeField] private string _inventoryItem;
     [SerializeField] private string _pickUpMessage;
     [SerializeField] private string _needsPowerMessage;
-    public override void Interact(PlayerScriptsHandler __playerScripts)
+    public void Interact(PlayerScriptsHandler __playerScripts)
     {
         if(!_powerManager.IsMapPowered() && _needsPowerMessage != "") return;
         if(__playerScripts.GetPlayerInventory().HasItem(_inventoryItem)) return;
@@ -17,7 +17,7 @@ public class InventoryPickupInteractable : Interactable
         _renderer.enabled = false;
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
+    public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(__playerScripts.GetPlayerInventory().HasItem(_inventoryItem)) return "";
         if(!_powerManager.IsMapPowered() && _needsPowerMessage != "") return _needsPowerMessage;

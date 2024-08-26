@@ -30,13 +30,16 @@ public class GunHandler : MonoBehaviour
     [SerializeField] private float _gunRotSmoothness;
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private GlobalSettingsManager _settings;
+    [SerializeField] private GameObject _grenadePrefab;
+    [SerializeField] private float _throwForce;
+    [SerializeField] private GameObject _grenadeUIPrefab;
+    [SerializeField] private Transform _grenadeUI;
     private List<int> _magAmmo = new List<int>();
     private List<int> _spareAmmo = new List<int>();
     private int _selectedIndex;
     private Gun _selectedGun;
     private float _timePassed;
     private bool _reloading;
-    private bool _switchingGuns;
     private float _shootingTime;
     private Vector2 _preRecoil = Vector2.zero;
     private bool _meleeing;
@@ -49,11 +52,17 @@ public class GunHandler : MonoBehaviour
     private InputAction _meleeInput;
     private InputAction _lookInput;
     private InputAction _moveInput;
+    private InputAction _grenadeInput;
+    private bool _gamepadScrolled;
+    private int _numOfGrenades;
     
 
     private void Start() {
+        _numOfGrenades = 1;
+        for(int i=0; i<_numOfGrenades; i++) {
+            Instantiate(_grenadeUIPrefab, _grenadeUI);
+        }
         _reloading = false;
-        _switchingGuns = false;
         foreach(Gun gun in _guns) {
             _magAmmo.Add(gun.AmmoPerMag);
             _spareAmmo.Add(gun.MaxAmmoReserve/2);
@@ -67,6 +76,7 @@ public class GunHandler : MonoBehaviour
         _meleeInput = _playerInput.actions["Melee"];
         _lookInput = _playerInput.actions["Look"];
         _moveInput = _playerInput.actions["Move"];
+        _grenadeInput = _playerInput.actions["Grenade"];
     }
 
     public Gun GetSelectedGun() {
@@ -119,20 +129,23 @@ public class GunHandler : MonoBehaviour
     private void Update() {
         if(_pauser.Paused) return;
         _timePassed += Time.deltaTime;
-        if(_switchWeaponInput.ReadValue<float>() < 0 && !_meleeing) {
+        if(_switchWeaponInput.ReadValue<float>() < 0 && !_meleeing && !_gamepadScrolled) {
             _selectedIndex += 1;
             if(_selectedIndex >= _guns.Count) {
                 _selectedIndex = 0;
             }
+            if(_playerInput.currentControlScheme != "Keyboard And Mouse") _gamepadScrolled = true;
             SwapGun();
         }
-        if(_switchWeaponInput.ReadValue<float>() > 0 && !_meleeing) {
+        if(_switchWeaponInput.ReadValue<float>() > 0 && !_meleeing && !_gamepadScrolled) {
             _selectedIndex -= 1;
             if(_selectedIndex < 0) {
                 _selectedIndex = _guns.Count-1;
             }
+            if(_playerInput.currentControlScheme != "Keyboard And Mouse") _gamepadScrolled = true;
             SwapGun();
         }
+        if(_switchWeaponInput.ReadValue<float>() == 0) _gamepadScrolled = false;
         if(_meleeInput.WasPressedThisFrame() && !_meleeing && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN))) {
             if(_reloading) {
                 _anims.speed = 1;
@@ -142,7 +155,7 @@ public class GunHandler : MonoBehaviour
             _anims.Play("Melee");
             _meleeing = true;
         }
-        if(_selectedGun && !_switchingGuns && !_meleeing && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN)) && _selectedGun) {
+        if(_selectedGun && !_meleeing && !_reloading && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN)) && _selectedGun) {
             TryFireGun();
             TryReload();
         }
@@ -152,6 +165,26 @@ public class GunHandler : MonoBehaviour
         } else {
             ClearAmmoDisplay();
         }
+        if(!_reloading && !_meleeing && !_playerMovement.IsRunning()) {
+            if(_grenadeInput.WasPressedThisFrame() && _numOfGrenades > 0) {
+                ThrowGrenade();
+            }
+        }
+    }
+
+    public void AddGrenades(int __num) {
+        for(int i=0; i<__num; i++) {
+            Instantiate(_grenadeUIPrefab, _grenadeUI);
+        }
+        _numOfGrenades = Mathf.Clamp(_numOfGrenades+__num, 0, 4);
+    }
+
+    private void ThrowGrenade() {
+        _numOfGrenades--;
+        Destroy(_grenadeUI.GetChild(0).gameObject);
+        Rigidbody grenadeRB = Instantiate(_grenadePrefab, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+        grenadeRB.GetComponent<Grenade>().SetData(_playerPoints, _powerUpManager, _audioManager);
+        grenadeRB.AddForce(transform.forward*_throwForce, ForceMode.Impulse);
     }
 
     private void LateUpdate() {
@@ -221,6 +254,7 @@ public class GunHandler : MonoBehaviour
     }
 
     private IEnumerator Reload() {
+        _preRecoil = new Vector2(_selectedGun.VerticalRecoilPattern.Evaluate(0), _selectedGun.HorizontalRecoilPattern.Evaluate(0));
         float reloadDiv = _playerPerks.HasPerks(Perks.FAST_RELOAD)?2:(_playerPerks.HasSideMixPerk(Perks.FAST_RELOAD)?1.5f:1);
         reloadDiv *= _playerPerks.HasMix(Perks.FAST_RELOAD, Perks.EXTRA_HEALTH)?_playerHealth.GetHealth()/100f:1;
         float reloadTime = _selectedGun.ReloadTime/reloadDiv;
@@ -251,7 +285,7 @@ public class GunHandler : MonoBehaviour
         }
         if(_spareAmmo[_selectedIndex] <= 0 && _magAmmo[_selectedIndex] <= 0) {
             int presel = _selectedIndex;
-            _selectedIndex += 1;
+            _selectedIndex++;
             if(_selectedIndex >= _guns.Count) {
                 _selectedIndex = 0;
             }
@@ -260,18 +294,15 @@ public class GunHandler : MonoBehaviour
             } else {
                 SwapGun();
             }
-            _switchingGuns = true;
             _shootingTime = 0;
             return;
         }
-        if(_magAmmo[_selectedIndex] <= 1 && _spareAmmo[_selectedIndex] > 0) {
+        if(_magAmmo[_selectedIndex] <= 0 && _spareAmmo[_selectedIndex] > 0) {
             StartCoroutine(Reload());
-            if(_magAmmo[_selectedIndex] <= 0) {
-                _shootingTime = 0;
-                return;
-            }
+            _shootingTime = 0;
+            return;
         }
-        _shootingTime += 1/_selectedGun.ShotsPerSecond;
+        _shootingTime += 1/(_selectedGun.ShotsPerSecond+(_playerPerks.HasPerks(Perks.FAST_RELOAD)?_selectedGun.ExtraShotsPerSecond:0));
         _magAmmo[_selectedIndex] -= 1;
         _timePassed = 0;
         _audioManager.PlaySound(_selectedGun.ShootSound);
@@ -286,6 +317,10 @@ public class GunHandler : MonoBehaviour
             }
         }
         KickCamera();
+        if(_magAmmo[_selectedIndex] <= 0 && _spareAmmo[_selectedIndex] > 0) {
+            StartCoroutine(Reload());
+            _shootingTime = 0;
+        }
     }
 
     private float GetGunDamage(Vector3 __hitPos, int __pierce) {

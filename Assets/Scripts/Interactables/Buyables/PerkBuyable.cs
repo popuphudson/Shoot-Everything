@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PerkBuyable : Interactable
+public class PerkBuyable : MonoBehaviour, Interactable
 {
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private int _cost;
@@ -20,7 +20,7 @@ public class PerkBuyable : Interactable
         _bought = 0;
     }
 
-    public override void Interact(PlayerScriptsHandler __playerScripts)
+    public void Interact(PlayerScriptsHandler __playerScripts)
     {
         if(!_ignoreMixedPerks && (__playerScripts.GetPlayerPerks().HasMainMixPerk(_perks) || __playerScripts.GetPlayerPerks().HasSideMixPerk(_perks))) return;
         if(__playerScripts.GetPlayerPerks().HasPerks(_perks)) return;
@@ -39,7 +39,7 @@ public class PerkBuyable : Interactable
         }
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
+    public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(!_ignoreMixedPerks && (__playerScripts.GetPlayerPerks().HasMainMixPerk(_perks) || __playerScripts.GetPlayerPerks().HasSideMixPerk(_perks))) return "";
         if(__playerScripts.GetPlayerPerks().HasPerks(_perks)) return "";

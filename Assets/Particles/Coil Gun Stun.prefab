@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7193220370529408895}
   - component: {fileID: 7193220370529408888}
   - component: {fileID: 373982975056015110}
+  - component: {fileID: 4045134725551247165}
   m_Layer: 0
   m_Name: Coil Gun Stun
   m_TagString: Untagged
@@ -4834,3 +4835,16 @@ MonoBehaviour:
     m_Bits: 64
   _stayTime: 6
   _timeToKill: 4
+--- !u!135 &4045134725551247165
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7193220370529408889}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}

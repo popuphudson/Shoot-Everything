@@ -8,7 +8,7 @@ public class Mixable {
     public Perks SidePerk;
 }
 
-public class PickNMixBuyable : Interactable
+public class PickNMixBuyable : MonoBehaviour, Interactable
 {
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private int _cost;
@@ -22,7 +22,7 @@ public class PickNMixBuyable : Interactable
         UpdateCanMix();
     }
 
-    public override void Interact(PlayerScriptsHandler __playerScripts)
+    public void Interact(PlayerScriptsHandler __playerScripts)
     {
         if(_mainInput.GetSelectedPerk() == _sideInput.GetSelectedPerk()) return;
         if(!_canMix) return;
@@ -35,7 +35,7 @@ public class PickNMixBuyable : Interactable
         _mixed = true;
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
+    public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(_mixed) return "";
         if(_mainInput.GetSelectedPerk() == _sideInput.GetSelectedPerk()) return "Cannot mix the same perk together!";

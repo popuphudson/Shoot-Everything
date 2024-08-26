@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MysteryBoxBuyable : Interactable
+public class MysteryBoxBuyable : MonoBehaviour, Interactable
 {
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private int _cost;
@@ -54,7 +54,7 @@ public class MysteryBoxBuyable : Interactable
         _moving = false;
     }
 
-    public override void Interact(PlayerScriptsHandler __playerScripts)
+    public void Interact(PlayerScriptsHandler __playerScripts)
     {
         if(_grabTimer > 0 && _canGrab) {
             __playerScripts.GetPlayerGunHandler().AddGun(_selectedGun);
@@ -92,7 +92,7 @@ public class MysteryBoxBuyable : Interactable
         _rollsUntilSwap--;
     }
 
-    public override string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
+    public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(_grabTimer > 0 && _canGrab && _selectedGun) {
             return $"E To Grab {_selectedGun.name}";
