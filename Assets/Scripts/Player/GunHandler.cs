@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using JetBrains.Annotations;
 using UnityEngine.InputSystem;
 
 public class GunHandler : MonoBehaviour
@@ -34,6 +33,9 @@ public class GunHandler : MonoBehaviour
     [SerializeField] private float _throwForce;
     [SerializeField] private GameObject _grenadeUIPrefab;
     [SerializeField] private Transform _grenadeUI;
+    [SerializeField] private ReticleSizeCalculator _reticle;
+    [SerializeField] private Camera _weaponCamera;
+    [SerializeField] private float _aimTime;
     private List<int> _magAmmo = new List<int>();
     private List<int> _spareAmmo = new List<int>();
     private int _selectedIndex;
@@ -53,8 +55,11 @@ public class GunHandler : MonoBehaviour
     private InputAction _lookInput;
     private InputAction _moveInput;
     private InputAction _grenadeInput;
+    private InputAction _aimInput;
     private bool _gamepadScrolled;
     private int _numOfGrenades;
+    private bool _aiming;
+    private bool _startingReload;
     
 
     private void Start() {
@@ -77,6 +82,7 @@ public class GunHandler : MonoBehaviour
         _lookInput = _playerInput.actions["Look"];
         _moveInput = _playerInput.actions["Move"];
         _grenadeInput = _playerInput.actions["Grenade"];
+        _aimInput = _playerInput.actions["Aim"];
     }
 
     public Gun GetSelectedGun() {
@@ -91,6 +97,10 @@ public class GunHandler : MonoBehaviour
             _selectedIndex = 0;
         }
         SwapGun();
+    }
+
+    public void OnNextWave() {
+        AddGrenades(1);
     }
 
     public int GetNumberOfGuns() {
@@ -152,6 +162,7 @@ public class GunHandler : MonoBehaviour
                 _reloading = false;
                 StopAllCoroutines();
             }
+            _aiming = false;
             _anims.Play("Melee");
             _meleeing = true;
         }
@@ -170,6 +181,30 @@ public class GunHandler : MonoBehaviour
                 ThrowGrenade();
             }
         }
+        if(!_meleeing && !_reloading && !_playerMovement.IsRunning() && !_startingReload) {
+            _aiming = _aimInput.IsPressed();
+        } else {
+            _aiming = false;
+        }
+        if(_aiming) {
+            AimIn();
+        } else {
+            AimOut();
+        }
+    }
+
+    private void AimIn() {
+        _weaponCamera.fieldOfView = Mathf.Lerp(_weaponCamera.fieldOfView, 30, Time.deltaTime*_aimTime);
+        _reticle.HideReticle();
+    }
+
+    private void AimOut() {
+        _weaponCamera.fieldOfView = Mathf.Lerp(_weaponCamera.fieldOfView, 90, Time.deltaTime*_aimTime);
+        _reticle.ShowReticle();
+    }
+
+    public bool GetAiming() {
+        return _aiming;
     }
 
     public void AddGrenades(int __num) {
@@ -188,17 +223,28 @@ public class GunHandler : MonoBehaviour
     }
 
     private void LateUpdate() {
-        Vector3 changeInPos = ((Vector3.forward*_moveInput.ReadValue<Vector2>().y)+(Vector3.right*_moveInput.ReadValue<Vector2>().x))*(_playerMovement.IsRunning()?(_playerPerks.HasPerks(Perks.BETTER_RUN)?2.5f:2):1);
-        changeInPos.Normalize();
-        _gunHoldPointPosition = Vector3.Lerp(_gunHoldPointPosition, _gunHoldPointStart-(changeInPos/20), Time.deltaTime*_gunMoveSmoothness);
-        if(!_meleeing && !_reloading) _gunHoldPoint.localPosition = _gunHoldPointPosition;
-        Vector3 changeInRot = new Vector3(Mathf.Clamp(-_lookInput.ReadValue<Vector2>().y*_settings.MouseSensitivity.y, -10f, 10f), Mathf.Clamp(_lookInput.ReadValue<Vector2>().x*_settings.MouseSensitivity.x, -20f, 20f), 0);
-        _gunHoldPointRotation = Vector3.Lerp(_gunHoldPointRotation, changeInRot, Time.deltaTime*_gunRotSmoothness);
-        if(!_meleeing && !_reloading) _gunHoldPoint.localEulerAngles = _gunHoldPointRotation;
+        if(!_aiming) {
+            Vector3 changeInPos = ((Vector3.forward*_moveInput.ReadValue<Vector2>().y)+(Vector3.right*_moveInput.ReadValue<Vector2>().x))*(_playerMovement.IsRunning()?(_playerPerks.HasPerks(Perks.BETTER_RUN)?2.5f:2):1);
+            changeInPos.Normalize();
+            if(_startingReload) changeInPos = Vector3.zero;
+            _gunHoldPointPosition = Vector3.Lerp(_gunHoldPointPosition, _gunHoldPointStart-(changeInPos/20), Time.deltaTime*_gunMoveSmoothness);
+            if(!_meleeing && !_reloading) _gunHoldPoint.localPosition = _gunHoldPointPosition;
+            Vector3 changeInRot = new Vector3(Mathf.Clamp(-_lookInput.ReadValue<Vector2>().y*_settings.MouseSensitivity.y, -5f, 5f), Mathf.Clamp(_lookInput.ReadValue<Vector2>().x*_settings.MouseSensitivity.x, -5f, 5f), 0);
+            if(_startingReload) changeInRot = Vector3.zero;
+            _gunHoldPointRotation = Vector3.Lerp(_gunHoldPointRotation, changeInRot, Time.deltaTime*_gunRotSmoothness);
+            if(!_meleeing && !_reloading) _gunHoldPoint.localEulerAngles = _gunHoldPointRotation;
+        } else {
+            _gunHoldPointPosition = Vector3.Lerp(_gunHoldPointPosition, new Vector3(0,-0.15f, 1), Time.deltaTime*_aimTime);
+            _gunHoldPoint.localPosition = _gunHoldPointPosition;
+            Vector3 changeInRot = new Vector3(Mathf.Clamp(-_lookInput.ReadValue<Vector2>().y*_settings.MouseSensitivity.y, -1f, 1f), Mathf.Clamp(_lookInput.ReadValue<Vector2>().x*_settings.MouseSensitivity.x, -1f, 1f), 0);
+            if(_startingReload) changeInRot = Vector3.zero;
+            _gunHoldPointRotation = Vector3.Lerp(_gunHoldPointRotation, changeInRot, Time.deltaTime*_gunRotSmoothness);
+            _gunHoldPoint.localEulerAngles = _gunHoldPointRotation;
+        }
     }
 
     private void TryReload() {
-        if(_reloadInput.WasPressedThisFrame() && !_reloading && _magAmmo[_selectedIndex] != _selectedGun.AmmoPerMag && _spareAmmo[_selectedIndex] > 0) {
+        if(_reloadInput.WasPressedThisFrame() && !_startingReload && !_reloading && _magAmmo[_selectedIndex] != _selectedGun.AmmoPerMag && _spareAmmo[_selectedIndex] > 0) {
             StartCoroutine(Reload());
         }
     }
@@ -254,13 +300,18 @@ public class GunHandler : MonoBehaviour
     }
 
     private IEnumerator Reload() {
+        _startingReload = true;
+        while(Vector3.Distance(_gunHoldPointPosition, _gunHoldPointStart) > 0.2f || Vector3.Distance(_gunHoldPointRotation, Vector3.zero) > 1f) {
+            yield return null;
+        }
+        _startingReload = false;
+        _reloading = true;
         _preRecoil = new Vector2(_selectedGun.VerticalRecoilPattern.Evaluate(0), _selectedGun.HorizontalRecoilPattern.Evaluate(0));
         float reloadDiv = _playerPerks.HasPerks(Perks.FAST_RELOAD)?2:(_playerPerks.HasSideMixPerk(Perks.FAST_RELOAD)?1.5f:1);
         reloadDiv *= _playerPerks.HasMix(Perks.FAST_RELOAD, Perks.EXTRA_HEALTH)?_playerHealth.GetHealth()/100f:1;
         float reloadTime = _selectedGun.ReloadTime/reloadDiv;
         _anims.speed = 1/reloadTime;
         _anims.CrossFade("Reload", 0.05f);
-        _reloading = true;
         yield return new WaitForSeconds(reloadTime);
         _reloading = false;
         if(_playerPerks.HasMix(Perks.QUICK_HEAL_LIFE, Perks.FAST_RELOAD)) _playerHealth.Heal(50);
@@ -306,11 +357,13 @@ public class GunHandler : MonoBehaviour
         _magAmmo[_selectedIndex] -= 1;
         _timePassed = 0;
         _audioManager.PlaySound(_selectedGun.ShootSound);
-        int extraTotalShots = _playerPerks.HasPerks(Perks.EXTRA_OVERALL_DAMAGE)?2:1;
+        int extraTotalShots = _playerPerks.HasPerks(Perks.EXTRA_OVERALL_DAMAGE)?(_selectedGun.IsWonderWeapon?1:2):1;
         extraTotalShots += _playerPerks.HasMix(Perks.EXTRA_OVERALL_DAMAGE, Perks.EXTRA_HEALTH)?Mathf.FloorToInt(_playerHealth.GetHealth()/50):0;
         for(int j=0;j<extraTotalShots;j++) {
             for(int i = 0; i < _selectedGun.ShotsPerShot; i++) {
-                Vector2 spread = new Vector2(Random.Range(-_selectedGun.MaxShotSpread.x, _selectedGun.MaxShotSpread.x), Random.Range(-_selectedGun.MaxShotSpread.y, _selectedGun.MaxShotSpread.y));
+                Vector2 spread;
+                if(!_aiming) spread = new Vector2(Random.Range(-_selectedGun.MaxShotSpread.x, _selectedGun.MaxShotSpread.x), Random.Range(-_selectedGun.MaxShotSpread.y, _selectedGun.MaxShotSpread.y));
+                else spread = new Vector2(Random.Range(-_selectedGun.AimingShotSpread.x, _selectedGun.AimingShotSpread.x), Random.Range(-_selectedGun.AimingShotSpread.y, _selectedGun.AimingShotSpread.y));
                 _playerCamera.Rotate(spread.y, spread.x, 0);
                 ShootRay();
                 _playerCamera.Rotate(-spread.y, -spread.x, 0);
@@ -327,6 +380,7 @@ public class GunHandler : MonoBehaviour
         float totalDamage = _selectedGun.Damage;
         totalDamage *= _selectedGun.RangeDamageDropOff.Evaluate(Vector3.Distance(__hitPos, _playerCamera.position)/_selectedGun.ShootRange)*_selectedGun.PierceDamageDropOff.Evaluate(__pierce);
         if(_playerPerks.HasMix(Perks.EXTRA_OVERALL_DAMAGE, Perks.FAST_RELOAD)) totalDamage *= (_magAmmo[_selectedIndex] >= Mathf.FloorToInt(_selectedGun.AmmoPerMag*0.75f))?3:1;
+        if(_selectedGun.IsWonderWeapon) totalDamage *= 2f;
         if(_powerUpManager.IsPowerupActive(PowerupType.INSTAKILL)) totalDamage = -1f;
         return totalDamage;
     }
@@ -386,6 +440,7 @@ public class GunHandler : MonoBehaviour
             HandleZombieHit(hit, shot);
         } else {
             HandleObjectHit(hit);
+            return;
         }
         for(int i = 0; i < _selectedGun.Pierce; i++) {
             if(!hit.transform) break;
@@ -401,9 +456,8 @@ public class GunHandler : MonoBehaviour
                     GameObject effect = Instantiate(_selectedGun.ZombieHitEffect, hit.point, Quaternion.identity);
                     Destroy(effect, 5f);
                 } else {
-                    GameObject effect = Instantiate(_selectedGun.HitEffect, hit.point, Quaternion.identity);
-                    effect.transform.forward = hit.normal;
-                    Destroy(effect, 5f);
+                    HandleObjectHit(hit);
+                    break;
                 }
             } else {
                 collider.enabled = true;
@@ -418,12 +472,14 @@ public class GunHandler : MonoBehaviour
             Vector2 currentRecoil = new Vector2(_selectedGun.VerticalRecoilPattern.Evaluate(recoilStep), _selectedGun.HorizontalRecoilPattern.Evaluate(recoilStep));
             Vector2 addedRecoil = new Vector2(-(currentRecoil.x-_preRecoil.x),currentRecoil.y-_preRecoil.y)+new Vector2(0.5f*Random.Range(-1f,1f), 0.5f*Random.Range(-1f, 1f));
             _playerLook.AddRecoil(addedRecoil);
-            _gunHoldPointRotation += new Vector3(addedRecoil.x, addedRecoil.y, 0)*2;
+            if(!_aiming) _gunHoldPointRotation += new Vector3(addedRecoil.x, addedRecoil.y, 0)*2;
+            else _gunHoldPointPosition -= new Vector3(0, 0, addedRecoil.magnitude/10f);
             _preRecoil = currentRecoil;
         } else {
             Vector2 addedRecoil = new Vector2(-_selectedGun.OneTimeVerticalRecoil,Random.Range(-1,2)*_selectedGun.OneTimeHorizontalRecoil);
             _playerLook.AddReversibleRecoil(addedRecoil);
-            _gunHoldPointRotation += new Vector3(addedRecoil.x, addedRecoil.y, 0)*2;
+            if(!_aiming) _gunHoldPointRotation += new Vector3(addedRecoil.x, addedRecoil.y, 0)*2;
+            else _gunHoldPointPosition -= new Vector3(0, 0, addedRecoil.magnitude/10f);
         }
     }
 
@@ -431,6 +487,7 @@ public class GunHandler : MonoBehaviour
         for(int i = 0; i < _gunHoldPoint.childCount; i++) {
             Destroy(_gunHoldPoint.GetChild(i).gameObject);
         }
+        _aiming = false;
         _reloading = false;
         _meleeing = false;
         StopAllCoroutines();
@@ -446,7 +503,7 @@ public class GunHandler : MonoBehaviour
                 child.gameObject.layer = 9;
             }
         }
-        
+        _reticle.UpdateReticleForGun(_selectedGun);
     }
 
     public void RefillAllAmmo() {

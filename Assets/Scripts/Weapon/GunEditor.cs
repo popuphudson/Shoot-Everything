@@ -32,6 +32,7 @@ public class GunEditor : Editor {
         SerializedProperty pAPedWeapon = serializedObject.FindProperty("PAPedWeapon");
         SerializedProperty name = serializedObject.FindProperty("Name");
         SerializedProperty shootSound = serializedObject.FindProperty("ShootSound");
+        SerializedProperty aimingShotSpread = serializedObject.FindProperty("AimingShotSpread");
 
         name.stringValue = EditorGUILayout.TextField("Name", name.stringValue);
         isWonderWeapon.boolValue = EditorGUILayout.Toggle("Is Wonder Weapon", isWonderWeapon.boolValue);
@@ -45,6 +46,7 @@ public class GunEditor : Editor {
         pierceDamageDropOff.animationCurveValue = EditorGUILayout.CurveField("Pierce Damage Drop Off", pierceDamageDropOff.animationCurveValue, Color.green, new Rect(0, 0, pierce.intValue, 1));
         shotsPerShot.intValue = EditorGUILayout.IntField("Shots Per Shot", shotsPerShot.intValue);
         maxShotSpread.vector2Value = EditorGUILayout.Vector2Field("Max Shot Spread", maxShotSpread.vector2Value);
+        aimingShotSpread.vector2Value = EditorGUILayout.Vector2Field("Aiming Shot Spread", aimingShotSpread.vector2Value);
         shotsPerSecond.floatValue = EditorGUILayout.FloatField("Shots Per Second", shotsPerSecond.floatValue);
         extraShotsPerSecond.floatValue = EditorGUILayout.FloatField("Extra Shots Per Second", extraShotsPerSecond.floatValue);
         ammoPerMag.intValue = EditorGUILayout.IntField("Ammo Per Mag", ammoPerMag.intValue);

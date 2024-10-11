@@ -21,6 +21,7 @@ public class Gun : ScriptableObject {
     public float ShotsPerSecond;
     public int ShotsPerShot;
     public Vector2 MaxShotSpread;
+    public Vector2 AimingShotSpread;
     public int AmmoPerMag;
     public int MaxAmmoReserve;
     public float ReloadTime;

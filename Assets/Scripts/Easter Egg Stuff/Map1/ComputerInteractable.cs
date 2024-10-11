@@ -10,7 +10,7 @@ public class ComputerInteractable : MonoBehaviour, Interactable
     [SerializeField] private string _unlockPortalItem;
     [SerializeField] private GameObject _papPortal, _eePortal;
     private bool _switchable = false;
-    private bool _selectedEEPortal = false;
+    private bool _selectedEEPortal = true;
     public void Interact(PlayerScriptsHandler __playerScripts) {
         if(__playerScripts.GetPlayerInventory().HasItem(_itemToPap) && !__playerScripts.GetPlayerInventory().HasItem(_unlockPortalItem)) {
             __playerScripts.GetPlayerInventory().AddItem(_unlockPortalItem);
@@ -19,7 +19,7 @@ public class ComputerInteractable : MonoBehaviour, Interactable
         if(_eeManager.GetExaustStepComplete() && _eeManager.GetEEState() == Map1EEState.EXHAUST) {
             _eeManager.ProceedFromExaustStep();
         }
-        if(__playerScripts.GetPlayerInventory().HasItem(__item: _itemToEELockdown) && !_switchable) {
+        if(__playerScripts.GetPlayerInventory().HasItem(__item: _itemToEELockdown) && _eeManager.GetEEState() == Map1EEState.KEYCARD && !_switchable) {
             _switchable = true;
             SwitchPortal();
         }
@@ -37,9 +37,15 @@ public class ComputerInteractable : MonoBehaviour, Interactable
     public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput) {
         if(_switchable) return $"{__interactInput} to switch portal location";
         if(__playerScripts.GetPlayerInventory().HasItem(_itemToPap) && !__playerScripts.GetPlayerInventory().HasItem(_unlockPortalItem)) return $"{__interactInput} to Input Location Card";
-        if(__playerScripts.GetPlayerInventory().HasItem(__item: _itemToEELockdown) && !_switchable) return $"{__interactInput} to Input Location Card";
+        if(__playerScripts.GetPlayerInventory().HasItem(__item: _itemToEELockdown) && !_switchable && _eeManager.GetEEState() == Map1EEState.KEYCARD) return $"{__interactInput} to Input Location Card";
         if(!__playerScripts.GetPlayerInventory().HasItem(_itemToPap)) return "Missing location card...";
         if(_eeManager.GetExaustStepComplete() && _eeManager.GetEEState() == Map1EEState.EXHAUST) return $"{__interactInput} to Open Cache";
         return "";
+    }
+
+    public void DoneLockDown() {
+        _switchable = false;
+        _papPortal.SetActive(true);
+        _eePortal.SetActive(false);
     }
 }

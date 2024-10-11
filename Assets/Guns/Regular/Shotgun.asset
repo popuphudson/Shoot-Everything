@@ -80,6 +80,7 @@ MonoBehaviour:
   ShotsPerSecond: 1.4
   ShotsPerShot: 8
   MaxShotSpread: {x: 3, y: 3}
+  AimingShotSpread: {x: 2.5, y: 2.5}
   AmmoPerMag: 6
   MaxAmmoReserve: 60
   ReloadTime: 4

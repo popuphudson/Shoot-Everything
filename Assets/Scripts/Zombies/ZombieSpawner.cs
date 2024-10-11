@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using TMPro;
 
 public class ZombieSpawner : MonoBehaviour 
@@ -18,8 +19,7 @@ public class ZombieSpawner : MonoBehaviour
     [SerializeField] private Animator _roundTextAnims;
     [SerializeField] private LevelData _levelData;
     [SerializeField] private PowerUpManager _powerUpManager;
-    [SerializeField] private GunHandler _gunHandler;
-    [SerializeField] private Triggerable[] _waveNextTriggerable;
+    [SerializeField] private UnityEvent _onNextWave;
     private int _wave = 0;
     private bool _spawning = false;
     private int _leftToSpawn;
@@ -108,10 +108,7 @@ public class ZombieSpawner : MonoBehaviour
         _wave += 1;
         _roundTextAnims.Play("Start Round");
         _audioManager.PlaySound(_roundChangeSound);
-        _gunHandler.AddGrenades(1);
-        foreach(Triggerable triggerable in _waveNextTriggerable) {
-            triggerable.Trigger();
-        }
+        _onNextWave.Invoke();
         yield return new WaitForSeconds(0.3f);
         _roundText.text = _wave.ToString();
         if(_wave==1) yield return new WaitForSeconds(4);

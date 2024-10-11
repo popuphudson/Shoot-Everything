@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private PlayerPerks _playerPerks;
     [SerializeField] private PauseMenu _pauser;
+    [SerializeField] private GunHandler _gunHandler; 
     [HideInInspector] public AreaData CurrentArea;
     [SerializeField] private float _moveSmoothTime;
     [SerializeField] private float _gravityStrength;
@@ -141,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
 
         float currentSpeed = _running? _runSpeed : (_stance==Stance.STANDING? _walkSpeed : (_stance==Stance.CROUCHING? _crouchSpeed : _proneSpeed));
         currentSpeed *= _playerPerks.HasMix(Perks.BETTER_RUN, Perks.EXTRA_HEALTH)?Mathf.Max(_playerHealth.GetHealth()/125f, 1):1;
+        currentSpeed *= _gunHandler.GetAiming()?0.5f:1;
         _currentMoveVelocity = Vector3.SmoothDamp(
             _currentMoveVelocity,
             moveVector * currentSpeed * (_playerPerks.HasPerks(Perks.BETTER_RUN)?1.125f:1),
@@ -168,13 +170,16 @@ public class PlayerMovement : MonoBehaviour
                 _currentForceVelocity.y = -10f;
             }
 
-            if(_jumpInput.WasPressedThisFrame() && (_stance == Stance.STANDING || _slideTimer > 0)) {
+            if(_jumpInput.WasPressedThisFrame() && (_stance == Stance.STANDING || _slideTimer > 0) && _jumpMul > 0.5f) {
                 _currentForceVelocity.y = _jumpStrength*_jumpMul;
                 _jumpMul /= 1.1f;
+                if(_jumpMul < 0.5f) {
+                    _jumpMul = 0f;
+                }
+                _appliedForceVelocity = _appliedForceVelocity*0.75f;
+                _storedForceVelocity = _storedForceVelocity*0.75f;
                 if(_slideTimer > 0) {
                     _slideTimer = 0.1f;
-                    _appliedForceVelocity = _appliedForceVelocity*0.75f;
-                    _storedForceVelocity = _storedForceVelocity*0.75f;
                 }
                 _stance = Stance.STANDING;
             } else {

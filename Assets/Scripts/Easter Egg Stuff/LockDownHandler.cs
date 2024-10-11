@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LockDownHandler : MonoBehaviour
 {
     [SerializeField] private int _requiredOfType;
-    [SerializeField] private Triggerable[] _lockDownEndTriggerable;
+    [SerializeField] private ZombieSpawner _spawner;
+    [SerializeField] private UnityEvent _onLockDownEnd;
     private int _leftOfRequiredType;
     private bool _lockDowning = false;
     public void StartLockDown() {
+        _spawner.KillAll();
         _leftOfRequiredType = _requiredOfType;
         _lockDowning = true;
     }
@@ -23,8 +26,6 @@ public class LockDownHandler : MonoBehaviour
 
     private void EndLockDown() {
         _lockDowning = false;
-        foreach(Triggerable triggerable in _lockDownEndTriggerable) {
-            triggerable.Trigger();
-        }
+        _onLockDownEnd.Invoke();
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum PortalSound {
     NONE,
@@ -22,9 +23,10 @@ public class PortalInteractable : MonoBehaviour, Interactable
     [SerializeField] private bool[] _locksMovement;
     [SerializeField] private float _coolDownTime;
     [SerializeField] private Sound _portalStartSound, _portalEndSound;
-    [SerializeField] private Triggerable[] _teleportTriggerable;
-    [SerializeField] private Triggerable[] _resetTriggerable;
     [SerializeField] private string _customTeleportText;
+    [SerializeField] private UnityEvent _onStartTeleporting;
+    [SerializeField] private UnityEvent _onEndTeleporting;
+    [SerializeField] private UnityEvent _onTeleportReset;
     float _coolDownTimer;
     private bool _reset = true;
     
@@ -43,9 +45,7 @@ public class PortalInteractable : MonoBehaviour, Interactable
         } else {
             StartCoroutine(Teleportations(__playerScripts));
         }
-        foreach(Triggerable trigger in _teleportTriggerable) {
-            trigger.Trigger();
-        }
+        _onStartTeleporting.Invoke();
         _coolDownTimer = _coolDownTime;
         _reset = false;
     }
@@ -81,14 +81,13 @@ public class PortalInteractable : MonoBehaviour, Interactable
             yield return new WaitForSeconds(_times[i]);
             __playerScripts.GetPlayerMovement().UnFreeze();
         }
+        _onEndTeleporting.Invoke();
     }
 
     private void Update() {
         if(_coolDownTimer <= 0) {
             if(!_reset) {
-                foreach(Triggerable trigger in _resetTriggerable) {
-                    trigger.Trigger();
-                }
+                _onTeleportReset.Invoke();
                 _reset = true;
             }
             return;

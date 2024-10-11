@@ -41,6 +41,22 @@ public class Map1EEManager : MonoBehaviour
         _state = Map1EEState.KEYCARD;
     }
 
+    public void TryStartExaustStep() {
+        if(_state == Map1EEState.START) SetEEState(Map1EEState.EXHAUST);
+    }
+
+    public void TryStopExaustStep() {
+        if(_state == Map1EEState.EXHAUST) SetEEState(Map1EEState.START);
+    }
+
+    public void StartLockDownStep() {
+        SetEEState(Map1EEState.LOCKDOWN);
+    }
+
+    public void StartRangeExtendStep() {
+        SetEEState(Map1EEState.RANGE_EXTEND);
+    }
+
     public void UpdateEEStep() {
         if(_state == Map1EEState.EXHAUST) {
             bool allActive = true;

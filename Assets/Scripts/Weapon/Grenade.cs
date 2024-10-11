@@ -10,7 +10,7 @@ public class Grenade : MonoBehaviour
     private PlayerPoints _playerPoints;
     private PowerUpManager _powerUpManager;
     private void Start() {
-        Invoke("Explode", 3.5f);
+        Invoke("Explode", 2f);
     }
 
     private void Explode() {

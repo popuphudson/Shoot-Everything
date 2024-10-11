@@ -39,7 +39,7 @@ public class PlayerHealth : MonoBehaviour
         _vignette.intensity.value = _health<=50?1:1-(_health/_maxHealth);
         _depthOfField.enabled.value = _health<=50; 
         if(_playerPerks.HasPerks(Perks.EXTRA_HEALTH)) _maxHealth = _orimMaxHealth+150;
-        if(_playerPerks.HasSideMixPerk(Perks.EXTRA_HEALTH) || _playerPerks.HasMainMixPerk(Perks.EXTRA_HEALTH)) _maxHealth = _orimMaxHealth+50;
+        else if(_playerPerks.HasSideMixPerk(Perks.EXTRA_HEALTH) || _playerPerks.HasMainMixPerk(Perks.EXTRA_HEALTH)) _maxHealth = _orimMaxHealth+50;
         else _maxHealth = _orimMaxHealth;
         _damageTimer -= Time.deltaTime;
         if(_graceTimer > 0) _graceTimer -= Time.deltaTime;

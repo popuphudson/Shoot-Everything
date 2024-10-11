@@ -70,7 +70,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   ShotsPerSecond: 0.75
   ShotsPerShot: 1
-  MaxShotSpread: {x: 0, y: 0}
+  MaxShotSpread: {x: 3, y: 3}
+  AimingShotSpread: {x: 0, y: 0}
   AmmoPerMag: 4
   MaxAmmoReserve: 56
   ReloadTime: 2

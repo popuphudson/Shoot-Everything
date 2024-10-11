@@ -36,8 +36,8 @@ public class PackAPunchBuyable : MonoBehaviour, Interactable
 
     public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
-        if(__playerScripts.GetPlayerGunHandler().GetSelectedGun() && __playerScripts.GetPlayerGunHandler().GetSelectedGun().IsPAPed) return "";
         if(_heldGun && _timer < 0) return $"{__interactInput} to pickup weapon";
+        if(__playerScripts.GetPlayerGunHandler().GetSelectedGun() && __playerScripts.GetPlayerGunHandler().GetSelectedGun().IsPAPed) return "";
         if(!_heldGun) return $"{__interactInput} to Pack a Punch for {_cost}";
         return "Pack a punching";
     }
