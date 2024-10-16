@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6623056574443051082}
   - component: {fileID: 6623056574443051083}
   - component: {fileID: 6623056574443051084}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 6623056575377898933}
   - component: {fileID: 6623056575377898934}
   - component: {fileID: 6623056575377898935}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Grenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7938236842536322868}
   - component: {fileID: -4343308602635023556}
   - component: {fileID: 7722304773894871964}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Grenade Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4903,7 +4903,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _damage: 0
-  _radius: 4
+  _radius: 2.5
 --- !u!135 &7722304773894871964
 SphereCollider:
   m_ObjectHideFlags: 0

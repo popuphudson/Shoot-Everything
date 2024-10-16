@@ -2,12 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class LinkedGun {
+    public Gun OrigionalGun;
+    public Gun[] LinkedGuns;
+}
+
 public class MysteryBoxBuyable : MonoBehaviour, Interactable
 {
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private int _cost;
     [SerializeField] private Gun[] _allGuns;
-    [SerializeField] private Gun _starterPistol;
+    [SerializeField] private LinkedGun[] _linkedGuns;
     [SerializeField] private Transform _gunDisplay;
     [SerializeField] private Animator _anims;
     [SerializeField] private Vector3[] _locations;
@@ -79,7 +85,8 @@ public class MysteryBoxBuyable : MonoBehaviour, Interactable
         List<Gun> gunPool = new List<Gun>();
         foreach(Gun gun in _allGuns) {
             if(!__playerScripts.GetPlayerGunHandler().HasGun(gun) && !__playerScripts.GetPlayerGunHandler().HasGun(gun.PAPedWeapon)) {
-                gunPool.Add(gun);
+                if(HasGunLinked(gun) == null) gunPool.Add(gun);
+                else if(!PlayerHasGuns(__playerScripts, HasGunLinked(gun).LinkedGuns)) gunPool.Add(gun);
             }
         }
         _selectedGun = gunPool[Random.Range(0, gunPool.Count)];
@@ -90,6 +97,20 @@ public class MysteryBoxBuyable : MonoBehaviour, Interactable
         _anims.Play("Random Selection");
         Instantiate(_selectedGun.GunModel, _gunDisplay);
         _rollsUntilSwap--;
+    }
+
+    public bool PlayerHasGuns(PlayerScriptsHandler __playerScripts, Gun[] __guns) {
+        foreach(Gun gun in __guns) {
+            if(!__playerScripts.GetPlayerGunHandler().HasGun(gun)) return true;
+        }
+        return false;
+    }
+
+    public LinkedGun HasGunLinked(Gun __gun) {
+        foreach(LinkedGun linkedGun in _linkedGuns) {
+            if(linkedGun.OrigionalGun == __gun) return linkedGun;
+        }
+        return null;
     }
 
     public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)

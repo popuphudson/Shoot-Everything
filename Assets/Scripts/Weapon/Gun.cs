@@ -11,8 +11,8 @@ public class Gun : ScriptableObject {
     public string Name;
     public bool IsWonderWeapon;
     public WonderWeaponType WonderWeaponType;
-    public bool IsPAPed;
     public Gun PAPedWeapon;
+    public string ItemRequirementToPAP;
     public float Damage;
     public float ShootRange;
     public AnimationCurve RangeDamageDropOff;
@@ -34,5 +34,6 @@ public class Gun : ScriptableObject {
     public GameObject GunModel;
     public GameObject HitEffect;
     public GameObject ZombieHitEffect;
+    public GameObject BulletTrail;
     public Sound ShootSound;
 }

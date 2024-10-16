@@ -15,8 +15,8 @@ MonoBehaviour:
   Name: Thunderstruck
   IsWonderWeapon: 1
   WonderWeaponType: 1
-  IsPAPed: 1
-  PAPedWeapon: {fileID: 0}
+  PAPedWeapon: {fileID: 11400000, guid: 1944e2a9cd7ddf942a7eb40b3b048db5, type: 2}
+  ItemRequirementToPAP: COIL_GUN_UPGRADER
   Damage: 3370
   ShootRange: 100
   RangeDamageDropOff:
@@ -91,9 +91,10 @@ MonoBehaviour:
   OneTimeHorizontalRecoil: 4
   Automatic: 0
   ExtraShotsPerSecond: 0.5
-  GunModel: {fileID: 6447663167742845289, guid: 8dcce957df3a6d44287da04eb5a3b6bd, type: 3}
+  GunModel: {fileID: 6447663167742845289, guid: 46fd1f6b9c066794fa2d9f7c9216e5dd, type: 3}
   HitEffect: {fileID: 7193220370529408889, guid: 74241b6292747b546a04b2085a62cb6a, type: 3}
   ZombieHitEffect: {fileID: 5474087948818168996, guid: 2074731d35f209241abe29bdc4769e6b, type: 3}
+  BulletTrail: {fileID: 5803193985810463505, guid: 1e6099df90c01dd4abb9b98f9aefa4be, type: 3}
   ShootSound:
     Clip: {fileID: 8300000, guid: 66538efdf9a7c054ba5e231005fa26c9, type: 3}
     Volume: 1

@@ -100,9 +100,10 @@ MonoBehaviour:
   OneTimeHorizontalRecoil: 5
   Automatic: 0
   ExtraShotsPerSecond: 0.6
-  GunModel: {fileID: 6279740389721463147, guid: 945247bae4b0d784fa10b079c528e2ef, type: 3}
+  GunModel: {fileID: 6279740389721463147, guid: d375ac2c34a51474ebc626a62db6d064, type: 3}
   HitEffect: {fileID: 7938236842536322869, guid: 4d9ae622702676942942e025d95978bd, type: 3}
   ZombieHitEffect: {fileID: 546732742291030855, guid: 3edf3e3944e965e48930ef1041fca506, type: 3}
+  BulletTrail: {fileID: 5803193985810463505, guid: 6205ddc4f355b10409e8fba7bcee67e3, type: 3}
   ShootSound:
     Clip: {fileID: 8300000, guid: d812711905bc0b84e9214fca4fe85d3c, type: 3}
     Volume: 1

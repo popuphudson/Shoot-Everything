@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5474087948818168997}
   - component: {fileID: 3248231833741952219}
   - component: {fileID: 6899624576965415837}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Coil Gun Stun Paped Zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4860,7 +4860,7 @@ GameObject:
   - component: {fileID: 5298406097380485496}
   - component: {fileID: 2949669570488199976}
   - component: {fileID: 7323093630625537249}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Zombie Hit Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}

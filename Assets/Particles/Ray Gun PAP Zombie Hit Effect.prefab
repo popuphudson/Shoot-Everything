@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6080369371809896470}
   - component: {fileID: 9082918880292152347}
   - component: {fileID: 5769994587484460790}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Ray Gun PAP Zombie Hit Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4920,7 +4920,7 @@ GameObject:
   - component: {fileID: 6957299890273542545}
   - component: {fileID: 6957299890273542544}
   - component: {fileID: 6957299890273542547}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Raygun Hit Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -15,8 +15,8 @@ MonoBehaviour:
   Name: Maddadun
   IsWonderWeapon: 0
   WonderWeaponType: 0
-  IsPAPed: 1
   PAPedWeapon: {fileID: 0}
+  ItemRequirementToPAP: 
   Damage: 168
   ShootRange: 100
   RangeDamageDropOff:
@@ -145,9 +145,10 @@ MonoBehaviour:
   OneTimeHorizontalRecoil: 0
   Automatic: 1
   ExtraShotsPerSecond: 0
-  GunModel: {fileID: 750484605845079217, guid: 6e19b381711f97a448c35d71d89f4b16, type: 3}
+  GunModel: {fileID: 750484605845079217, guid: a3a4fc005447a05469d3171e7c1e0f79, type: 3}
   HitEffect: {fileID: 7938236842536322869, guid: 4d9ae622702676942942e025d95978bd, type: 3}
   ZombieHitEffect: {fileID: 546732742291030855, guid: 3edf3e3944e965e48930ef1041fca506, type: 3}
+  BulletTrail: {fileID: 5803193985810463505, guid: 6205ddc4f355b10409e8fba7bcee67e3, type: 3}
   ShootSound:
     Clip: {fileID: 8300000, guid: 22ce01b552f40a14fb9b0b14ca2442a3, type: 3}
     Volume: 1

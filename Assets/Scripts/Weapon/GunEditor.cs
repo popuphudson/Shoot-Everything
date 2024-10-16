@@ -28,17 +28,18 @@ public class GunEditor : Editor {
         SerializedProperty isWonderWeapon = serializedObject.FindProperty("IsWonderWeapon");
         SerializedProperty wonderWeaponType = serializedObject.FindProperty("WonderWeaponType");
         SerializedProperty extraShotsPerSecond = serializedObject.FindProperty("ExtraShotsPerSecond");
-        SerializedProperty isPAPed = serializedObject.FindProperty("IsPAPed");
         SerializedProperty pAPedWeapon = serializedObject.FindProperty("PAPedWeapon");
         SerializedProperty name = serializedObject.FindProperty("Name");
         SerializedProperty shootSound = serializedObject.FindProperty("ShootSound");
         SerializedProperty aimingShotSpread = serializedObject.FindProperty("AimingShotSpread");
+        SerializedProperty bulletTrail = serializedObject.FindProperty("BulletTrail");
+        SerializedProperty itemRequirementToPap = serializedObject.FindProperty("ItemRequirementToPAP");
 
         name.stringValue = EditorGUILayout.TextField("Name", name.stringValue);
         isWonderWeapon.boolValue = EditorGUILayout.Toggle("Is Wonder Weapon", isWonderWeapon.boolValue);
         if(isWonderWeapon.boolValue) EditorGUILayout.PropertyField(wonderWeaponType);
-        isPAPed.boolValue = EditorGUILayout.Toggle("Is Pack A Punched", isPAPed.boolValue);
-        if(!isPAPed.boolValue) pAPedWeapon.objectReferenceValue = EditorGUILayout.ObjectField("Pack A Punched Weapon", pAPedWeapon.objectReferenceValue, typeof(Gun), false);
+        pAPedWeapon.objectReferenceValue = EditorGUILayout.ObjectField("Pack A Punched Weapon", pAPedWeapon.objectReferenceValue, typeof(Gun), false);
+        itemRequirementToPap.stringValue = EditorGUILayout.TextField("Item Requirment To PAP", itemRequirementToPap.stringValue);
         damage.floatValue = EditorGUILayout.FloatField("Damage", damage.floatValue);
         shootRange.floatValue = EditorGUILayout.FloatField("Shoot Range", shootRange.floatValue);
         rangeDamageDropOff.animationCurveValue = EditorGUILayout.CurveField("Range Damage Drop Off", rangeDamageDropOff.animationCurveValue, Color.green, new Rect(0, 0, 1, 1));
@@ -63,6 +64,7 @@ public class GunEditor : Editor {
         gunModel.objectReferenceValue = EditorGUILayout.ObjectField("Gun Model", gunModel.objectReferenceValue, typeof(GameObject), true);
         hitEffect.objectReferenceValue = EditorGUILayout.ObjectField("Hit Effect", hitEffect.objectReferenceValue, typeof(GameObject), true);
         zombieHitEffect.objectReferenceValue = EditorGUILayout.ObjectField("Zombie Hit Effect", zombieHitEffect.objectReferenceValue, typeof(GameObject), true);
+        bulletTrail.objectReferenceValue = EditorGUILayout.ObjectField("Bullet Trail", bulletTrail.objectReferenceValue, typeof(GameObject), true);
         EditorGUILayout.PropertyField(shootSound);
 
         serializedObject.ApplyModifiedProperties();

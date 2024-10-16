@@ -166,7 +166,7 @@ public class GunHandler : MonoBehaviour
             _anims.Play("Melee");
             _meleeing = true;
         }
-        if(_selectedGun && !_meleeing && !_reloading && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN)) && _selectedGun) {
+        if(_selectedGun && !_meleeing && !_startingReload && !_reloading && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN)) && _selectedGun) {
             TryFireGun();
             TryReload();
         }
@@ -208,7 +208,8 @@ public class GunHandler : MonoBehaviour
     }
 
     public void AddGrenades(int __num) {
-        for(int i=0; i<__num; i++) {
+        int addedGrenades = Mathf.Clamp(_numOfGrenades+__num, 0, 4)-_numOfGrenades;
+        for(int i=0; i<addedGrenades; i++) {
             Instantiate(_grenadeUIPrefab, _grenadeUI);
         }
         _numOfGrenades = Mathf.Clamp(_numOfGrenades+__num, 0, 4);
@@ -430,12 +431,19 @@ public class GunHandler : MonoBehaviour
         }
     }
 
+    private IEnumerator DoBulletTrail(RaycastHit __hit) {
+        GameObject bulletTrail = Instantiate(_selectedGun.BulletTrail, _gunHoldPoint.GetChild(0).GetChild(0).position, Quaternion.identity);
+        yield return null;
+        bulletTrail.transform.position = __hit.point;
+    }
+
     private void ShootRay() {
         RaycastHit hit;
         Collider collider;
         if(!Physics.Raycast(_playerCamera.position, _playerCamera.forward, out hit, _selectedGun.ShootRange, _solidLayers)) return;
         ShootableRelay shot = hit.transform.GetComponent<ShootableRelay>();
         collider = hit.transform.GetComponent<Collider>();
+        StartCoroutine(DoBulletTrail(hit));
         if(shot) {
             HandleZombieHit(hit, shot);
         } else {
@@ -449,6 +457,7 @@ public class GunHandler : MonoBehaviour
                 collider.enabled = true;
                 ShootableRelay Pierceshot = hit.transform.GetComponent<ShootableRelay>();
                 collider = hit.transform.GetComponent<Collider>();
+                StartCoroutine(DoBulletTrail(hit));
                 if(Pierceshot) {
                     _playerPoints.AddPoints(10);
                     KillNotification.Notification("10");
@@ -489,6 +498,7 @@ public class GunHandler : MonoBehaviour
         }
         _aiming = false;
         _reloading = false;
+        _startingReload = false;
         _meleeing = false;
         StopAllCoroutines();
         _anims.speed = 1;

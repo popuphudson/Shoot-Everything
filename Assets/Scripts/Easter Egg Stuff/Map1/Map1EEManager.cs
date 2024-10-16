@@ -7,12 +7,12 @@ public enum Map1EEState {
     EXHAUST,
     KEYCARD,
     LOCKDOWN,
-    RANGE_EXTEND,
-    BOSS_FIGHT
+    UPGRADE_COIL_GUN
 }
 
 public class Map1EEManager : MonoBehaviour
 {
+    [SerializeField] private PlayerInventory _playerInventory;
     [SerializeField] private ExaustShootable[] _exausts;
     [SerializeField] private CacheShootable _cache;
     [SerializeField] private Vector3[] _cachePositions;
@@ -53,8 +53,9 @@ public class Map1EEManager : MonoBehaviour
         SetEEState(Map1EEState.LOCKDOWN);
     }
 
-    public void StartRangeExtendStep() {
-        SetEEState(Map1EEState.RANGE_EXTEND);
+    public void StartWeaponUpgrade() {
+        SetEEState(Map1EEState.UPGRADE_COIL_GUN);
+        _playerInventory.AddItem("COIL_GUN_UPGRADER");
     }
 
     public void UpdateEEStep() {

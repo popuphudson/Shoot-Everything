@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7193220370529408888}
   - component: {fileID: 373982975056015110}
   - component: {fileID: 4045134725551247165}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Coil Gun Stun
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -23,7 +23,9 @@ public class PackAPunchBuyable : MonoBehaviour, Interactable
             }
             return;
         }
-        if(__playerScripts.GetPlayerGunHandler().GetSelectedGun().IsPAPed) return;
+        if(__playerScripts.GetPlayerGunHandler().GetSelectedGun() == null) return;
+        if(__playerScripts.GetPlayerGunHandler().GetSelectedGun().PAPedWeapon == null) return;
+        if(__playerScripts.GetPlayerGunHandler().GetSelectedGun().ItemRequirementToPAP != "" && !__playerScripts.GetPlayerInventory().HasItem(__playerScripts.GetPlayerGunHandler().GetSelectedGun().ItemRequirementToPAP)) return;
         if(__playerScripts.GetPlayerPoints().GetPoints() < _cost) return;
         __playerScripts.GetPlayerPoints().RemovePoints(_cost);
         _audioManager.PlaySoundAtPoint(_purchaseSound, transform.position);
@@ -37,7 +39,8 @@ public class PackAPunchBuyable : MonoBehaviour, Interactable
     public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(_heldGun && _timer < 0) return $"{__interactInput} to pickup weapon";
-        if(__playerScripts.GetPlayerGunHandler().GetSelectedGun() && __playerScripts.GetPlayerGunHandler().GetSelectedGun().IsPAPed) return "";
+        if(__playerScripts.GetPlayerGunHandler().GetSelectedGun() && __playerScripts.GetPlayerGunHandler().GetSelectedGun().PAPedWeapon == null) return "";
+        if(__playerScripts.GetPlayerGunHandler().GetSelectedGun() && __playerScripts.GetPlayerGunHandler().GetSelectedGun().ItemRequirementToPAP != "" && !__playerScripts.GetPlayerInventory().HasItem(__playerScripts.GetPlayerGunHandler().GetSelectedGun().ItemRequirementToPAP)) return "";
         if(!_heldGun) return $"{__interactInput} to Pack a Punch for {_cost}";
         return "Pack a punching";
     }

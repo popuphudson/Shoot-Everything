@@ -94,6 +94,7 @@ MonoBehaviour:
   GunModel: {fileID: 3194613818491447574, guid: 6625904ebaf731642b529f0dd86bf293, type: 3}
   HitEffect: {fileID: 6829297285961723688, guid: 087e38ac2c140e54a98b3e79c104054e, type: 3}
   ZombieHitEffect: {fileID: 6088985502395129503, guid: 1ef7a6f1540b70941b2d4cb55fe8462f, type: 3}
+  BulletTrail: {fileID: 5803193985810463505, guid: f53bfd508930a5a4aae1e9a557dde5d4, type: 3}
   ShootSound:
     Clip: {fileID: 8300000, guid: 3b5f14483f3cba1488a7843c5a0c18c1, type: 3}
     Volume: 1

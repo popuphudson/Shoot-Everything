@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1627798203177296098}
   - component: {fileID: 8646899508656743090}
   - component: {fileID: 4229015603867424123}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Zombie Hit Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4883,7 +4883,7 @@ GameObject:
   - component: {fileID: 7938236842536322868}
   - component: {fileID: 2257634187870269864}
   - component: {fileID: -4343308602635023556}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Zombie Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}

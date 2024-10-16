@@ -89,6 +89,7 @@ MonoBehaviour:
   ShotsPerSecond: 1
   ShotsPerShot: 1
   MaxShotSpread: {x: 8, y: 8}
+  AimingShotSpread: {x: 0, y: 0}
   AmmoPerMag: 8
   MaxAmmoReserve: 80
   ReloadTime: 3
@@ -108,9 +109,10 @@ MonoBehaviour:
   OneTimeHorizontalRecoil: 3
   Automatic: 0
   ExtraShotsPerSecond: 0.6
-  GunModel: {fileID: 7393585506450278224, guid: 92c5407441b66a04c80b7e01fe8839dc, type: 3}
+  GunModel: {fileID: 7393585506450278224, guid: b9acaafd024c71741877ba142ca104b5, type: 3}
   HitEffect: {fileID: 7938236842536322869, guid: 4d9ae622702676942942e025d95978bd, type: 3}
   ZombieHitEffect: {fileID: 546732742291030855, guid: 3edf3e3944e965e48930ef1041fca506, type: 3}
+  BulletTrail: {fileID: 5803193985810463505, guid: 6205ddc4f355b10409e8fba7bcee67e3, type: 3}
   ShootSound:
     Clip: {fileID: 8300000, guid: d812711905bc0b84e9214fca4fe85d3c, type: 3}
     Volume: 1
