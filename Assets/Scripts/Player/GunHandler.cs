@@ -33,7 +33,6 @@ public class GunHandler : MonoBehaviour
     [SerializeField] private float _throwForce;
     [SerializeField] private GameObject _grenadeUIPrefab;
     [SerializeField] private Transform _grenadeUI;
-    [SerializeField] private ReticleSizeCalculator _reticle;
     [SerializeField] private Camera _weaponCamera;
     [SerializeField] private float _aimTime;
     private List<int> _magAmmo = new List<int>();
@@ -195,12 +194,10 @@ public class GunHandler : MonoBehaviour
 
     private void AimIn() {
         _weaponCamera.fieldOfView = Mathf.Lerp(_weaponCamera.fieldOfView, 30, Time.deltaTime*_aimTime);
-        _reticle.HideReticle();
     }
 
     private void AimOut() {
         _weaponCamera.fieldOfView = Mathf.Lerp(_weaponCamera.fieldOfView, 90, Time.deltaTime*_aimTime);
-        _reticle.ShowReticle();
     }
 
     public bool GetAiming() {
@@ -513,7 +510,6 @@ public class GunHandler : MonoBehaviour
                 child.gameObject.layer = 9;
             }
         }
-        _reticle.UpdateReticleForGun(_selectedGun);
     }
 
     public void RefillAllAmmo() {
