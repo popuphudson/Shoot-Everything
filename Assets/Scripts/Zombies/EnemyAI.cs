@@ -34,6 +34,10 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    public void RetargetBarriers() {
+        _targetBarrier = true;
+    }
+
     public void SetAudioManager(AudioManager __audioManager) {
         _audioManager = __audioManager;
     }

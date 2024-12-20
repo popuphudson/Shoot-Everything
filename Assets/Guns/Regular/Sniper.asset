@@ -15,9 +15,9 @@ MonoBehaviour:
   Name: Sniper
   IsWonderWeapon: 0
   WonderWeaponType: 0
-  IsPAPed: 0
   PAPedWeapon: {fileID: 11400000, guid: 8d38b86fa8e1bb14b8595cf9d72ff84e, type: 2}
-  Damage: 610
+  ItemRequirementToPAP: 
+  Damage: 715
   ShootRange: 100
   RangeDamageDropOff:
     serializedVersion: 2
@@ -125,3 +125,5 @@ MonoBehaviour:
   ShootSound:
     Clip: {fileID: 8300000, guid: 248ef485e79cfca43b497455748b0bde, type: 3}
     Volume: 0.8
+  SniperAim: 1
+  ScopeInSprite: {fileID: 21300000, guid: be692e048b431084a80717e90746a804, type: 3}

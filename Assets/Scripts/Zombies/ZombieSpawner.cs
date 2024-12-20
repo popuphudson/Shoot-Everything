@@ -28,9 +28,23 @@ public class ZombieSpawner : MonoBehaviour
     private bool _forcedIdle;
     private float _ambientTimer;
     private bool _spawnable;
+    private float _forcedSpawnSpeedTime;
+    private bool _forceSpawnSpeed;
 
     public bool ZombiesAreForcedIdle() {
         return _forcedIdle;
+    }
+
+    public void SetSpawnSpeed(float __spawnSpeed) {
+        _forcedSpawnSpeedTime = __spawnSpeed;
+        _forceSpawnSpeed = __spawnSpeed > 0;
+        
+    }
+
+    public void UpdateZombiesWithBarriers() {
+        for(int i=0; i < transform.childCount; i++) {
+            transform.GetChild(0).GetComponent<EnemyAI>().RetargetBarriers();
+        }
     }
 
     private void Awake() {
@@ -62,7 +76,8 @@ public class ZombieSpawner : MonoBehaviour
             SpawnBasicZombie();
             _leftToSpawn--;
             _spawning = _leftToSpawn>0;
-            _spawnTimer = _timeBetweenSpawns;
+            if(_forceSpawnSpeed) _spawnTimer = _forcedSpawnSpeedTime;
+            else _spawnTimer = _timeBetweenSpawns;
         }
         if(transform.childCount == 0 && !_spawning) {
             StartCoroutine(SpawnZombies());

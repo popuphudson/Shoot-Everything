@@ -12,6 +12,7 @@ public class LockDownHandler : MonoBehaviour
     private bool _lockDowning = false;
     public void StartLockDown() {
         _spawner.KillAll();
+        _spawner.SetSpawnSpeed(0.5f);
         _leftOfRequiredType = _requiredOfType;
         _lockDowning = true;
     }
@@ -27,5 +28,6 @@ public class LockDownHandler : MonoBehaviour
     private void EndLockDown() {
         _lockDowning = false;
         _onLockDownEnd.Invoke();
+        _spawner.SetSpawnSpeed(-1);
     }
 }

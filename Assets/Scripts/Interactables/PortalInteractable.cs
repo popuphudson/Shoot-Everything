@@ -66,7 +66,10 @@ public class PortalInteractable : MonoBehaviour, Interactable
         for(int i = 0; i < _locations.Length; i++) {
             __playerScripts.GetPlayerMovement().Teleport(_locations[i]);
             __playerScripts.GetPlayerLook().SetRotation(_eulerRotations[i]);
-            if(_locksMovement[i]) __playerScripts.GetPlayerMovement().Freeze();
+            if(_locksMovement[i]) {
+                __playerScripts.GetPlayerMovement().Freeze();
+                __playerScripts.GetPlayerGunHandler().Freeze();
+            } 
             if(prevSound) {
                 Destroy(prevSound);
             }
@@ -80,6 +83,7 @@ public class PortalInteractable : MonoBehaviour, Interactable
             }
             yield return new WaitForSeconds(_times[i]);
             __playerScripts.GetPlayerMovement().UnFreeze();
+            __playerScripts.GetPlayerGunHandler().UnFreeze();
         }
         _onEndTeleporting.Invoke();
     }

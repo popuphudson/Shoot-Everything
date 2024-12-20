@@ -4,7 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class LinkedGun {
-    public Gun OrigionalGun;
+    public Gun OriginalGun;
     public Gun[] LinkedGuns;
 }
 
@@ -101,14 +101,14 @@ public class MysteryBoxBuyable : MonoBehaviour, Interactable
 
     public bool PlayerHasGuns(PlayerScriptsHandler __playerScripts, Gun[] __guns) {
         foreach(Gun gun in __guns) {
-            if(!__playerScripts.GetPlayerGunHandler().HasGun(gun)) return true;
+            if(__playerScripts.GetPlayerGunHandler().HasGun(gun)) return true;
         }
         return false;
     }
 
     public LinkedGun HasGunLinked(Gun __gun) {
         foreach(LinkedGun linkedGun in _linkedGuns) {
-            if(linkedGun.OrigionalGun == __gun) return linkedGun;
+            if(linkedGun.OriginalGun == __gun) return linkedGun;
         }
         return null;
     }

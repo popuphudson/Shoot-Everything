@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class GunHandler : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class GunHandler : MonoBehaviour
     [SerializeField] private LayerMask _solidLayers;
     [SerializeField] private LayerMask _enemyHealthLayer;
     [SerializeField] private LayerMask _enemySolidLayer;
-    [SerializeField] private Transform _playerCamera;
+    [SerializeField] private Camera _playerCamera;
     [SerializeField] private List<Gun> _guns = new List<Gun>();
     [SerializeField] private PlayerPoints _playerPoints;
     [SerializeField] private TextMeshProUGUI _ammoCounter;
@@ -35,6 +36,7 @@ public class GunHandler : MonoBehaviour
     [SerializeField] private Transform _grenadeUI;
     [SerializeField] private Camera _weaponCamera;
     [SerializeField] private float _aimTime;
+    [SerializeField] private Image _scopeInImage;
     private List<int> _magAmmo = new List<int>();
     private List<int> _spareAmmo = new List<int>();
     private int _selectedIndex;
@@ -59,6 +61,8 @@ public class GunHandler : MonoBehaviour
     private int _numOfGrenades;
     private bool _aiming;
     private bool _startingReload;
+    private bool _frozen;
+    private float _originalMainCameraFOV;
     
 
     private void Start() {
@@ -82,6 +86,15 @@ public class GunHandler : MonoBehaviour
         _moveInput = _playerInput.actions["Move"];
         _grenadeInput = _playerInput.actions["Grenade"];
         _aimInput = _playerInput.actions["Aim"];
+        _originalMainCameraFOV = _playerCamera.fieldOfView;
+    }
+
+    public void Freeze() {
+        _frozen = true;
+    }
+
+    public void UnFreeze() {
+        _frozen = false;
     }
 
     public Gun GetSelectedGun() {
@@ -138,7 +151,7 @@ public class GunHandler : MonoBehaviour
     private void Update() {
         if(_pauser.Paused) return;
         _timePassed += Time.deltaTime;
-        if(_switchWeaponInput.ReadValue<float>() < 0 && !_meleeing && !_gamepadScrolled) {
+        if(_switchWeaponInput.ReadValue<float>() < 0 && !_meleeing && !_frozen && !_gamepadScrolled) {
             _selectedIndex += 1;
             if(_selectedIndex >= _guns.Count) {
                 _selectedIndex = 0;
@@ -146,7 +159,7 @@ public class GunHandler : MonoBehaviour
             if(_playerInput.currentControlScheme != "Keyboard And Mouse") _gamepadScrolled = true;
             SwapGun();
         }
-        if(_switchWeaponInput.ReadValue<float>() > 0 && !_meleeing && !_gamepadScrolled) {
+        if(_switchWeaponInput.ReadValue<float>() > 0 && !_meleeing && !_frozen && !_gamepadScrolled) {
             _selectedIndex -= 1;
             if(_selectedIndex < 0) {
                 _selectedIndex = _guns.Count-1;
@@ -155,7 +168,7 @@ public class GunHandler : MonoBehaviour
             SwapGun();
         }
         if(_switchWeaponInput.ReadValue<float>() == 0) _gamepadScrolled = false;
-        if(_meleeInput.WasPressedThisFrame() && !_meleeing && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN))) {
+        if(_meleeInput.WasPressedThisFrame() && !_meleeing && !_frozen && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN))) {
             if(_reloading) {
                 _anims.speed = 1;
                 _reloading = false;
@@ -165,7 +178,7 @@ public class GunHandler : MonoBehaviour
             _anims.Play("Melee");
             _meleeing = true;
         }
-        if(_selectedGun && !_meleeing && !_startingReload && !_reloading && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN)) && _selectedGun) {
+        if(_selectedGun && !_meleeing && !_frozen && !_startingReload && !_reloading && (!_playerMovement.IsRunning() || _playerPerks.HasPerks(Perks.BETTER_RUN)) && _selectedGun) {
             TryFireGun();
             TryReload();
         }
@@ -175,12 +188,12 @@ public class GunHandler : MonoBehaviour
         } else {
             ClearAmmoDisplay();
         }
-        if(!_reloading && !_meleeing && !_playerMovement.IsRunning()) {
+        if(!_reloading && !_meleeing && !_frozen && !_playerMovement.IsRunning()) {
             if(_grenadeInput.WasPressedThisFrame() && _numOfGrenades > 0) {
                 ThrowGrenade();
             }
         }
-        if(!_meleeing && !_reloading && !_playerMovement.IsRunning() && !_startingReload) {
+        if(!_meleeing && !_reloading && !_frozen && !_playerMovement.IsRunning() && !_startingReload) {
             _aiming = _aimInput.IsPressed();
         } else {
             _aiming = false;
@@ -193,11 +206,23 @@ public class GunHandler : MonoBehaviour
     }
 
     private void AimIn() {
-        _weaponCamera.fieldOfView = Mathf.Lerp(_weaponCamera.fieldOfView, 30, Time.deltaTime*_aimTime);
+        if(_selectedGun.SniperAim) {
+            if(Vector3.Distance(_gunHoldPoint.localPosition, new Vector3(0,-0.15f, 1))<0.01f) {
+                _gunHoldPoint.gameObject.SetActive(false);
+                _scopeInImage.gameObject.SetActive(true);
+            }
+            _weaponCamera.fieldOfView = Mathf.Lerp(_weaponCamera.fieldOfView, 15, Time.deltaTime*_aimTime);
+        } else {
+            _weaponCamera.fieldOfView = Mathf.Lerp(_weaponCamera.fieldOfView, 30, Time.deltaTime*_aimTime);
+        }
     }
 
     private void AimOut() {
         _weaponCamera.fieldOfView = Mathf.Lerp(_weaponCamera.fieldOfView, 90, Time.deltaTime*_aimTime);
+        if(_selectedGun.SniperAim) {
+            _gunHoldPoint.gameObject.SetActive(true);
+            _scopeInImage.gameObject.SetActive(false);
+        }
     }
 
     public bool GetAiming() {
@@ -231,6 +256,7 @@ public class GunHandler : MonoBehaviour
             if(_startingReload) changeInRot = Vector3.zero;
             _gunHoldPointRotation = Vector3.Lerp(_gunHoldPointRotation, changeInRot, Time.deltaTime*_gunRotSmoothness);
             if(!_meleeing && !_reloading) _gunHoldPoint.localEulerAngles = _gunHoldPointRotation;
+            _playerCamera.fieldOfView = Mathf.Lerp(_playerCamera.fieldOfView, _originalMainCameraFOV, Time.deltaTime*5);
         } else {
             _gunHoldPointPosition = Vector3.Lerp(_gunHoldPointPosition, new Vector3(0,-0.15f, 1), Time.deltaTime*_aimTime);
             _gunHoldPoint.localPosition = _gunHoldPointPosition;
@@ -238,6 +264,8 @@ public class GunHandler : MonoBehaviour
             if(_startingReload) changeInRot = Vector3.zero;
             _gunHoldPointRotation = Vector3.Lerp(_gunHoldPointRotation, changeInRot, Time.deltaTime*_gunRotSmoothness);
             _gunHoldPoint.localEulerAngles = _gunHoldPointRotation;
+            if(_selectedGun && _selectedGun.SniperAim) _playerCamera.fieldOfView = Mathf.Lerp(_playerCamera.fieldOfView, _originalMainCameraFOV/2f, Time.deltaTime*5);
+            else if(_selectedGun) _playerCamera.fieldOfView = Mathf.Lerp(_playerCamera.fieldOfView, _originalMainCameraFOV/1.1f, Time.deltaTime*5);
         }
     }
 
@@ -258,13 +286,13 @@ public class GunHandler : MonoBehaviour
     private void CheckHealthBars() {
         RaycastHit hit;
         if(!GlobalSettingsManager.Instance.ShowHealthBars) return;
-        if(Physics.Raycast(_playerCamera.position, _playerCamera.forward, out hit, _selectedGun.ShootRange, _enemySolidLayer)) {
+        if(Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward, out hit, _selectedGun.ShootRange, _enemySolidLayer)) {
             ShootableHealthRelay shot = hit.transform.GetComponent<ShootableHealthRelay>();
             if(shot) {
                 shot.ShowHealth();
             }
         }
-        else if(Physics.Raycast(_playerCamera.position, _playerCamera.forward, out hit, _selectedGun.ShootRange, _enemyHealthLayer)) {
+        else if(Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward, out hit, _selectedGun.ShootRange, _enemyHealthLayer)) {
             ShootableHealthRelay shot = hit.transform.GetComponent<ShootableHealthRelay>();
             if(shot) {
                 shot.ShowHealth();
@@ -355,16 +383,17 @@ public class GunHandler : MonoBehaviour
         _magAmmo[_selectedIndex] -= 1;
         _timePassed = 0;
         _audioManager.PlaySound(_selectedGun.ShootSound);
-        int extraTotalShots = _playerPerks.HasPerks(Perks.EXTRA_OVERALL_DAMAGE)?(_selectedGun.IsWonderWeapon?1:2):1;
+        int extraTotalShots = _playerPerks.HasPerks(Perks.EXTRA_OVERALL_DAMAGE)?2:1;
         extraTotalShots += _playerPerks.HasMix(Perks.EXTRA_OVERALL_DAMAGE, Perks.EXTRA_HEALTH)?Mathf.FloorToInt(_playerHealth.GetHealth()/50):0;
+        if(_selectedGun.IsWonderWeapon) extraTotalShots = 1;
         for(int j=0;j<extraTotalShots;j++) {
             for(int i = 0; i < _selectedGun.ShotsPerShot; i++) {
                 Vector2 spread;
                 if(!_aiming) spread = new Vector2(Random.Range(-_selectedGun.MaxShotSpread.x, _selectedGun.MaxShotSpread.x), Random.Range(-_selectedGun.MaxShotSpread.y, _selectedGun.MaxShotSpread.y));
                 else spread = new Vector2(Random.Range(-_selectedGun.AimingShotSpread.x, _selectedGun.AimingShotSpread.x), Random.Range(-_selectedGun.AimingShotSpread.y, _selectedGun.AimingShotSpread.y));
-                _playerCamera.Rotate(spread.y, spread.x, 0);
+                _playerCamera.transform.Rotate(spread.y, spread.x, 0);
                 ShootRay();
-                _playerCamera.Rotate(-spread.y, -spread.x, 0);
+                _playerCamera.transform.Rotate(-spread.y, -spread.x, 0);
             }
         }
         KickCamera();
@@ -376,16 +405,17 @@ public class GunHandler : MonoBehaviour
 
     private float GetGunDamage(Vector3 __hitPos, int __pierce) {
         float totalDamage = _selectedGun.Damage;
-        totalDamage *= _selectedGun.RangeDamageDropOff.Evaluate(Vector3.Distance(__hitPos, _playerCamera.position)/_selectedGun.ShootRange)*_selectedGun.PierceDamageDropOff.Evaluate(__pierce);
+        totalDamage *= _selectedGun.RangeDamageDropOff.Evaluate(Vector3.Distance(__hitPos, _playerCamera.transform.position)/_selectedGun.ShootRange)*_selectedGun.PierceDamageDropOff.Evaluate(__pierce);
         if(_playerPerks.HasMix(Perks.EXTRA_OVERALL_DAMAGE, Perks.FAST_RELOAD)) totalDamage *= (_magAmmo[_selectedIndex] >= Mathf.FloorToInt(_selectedGun.AmmoPerMag*0.75f))?3:1;
-        if(_selectedGun.IsWonderWeapon) totalDamage *= 2f;
+        if(_selectedGun.IsWonderWeapon && _playerPerks.HasPerks(Perks.EXTRA_OVERALL_DAMAGE)) totalDamage *= 2f;
+        if(_selectedGun.IsWonderWeapon && _playerPerks.HasMix(Perks.EXTRA_OVERALL_DAMAGE, Perks.EXTRA_HEALTH)) totalDamage *= Mathf.Max(Mathf.FloorToInt(_playerHealth.GetHealth()/50), 1);
         if(_powerUpManager.IsPowerupActive(PowerupType.INSTAKILL)) totalDamage = -1f;
         return totalDamage;
     }
 
     private void MeleeRay() {
         RaycastHit hit;
-        if(Physics.Raycast(_playerCamera.position, _playerCamera.forward, out hit, _meleeRange, _solidLayers)) {
+        if(Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward, out hit, _meleeRange, _solidLayers)) {
             ShootableRelay shot = hit.transform.GetComponent<ShootableRelay>();
             if(shot) {
                 if(_powerUpManager.IsPowerupActive(PowerupType.INSTAKILL)) shot.TakeDamage(-1, _playerPoints, true, _powerUpManager);
@@ -437,7 +467,7 @@ public class GunHandler : MonoBehaviour
     private void ShootRay() {
         RaycastHit hit;
         Collider collider;
-        if(!Physics.Raycast(_playerCamera.position, _playerCamera.forward, out hit, _selectedGun.ShootRange, _solidLayers)) return;
+        if(!Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward, out hit, _selectedGun.ShootRange, _solidLayers)) return;
         ShootableRelay shot = hit.transform.GetComponent<ShootableRelay>();
         collider = hit.transform.GetComponent<Collider>();
         StartCoroutine(DoBulletTrail(hit));
@@ -450,7 +480,7 @@ public class GunHandler : MonoBehaviour
         for(int i = 0; i < _selectedGun.Pierce; i++) {
             if(!hit.transform) break;
             collider.enabled = false;
-            if(Physics.Raycast(hit.point, _playerCamera.forward, out hit, _selectedGun.ShootRange, _solidLayers)) {
+            if(Physics.Raycast(hit.point, _playerCamera.transform.forward, out hit, _selectedGun.ShootRange, _solidLayers)) {
                 collider.enabled = true;
                 ShootableRelay Pierceshot = hit.transform.GetComponent<ShootableRelay>();
                 collider = hit.transform.GetComponent<Collider>();
@@ -499,6 +529,7 @@ public class GunHandler : MonoBehaviour
         _meleeing = false;
         StopAllCoroutines();
         _anims.speed = 1;
+        if(_selectedGun) AimOut();
         _anims.Play("Idle");
         _timePassed = 0;
         if(_guns.Count == 0) _selectedGun = null;
@@ -509,6 +540,11 @@ public class GunHandler : MonoBehaviour
             foreach(Transform child in allChildren) {
                 child.gameObject.layer = 9;
             }
+        }
+        if(_selectedGun.SniperAim) {
+            _scopeInImage.sprite = _selectedGun.ScopeInSprite;
+        } else {
+            _scopeInImage.sprite = null;
         }
     }
 

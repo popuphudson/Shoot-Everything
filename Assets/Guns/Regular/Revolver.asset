@@ -15,9 +15,9 @@ MonoBehaviour:
   Name: Revolver
   IsWonderWeapon: 0
   WonderWeaponType: 0
-  IsPAPed: 0
   PAPedWeapon: {fileID: 11400000, guid: b53ec248cd9b76f418ed6153e5da2d50, type: 2}
-  Damage: 164
+  ItemRequirementToPAP: 
+  Damage: 210
   ShootRange: 60
   RangeDamageDropOff:
     serializedVersion: 2

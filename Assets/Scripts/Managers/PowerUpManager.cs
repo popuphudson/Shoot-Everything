@@ -78,6 +78,7 @@ public class PowerUpManager : MonoBehaviour
                 foreach(BarrierInteractable bar in _barriers) {
                     bar.FullRepair();
                 }
+                _zombieSpawner.UpdateZombiesWithBarriers();
                 break;
             case PowerupType.MAX_AMMO:
                 _playerScripts.GetPlayerGunHandler().RefillAllAmmo();

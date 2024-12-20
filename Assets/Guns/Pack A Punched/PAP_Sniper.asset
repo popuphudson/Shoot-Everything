@@ -15,8 +15,8 @@ MonoBehaviour:
   Name: The "Rail Cannon"
   IsWonderWeapon: 0
   WonderWeaponType: 0
-  IsPAPed: 1
   PAPedWeapon: {fileID: 0}
+  ItemRequirementToPAP: 
   Damage: 1296
   ShootRange: 100
   RangeDamageDropOff:
@@ -116,3 +116,5 @@ MonoBehaviour:
   ShootSound:
     Clip: {fileID: 8300000, guid: d812711905bc0b84e9214fca4fe85d3c, type: 3}
     Volume: 1
+  SniperAim: 1
+  ScopeInSprite: {fileID: 21300000, guid: be692e048b431084a80717e90746a804, type: 3}

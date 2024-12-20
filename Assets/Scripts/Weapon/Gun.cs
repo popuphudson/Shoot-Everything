@@ -36,4 +36,6 @@ public class Gun : ScriptableObject {
     public GameObject ZombieHitEffect;
     public GameObject BulletTrail;
     public Sound ShootSound;
+    public bool SniperAim;
+    public Sprite ScopeInSprite;
 }

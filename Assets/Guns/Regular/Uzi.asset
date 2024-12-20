@@ -15,9 +15,9 @@ MonoBehaviour:
   Name: Uzi
   IsWonderWeapon: 0
   WonderWeaponType: 0
-  IsPAPed: 0
   PAPedWeapon: {fileID: 11400000, guid: bfa6aeda45024da4c81da2749c5e58d1, type: 2}
-  Damage: 42
+  ItemRequirementToPAP: 
+  Damage: 67
   ShootRange: 120
   RangeDamageDropOff:
     serializedVersion: 2

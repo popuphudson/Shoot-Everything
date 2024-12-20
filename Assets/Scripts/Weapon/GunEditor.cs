@@ -34,6 +34,8 @@ public class GunEditor : Editor {
         SerializedProperty aimingShotSpread = serializedObject.FindProperty("AimingShotSpread");
         SerializedProperty bulletTrail = serializedObject.FindProperty("BulletTrail");
         SerializedProperty itemRequirementToPap = serializedObject.FindProperty("ItemRequirementToPAP");
+        SerializedProperty sniperAim = serializedObject.FindProperty("SniperAim");
+        SerializedProperty scopeInSprite = serializedObject.FindProperty("ScopeInSprite");
 
         name.stringValue = EditorGUILayout.TextField("Name", name.stringValue);
         isWonderWeapon.boolValue = EditorGUILayout.Toggle("Is Wonder Weapon", isWonderWeapon.boolValue);
@@ -66,6 +68,10 @@ public class GunEditor : Editor {
         zombieHitEffect.objectReferenceValue = EditorGUILayout.ObjectField("Zombie Hit Effect", zombieHitEffect.objectReferenceValue, typeof(GameObject), true);
         bulletTrail.objectReferenceValue = EditorGUILayout.ObjectField("Bullet Trail", bulletTrail.objectReferenceValue, typeof(GameObject), true);
         EditorGUILayout.PropertyField(shootSound);
+        sniperAim.boolValue = EditorGUILayout.Toggle("Sniper Aim", sniperAim.boolValue);
+        if(sniperAim.boolValue) {
+            EditorGUILayout.PropertyField(scopeInSprite);
+        }
 
         serializedObject.ApplyModifiedProperties();
     }

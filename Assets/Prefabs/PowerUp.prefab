@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1637274332231109536}
   - component: {fileID: 5152910628779727676}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Point At
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 3868562982580047222}
   - component: {fileID: 6979525081827477923}
   - component: {fileID: 8721398728435581125}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 7999713399087643314}
   - component: {fileID: 7999713399087643313}
   - component: {fileID: 7999713399087643315}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: PowerUp
   m_TagString: PowerUp
   m_Icon: {fileID: 0}
