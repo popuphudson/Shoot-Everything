@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BarrierInteractable : MonoBehaviour, Interactable
 {
+    [SerializeField] private ZombieSpawner _zombieSpawner;
     [SerializeField] private float _maxHealth;
     [SerializeField] private float _repairHealth;
     [SerializeField] private GameObject _offMeshLink;
@@ -31,6 +32,7 @@ public class BarrierInteractable : MonoBehaviour, Interactable
     {
         if(_health >= _maxHealth) return;
         if(_repairTimer > 0) return;
+        if(_health <= 0) _zombieSpawner.UpdateZombiesWithBarriers();
         _health = Mathf.Min(_maxHealth, _health+_repairHealth);
         _offMeshLink.SetActive(false);
         _repairTimer = 2;

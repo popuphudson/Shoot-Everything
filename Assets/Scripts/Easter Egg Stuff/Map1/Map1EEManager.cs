@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum Map1EEState {
     START,
@@ -12,12 +13,15 @@ public enum Map1EEState {
 
 public class Map1EEManager : MonoBehaviour
 {
+    [SerializeField] private AudioManager _audioManager;
+    [SerializeField] private Sound _exaustStepComplete;
     [SerializeField] private PlayerInventory _playerInventory;
     [SerializeField] private ExaustShootable[] _exausts;
     [SerializeField] private CacheShootable _cache;
     [SerializeField] private Vector3[] _cachePositions;
     [SerializeField] private Vector3[] _cacheRotations;
     [SerializeField] private Map1EEState _state = Map1EEState.START;
+    [SerializeField] private UnityEvent _finishExaustStep;
     private bool _allExaustsActive;
     
     public void SetEEState(Map1EEState __state) {
@@ -65,6 +69,10 @@ public class Map1EEManager : MonoBehaviour
                 if(!exaust.GetActive()) allActive = false;
             }
             _allExaustsActive = allActive;
+            if(_allExaustsActive) {
+                _audioManager.PlaySound(_exaustStepComplete);
+                _finishExaustStep.Invoke();
+            }
         }
     }
 }

@@ -116,7 +116,7 @@ public class MysteryBoxBuyable : MonoBehaviour, Interactable
     public string GetShown(PlayerScriptsHandler __playerScripts, string __interactInput)
     {
         if(_grabTimer > 0 && _canGrab && _selectedGun) {
-            return $"E To Grab {_selectedGun.name}";
+            return $"E To Grab {_selectedGun.Name}";
         } else if(_grabTimer > 0){
             return "";
         }
