@@ -27,7 +27,7 @@ public class PowerUpManager : MonoBehaviour
     private int _powerUpsGotten;
 
     private void Start() {
-        _killsToNextPowerup = Random.Range(10, 20);
+        _killsToNextPowerup = Random.Range(10, 20);;
         _powerUpNames.Add(PowerupType.MAX_AMMO, "Max Ammo");
         _powerUpNames.Add(PowerupType.INSTAKILL, "Instakill");
         _powerUpNames.Add(PowerupType.CARPENTER, "Carpenter");
@@ -40,7 +40,7 @@ public class PowerUpManager : MonoBehaviour
         _killsToNextPowerup--;
         if(_killsToNextPowerup == 0) {
             _powerUpsGotten++;
-            _killsToNextPowerup = Random.Range(10+(5*_powerUpsGotten), 30+(7*_powerUpsGotten));
+            _killsToNextPowerup = Random.Range(10+(2*_powerUpsGotten), 30+(2*_powerUpsGotten));
             return 0;
         }
         return _killsToNextPowerup;

@@ -76,6 +76,7 @@ public class Shootable : MonoBehaviour
                 if(__playerPoints) __playerPoints.AddPoints(Mathf.CeilToInt(_pointsGiven*__pointmul));
                 if(_enemyAI.CanPathToPlayerWithoutBarrierLinks()) {
                     if(__powerUpManager.GetKillsToNextPowerup() == 0) {
+                        Debug.Log("Powerup Spawned");
                         PowerUp go = Instantiate(_powerUpPrefab, transform.position, Quaternion.identity).GetComponent<PowerUp>();
                         go.SetPowerUpManager(__powerUpManager);
                         PowerupType powerupType = (PowerupType)System.Enum.GetValues(typeof(PowerupType)).GetValue(Random.Range(0, System.Enum.GetValues(typeof(PowerupType)).Length));

@@ -35,7 +35,8 @@ public class EnemyAI : MonoBehaviour
     }
 
     public void RetargetBarriers() {
-        _targetBarrier = true;
+        if(_agent.isOnNavMesh && CanPathToPlayerWithoutBarrierLinks()) _targetBarrier = false;
+        else _targetBarrier = true;
     }
 
     public void SetAudioManager(AudioManager __audioManager) {
