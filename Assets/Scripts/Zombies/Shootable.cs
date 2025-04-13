@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Shootable : MonoBehaviour
@@ -15,6 +16,7 @@ public class Shootable : MonoBehaviour
     [SerializeField] private int _pointsGiven;
     [SerializeField] private EnemyAI _enemyAI;
     [SerializeField] private GameObject _powerUpPrefab;
+    public UnityEvent DespawnEvent;
     private AudioManager _audioManager;
     private float _prevDecay;
     private float _decayTimer;
@@ -61,6 +63,14 @@ public class Shootable : MonoBehaviour
         } else {
             HideHealth();
         }
+    }
+
+    public void Despawn() {
+        _enemyAI.Killed();
+        _audioManager.PlaySoundAtPoint(_deathSound, transform.position);
+        gameObject.SetActive(false);
+        DespawnEvent.Invoke();
+        Destroy(gameObject, 1f);
     }
 
     public void TakeDamage(float __damage, PlayerPoints __playerPoints, float __pointmul, PowerUpManager __powerUpManager) {

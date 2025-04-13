@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
+using TreeEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,6 +14,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Transform _target;
     [SerializeField] private Animator _anims;
     [SerializeField] private LayerMask _solidLayers;
+    [SerializeField] private Shootable _shootable;
     private AudioManager _audioManager;
     private BarrierInteractable _barrier;
     private bool _ai = true;
@@ -27,6 +29,8 @@ public class EnemyAI : MonoBehaviour
     private PlayerMovement _targetMovement;
     private bool _quickAttack;
     private AudioSource _groanSound;
+    private Vector3 _prevPos;
+    private float _stuckTimer;
 
     public void Killed() {
         if(_groanSound) {
@@ -35,7 +39,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     public void RetargetBarriers() {
-        if(_agent.isOnNavMesh && CanPathToPlayerWithoutBarrierLinks()) _targetBarrier = false;
+        if(CanPathToPlayer()) _targetBarrier = false;
         else _targetBarrier = true;
     }
 
@@ -107,6 +111,14 @@ public class EnemyAI : MonoBehaviour
         return pathStatus;
     }
 
+    public bool CanPathToPlayer() {
+        if(!_agent.isOnNavMesh) return false;
+        NavMeshPath path = new NavMeshPath(); 
+        _agent.CalculatePath(_target.position, path);
+        bool pathStatus = path.status == NavMeshPathStatus.PathComplete;
+        return pathStatus;
+    }
+
     public void ForceIdle() {
         _randomPoint = RandomPlace();
         _forceIdle = true;
@@ -144,6 +156,14 @@ public class EnemyAI : MonoBehaviour
             LockOnTarget();
         } else if(!_forceIdle) {
             _agent.isStopped = true;
+        }
+        if(_stuckTimer <= 0) {
+            _stuckTimer = 2;
+            if(!_targetBarrier && !CanPathToPlayer()) {
+                _targetBarrier = true;
+            }
+        } else {
+            _stuckTimer -= Time.deltaTime;
         }
         if(_randomIdle || _forceIdle) {
             _agent.isStopped = false;
@@ -186,6 +206,7 @@ public class EnemyAI : MonoBehaviour
                 UpdateAnimationMoving();
             }
         }
+        _prevPos = transform.position;
     }
 
     private void TryDamageBarrier() {

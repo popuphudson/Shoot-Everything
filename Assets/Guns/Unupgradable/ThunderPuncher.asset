@@ -15,8 +15,8 @@ MonoBehaviour:
   Name: Thunder Puncher
   IsWonderWeapon: 1
   WonderWeaponType: 0
-  IsPAPed: 1
   PAPedWeapon: {fileID: 0}
+  ItemRequirementToPAP: 
   Damage: 3945
   ShootRange: 100
   RangeDamageDropOff:
@@ -142,4 +142,6 @@ MonoBehaviour:
   BulletTrail: {fileID: 5803193985810463505, guid: 480417604041f7341b2a63b0174a34ce, type: 3}
   ShootSound:
     Clip: {fileID: 8300000, guid: d56e067455aa4ca48b2b74c9af8910ea, type: 3}
-    Volume: 1
+    Volume: 0.5
+  SniperAim: 0
+  ScopeInSprite: {fileID: 0}

@@ -116,6 +116,11 @@ public class ZombieSpawner : MonoBehaviour
         }
         enemyAI.GetComponent<Shootable>().SetHealth(health);
         enemyAI.GetComponent<Shootable>().SetAudioManager(_audioManager);
+        enemyAI.GetComponent<Shootable>().DespawnEvent.AddListener(ZombieDespawned);
+    }
+
+    public void ZombieDespawned() {
+        _leftToSpawn++;
     }
 
     private IEnumerator SpawnZombies() {
